@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+
+
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+<head>
+    <title>SMS</title>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Datta Able Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords" content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template">
+    <meta name="author" content="Codedthemes" />
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <!-- Favicon icon -->
+    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="../assets/fonts/fontawesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../assets/fonts/fontawesome/css/brands.css">
+    <link rel="stylesheet" href="../assets/fonts/fontawesome/css/brands.min.css">
+    <link rel="stylesheet" href="../assets/fonts/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="../assets/fonts/fontawesome/css/fontawesome.min.css">
+    <!-- animation css -->
+    <link rel="stylesheet" href="../assets/plugins/animation/css/animate.min.css">
+    <!-- notification css -->
+    <link rel="stylesheet" href="../assets/plugins/notification/css/notification.min.css">
+    <!-- toolbar css -->
+    <link rel="stylesheet" href="../assets/plugins/toolbar/css/jquery.toolbar.css">
+    <!-- fileupload-custom css -->
+    <link rel="stylesheet" href="../assets/css/pages/fileupload.css">
+    <!-- smart wizard -->
+    <link rel="stylesheet" href="../assets/plugins/smart-wizard/css/smart_wizard.min.css">
+    <link rel="stylesheet" href="../assets/plugins/smart-wizard/css/smart_wizard_theme_arrows.min.css">
+    <link rel="stylesheet" href="../assets/plugins/smart-wizard/css/smart_wizard_theme_circles.min.css">
+    <link rel="stylesheet" href="../assets/plugins/smart-wizard/css/smart_wizard_theme_dots.min.css">
+    <!-- Bootstrap datetimepicker css -->
+    <link rel="stylesheet" href="../assets/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Select -->
+    <link href="~/Assets/plugins/multi-select/css/multi-select.css" rel="stylesheet" />
+    <link href="~/Assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+
+    <!-- Required Js -->
+    @RenderSection("styles", required: false)
+</head>
+
+<body>
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+
+
+    <!-- [ Pre-loader ] End -->
+    <!-- [ navigation menu ] start -->
+    <nav class="pcoded-navbar    navbar-image-3 icon-colored">
+
+        @*<nav class="pcoded-navbar navbar-collapsed  navbar-image-3 icon-colored ">*@
+
+        <div class="navbar-wrapper">
+            <div class="navbar-brand header-logo">
+                @*<a href="" class="b-brand">
+                        <div class="b-bg">
+                            <i class="feather icon-trending-up"></i>
+                        </div>
+                        <span class="b-title">SMS</span>
+                    </a>*@
+                <a href="#!" class="b-brand">
+                    <!-- ========   change your logo hear   ============ -->
+                    <img src="~/assets/Logo/logo.png" style="width: 55%;" alt="" class="logo">
+                </a>
+                <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+            </div>
+            <div class="navbar-content scroll-div">
+                <ul class="nav pcoded-inner-navbar">
+                    @{
+                        if (Session["MENU_ITEMS"] != null)
+                        {
+                            List<SMS.Model.Model.SubMenuItems> LiMenus = new List<SMS.Model.Model.SubMenuItems>();
+                            LiMenus = (List<SMS.Model.Model.SubMenuItems>)Session["MENU_ITEMS"];
+                            var parent = LiMenus.GroupBy(o => o.MODULE_NAME).Select(x => new SMS.Model.Model.SubMenuItems() { MODULE_NAME = x.FirstOrDefault().MODULE_NAME, STYLE = x.FirstOrDefault().STYLE, HAS_SUB = x.FirstOrDefault().HAS_SUB, CONTROLLER = x.FirstOrDefault().CONTROLLER, ACTION = x.FirstOrDefault().ACTION, MENU_NAME = x.FirstOrDefault().MENU_NAME }).ToList();
+                            foreach (var item in parent)
+                            {
+                                <li data-username="icons Feather Fontawsome flag material simple line themify" class="nav-item pcoded-hasmenu">
+                                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="@item.STYLE"></i></span><span class="pcoded-mtext">@item.MODULE_NAME</span></a>
+                                    @if (item.HAS_SUB == "Y")
+                                    {
+                                        var Sub = LiMenus.Where(s => s.MODULE_NAME == item.MODULE_NAME).ToList();
+                                        <ul class="pcoded-submenu">
+                                            @foreach (var subItem in Sub)
+                                            {
+                                                <li class=""><a href="@Url.Action(subItem.ACTION, subItem.CONTROLLER)" class="">@subItem.MENU_NAME</a></li>
+                                            }
+                                        </ul>
+                                    }
+                                </li>
+                            }
+                        }
+                    }
+
+
+
+                </ul>
+
+
+
+            </div>
+        </div>
+    </nav>
+    <!-- [ navigation menu ] end -->
+    <!-- [ Header ] start -->
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light">
+        <div class="m-header">
+            <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
+            <a href="" class="b-brand">
+                <div class="b-bg">
+                    <i class="feather icon-trending-up"></i>
+                </div>
+                <span class="b-title">SMS</span>
+            </a>
+        </div>
+        <a class="mobile-menu" id="mobile-header" href="#!">
+            <i class="feather icon-more-horizontal"></i>
+        </a>
+        <div class="collapse navbar-collapse">
+
+            <ul class="navbar-nav mr-auto">
+                <li><a href="#!" class="full-screen" onclick="javascript:toggleFullScreen()"><i class="feather icon-maximize"></i></a></li>
+                @*<li class="nav-item dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Dropdown</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#!">Action</a></li>
+                            <li><a class="dropdown-item" href="#!">Another action</a></li>
+                            <li><a class="dropdown-item" href="#!">Something else here</a></li>
+                        </ul>
+                    </li>*@
+                <li class="nav-item">
+                    <div class="main-search">
+                        <div class="input-group">
+                            <input type="text" id="m-search" class="form-control" placeholder="Search . . .">
+                            <a href="#!" class="input-group-append search-close">
+                                <i class="feather icon-x input-group-text"></i>
+                            </a>
+                            <span class="input-group-append search-btn btn btn-primary">
+                                <i class="feather icon-search input-group-text"></i>
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="Cmpny name" style="height: auto; font-size: 35px; font-family:Open Sans; font-weight: 400;">
+                    <i class="fas fa-tools"></i>
+                    @*<img src="~/Assets/images/cardilogy-removebg.png" style="width: 90px;align-items: center;" />*@
+
+                    @*<img src="~/Assets/images/animat-essential/diamond/animat-diamond-color.gif"  style="width: 80px;"/>*@
+
+                    <label class="breadcrumb-item">Store Management System</label>
+                </div>
+            </div>
+            <ul class="navbar-nav ml-auto">
+
+                <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-home"></i></a></li>
+                <li>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="icon feather icon-bell"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right notification">
+                            <div class="noti-head">
+                                <h6 class="d-inline-block m-b-0">Notifications</h6>
+                                <div class="float-right">
+                                    <a href="#!" class="m-r-10">mark as read</a>
+                                    <a href="#!">clear all</a>
+                                </div>
+                            </div>
+                            <ul class="noti-body">
+                                <li class="n-title">
+                                    <p class="m-b-0">NEW</p>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius" src="../assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>Madasamy</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                            <p>Your Request is Approved</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="n-title">
+                                    <p class="m-b-0">EARLIER</p>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius" src="../assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>Vijaykani</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                            <p>Waiting For your Approval</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="notification">
+                                    <div class="media">
+                                        <img class="img-radius" src="../assets/images/user/avatar-3.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <p><strong>Raja</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span></p>
+                                            <p>Your Request Raised</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="noti-footer">
+                                <a href="#!">show all</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="dropdown drp-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon feather icon-settings"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-notification">
+                            <div class="pro-head">
+                                <img src="../assets/images/user/avatar-1.jpg" class="img-radius" alt="User-Profile-Image">
+                                <span>ADMIN</span>
+                                <a href="/Account/SignOut" class="dud-logout" title="Logout">
+                                    <i class="feather icon-log-out"></i>
+                                </a>
+                            </div>
+                            <ul class="pro-body">
+                                @*<li><a href="#!" class="dropdown-item"><i class="feather icon-settings"></i>Settings</a></li>
+                                    <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i>Profile</a></li>
+                                    <li><a href="message.html" class="dropdown-item"><i class="feather icon-mail"></i>My Messages</a></li>*@
+                                <li><a href="/Account/SignOut" class="dropdown-item"><i class="feather icon-lock"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+
+    </header>
+    <!-- [ Header ] end -->
+    <!-- [ chat user list ] start -->
+    <section class="header-user-list">
+        <div class="h-list-header">
+            <div class="input-group">
+                <input type="text" id="search-friends" class="form-control" placeholder="Search Friend . . .">
+            </div>
+        </div>
+
+    </section>
+    <!-- [ chat user list ] end -->
+    <!-- [ chat message ] start -->
+    <section class="header-chat">
+        <div class="h-list-header">
+            <h6>Josephin Doe</h6>
+            <a href="#!" class="h-back-user-list"><i class="feather icon-chevron-left"></i></a>
+        </div>
+        <div class="h-list-body">
+            <div class="main-chat-cont scroll-div">
+                <div class="main-friend-chat">
+                    <div class="media chat-messages">
+                        <a class="media-left photo-table" href="#!">
+                            <img class="media-object img-radius img-radius m-t-5" src="../assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                        </a>
+                        <div class="media-body chat-menu-content">
+                            <div class="">
+                                <p class="chat-cont">hello Datta! Will you tell me something</p>
+                                <p class="chat-cont">about yourself?</p>
+                            </div>
+                            <p class="chat-time">8:20 a.m.</p>
+                        </div>
+                    </div>
+                    <div class="media chat-messages">
+                        <div class="media-body chat-menu-reply">
+                            <div class="">
+                                <p class="chat-cont">Ohh! very nice</p>
+                            </div>
+                            <p class="chat-time">8:22 a.m.</p>
+                        </div>
+                    </div>
+                    <div class="media chat-messages">
+                        <a class="media-left photo-table" href="#!">
+                            <img class="media-object img-radius img-radius m-t-5" src="../assets/images/user/avatar-2.jpg" alt="Generic placeholder image">
+                        </a>
+                        <div class="media-body chat-menu-content">
+                            <div class="">
+                                <p class="chat-cont">can you help me?</p>
+                            </div>
+                            <p class="chat-time">8:20 a.m.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-list-footer">
+            <div class="input-group">
+                <input type="file" class="chat-attach" style="display: none">
+                <a href="#!" class="input-group-prepend btn btn-success btn-attach">
+                    <i class="feather icon-paperclip"></i>
+                </a>
+                <input type="text" name="h-chat-text" class="form-control h-send-chat" placeholder="Write hear . . ">
+                <button type="submit" class="input-group-append btn-send btn btn-primary">
+                    <i class="feather icon-message-circle"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- [ chat message ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content" style="padding-top: 4px;">
+                @RenderBody()
+                <button id="Message" style="display: none;" value="Success" class="btn notifications btn-primary" data-type="inverse" data-animation-in="animated flipInX" data-animation-out="animated flipOutX">Flip In X</button>
+                <label id="Title" style="display: none;">Success</label>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div style="float: right; margin: 0px 30px 15px 0px;">
+
+            <span>Copyright © 2020 Everlasting infotech Pvt Ltd</span>
+        </div>
+    </footer>
+    <!-- [ Main Content ] end -->
+    @*<script src="../assets/plugins/jquery/js/ "></script>*@
+    <!-- Required Js -->
+    <script src="../assets/js/vendor-all.min.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/js/menu-setting.min.js"></script>
+    <script src="../assets/js/brands.js"></script>
+    <script src="../assets/js/brands.min.js"></script>
+    <script src="../assets/js/fontawesome.js"></script>
+    <script src="../assets/js/fontawesome.min.js"></script>
+    <script src="../assets/js/pcoded.min.js"></script>
+
+    <script src="../assets/plugins/smart-wizard/js/jquery.smartWizard.min.js"></script>
+    <script src="../assets/js/pages/wizard-custom.js"></script>
+    <!-- amchart js -->
+    <script src="../assets/plugins/amchart/js/amcharts.js"></script>
+    <script src="../assets/plugins/amchart/js/gauge.js"></script>
+    <script src="../assets/plugins/amchart/js/serial.js"></script>
+    <script src="../assets/plugins/amchart/js/light.js"></script>
+    <script src="../assets/plugins/amchart/js/pie.min.js"></script>
+    <script src="../assets/plugins/amchart/js/ammap.min.js"></script>
+    <script src="../assets/plugins/amchart/js/usaLow.js"></script>
+    <script src="../assets/plugins/amchart/js/radar.js"></script>
+    <script src="../assets/plugins/amchart/js/worldLow.js"></script>
+    <!-- notification Js -->
+    <script src="../assets/plugins/notification/js/bootstrap-growl.min.js"></script>
+    <script src="../assets/plugins/sweetalert/js/sweetalert.min.js"></script>
+    <script src="../assets/js/pages/ac-alert.js"></script>
+
+    <!-- dashboard-custom js -->
+
+    <script src="../assets/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script src="../assets/js/pages/form-validation.js"></script>
+
+
+    <!-- datepicker js -->
+    <script src="../assets/plugins/bootstrap-datetimepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../assets/js/pages/ac-datepicker.js"></script>
+
+
+    <!-- Input mask Js -->
+    <script src="../assets/plugins/inputmask/js/inputmask.min.js"></script>
+    <script src="../assets/plugins/inputmask/js/jquery.inputmask.min.js"></script>
+    <script src="../assets/plugins/inputmask/js/autoNumeric.js"></script>
+
+    <!-- toolbar Js -->
+    <script src="../assets/plugins/toolbar/js/jquery.toolbar.min.js"></script>
+    <script src="../assets/js/pages/ac-toolbar.js"></script>
+
+    <!-- form-picker-custom Js -->
+    <script src="../assets/js/pages/form-masking-custom.js"></script>
+    <script src="../CommonJS/Angular.min.js"></script>
+    <script src="../CommonJS/angular-filter.js"></script>
+    <script src="../CommonJS/CommonApp.js"></script>
+    <script src="../CommonJS/common-directive.js"></script>
+    <script src="../CommonJS/pdfmake.min.js"></script>
+    <script src="../CommonJS/html2canvas.min.js"></script>
+    <script src="../assets/js/pages/dashboard-custom.js"></script>
+
+    <!-- Float Chart js -->
+    <script src="../assets/plugins/flot/js/jquery.flot.js"></script>
+    <script src="../assets/plugins/flot/js/jquery.flot.categories.js"></script>
+    <script src="../assets/plugins/flot/js/curvedLines.js"></script>
+    <script src="../assets/plugins/flot/js/jquery.flot.tooltip.min.js"></script>
+
+    @*NODIFICATION JS*@
+    <script src="~/Assets/js/pages/ac-notification.js"></script>
+    <script src="~/Assets/js/Notify/jquery.app.js"></script>
+    <script src="~/Assets/js/Notify/jquery.core.js"></script>
+    <script src="~/Assets/js/Notify/notify-metro.js"></script>
+    <script src="~/Assets/js/Notify/notify.min.js"></script>
+    <script src="~/Assets/plugins/multi-select/js/jquery.multi-select.js"></script>
+    <script src="~/Assets/plugins/multi-select/js/jquery.quicksearch.js"></script>
+    <script src="~/Assets/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/Assets/js/pages/form-select-custom.js"></script>
+    <!-- dashboard-custom js -->
+    <script src="../assets/js/pages/dashboard-analytics.js"></script>
+    <!-- file-upload Js -->
+    <script src="../assets/plugins/fileupload/js/dropzone-amd-module.min.js"></script>
+    <script src="~/Assets/js/account-min.js"></script>
+    <script>
+        var page = {
+            bootstrap: 3
+        };
+
+        function swap_bs() {
+            page.bootstrap = 3;
+        }
+    </script>
+    <style>
+        .datepicker > .datepicker-days {
+            display: block;
+        }
+
+        ol.linenums {
+            margin: 0 0 0 -8px;
+        }
+    </style>
+
+    <script>
+        var showPopup = function (heading, message) {
+            $.Notification.autoHideNotify('success', 'top right', heading, message);
+        }
+        var showErrorPopup = function (heading, message) {
+            $.Notification.autoHideNotify('error', 'top right', heading, message);
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
