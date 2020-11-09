@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "ToolLocationMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+}
+<div ng-app="toollocationApp" ng-controller="toollocationCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Tool LocationMaster</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Tool Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolLocationMaster">Tool LocationMaster</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>ToolLocation Master List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add Drug" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-user-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-hover" style="width: 100%" datatable="ng" dt-options="vm.dtOptions">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Location Id</th>
+                                                <th>Location Name</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat=" row in ToolLocationList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.LocationID }}</td>
+                                                <td>{{ row.LocationName }}</td>
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    @*<a href="#!" class="btn btn-icon btn-outline-primary has-ripple" style="width: 36px; height: 40px;"><i class="feather icon-edit" ng-click="editClick(row,'E')" title="Edit"></i><span class="ripple ripple-animate" style="height: 45px; width: 45px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 1.5px; left: 5.5px;"></span></a>*@
+                                                    <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add ToolLocation</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Cancel" style="font-size: 25px;" ng-click="CancelToolLocation()"><i class="feather icon-user-x"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="ToollocationForm" ng-submit="submitForm(ToollocationForm.$valid,obj)" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine,'has-success': ToollocationForm.Tcode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool LocationCode</label>
+                                            <input id="LocationCode" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.LocationCode" required>
+                                            <p ng-show="ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine,'has-success': ToollocationForm.Tname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool LocationName</label>
+                                            <input id="LocationName"  type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.LocationName" required>
+                                            <p ng-show="ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolLocation()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Tool/ToolLocationMaster/ToolLocationMaster-app.js"></script>
+    <script src="~/AngularJS/Tool/ToolLocationMaster/ToolLocationMaster-controller.js"></script>
+}
