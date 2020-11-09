@@ -180,6 +180,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AngularJS\app.layout.js" />
+    <Content Include="AngularJS\controller.layout.js" />
     <Content Include="CommonJS\angualr-datatable.js" />
     <Content Include="CommonJS\angucomplete-alt.min.js" />
     <Content Include="CommonJS\angular-animate.js" />
@@ -236,7 +238,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AngularJS\Account\" />
+    <Folder Include="AngularJS\Account\Header\" />
     <Folder Include="App_Data\" />
     <Folder Include="Assets\" />
   </ItemGroup>
