@@ -184,6 +184,8 @@
   <ItemGroup>
     <Content Include="AngularJS\Tool\ToolLocationMaster\ToolLocationMaster-app.js" />
     <Content Include="AngularJS\Tool\ToolLocationMaster\ToolLocationMaster-controller.js" />
+    <Content Include="AngularJS\app.layout.js" />
+    <Content Include="AngularJS\controller.layout.js" />
     <Content Include="CommonJS\angualr-datatable.js" />
     <Content Include="CommonJS\angucomplete-alt.min.js" />
     <Content Include="CommonJS\angular-animate.js" />
@@ -241,7 +243,7 @@
     <Content Include="Views\Tool\ToolLocationMaster.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AngularJS\Account\" />
+    <Folder Include="AngularJS\Account\Header\" />
     <Folder Include="App_Data\" />
     <Folder Include="Assets\" />
     <Folder Include="Views\Base\" />

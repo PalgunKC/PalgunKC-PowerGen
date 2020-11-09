@@ -59,9 +59,10 @@
     </div>
 
 
+
     <!-- [ Pre-loader ] End -->
     <!-- [ navigation menu ] start -->
-    <nav class="pcoded-navbar icon-colored">
+    <nav class="pcoded-navbar navbar-image-3 icon-colored">
 
         @*<nav class="pcoded-navbar navbar-collapsed  navbar-image-3 icon-colored ">*@
 
@@ -74,10 +75,17 @@
                         <span class="b-title">SMS</span>
                     </a>*@
                 <a href="#!" class="b-brand">
+                    <div class="b-bg">
+                        <img src="~/assets/Logo/Logo-min.png" alt="" class="logo">
+                    </div>
                     <!-- ========   change your logo hear   ============ -->
-                    <img src="~/assets/Logo/logo.png" style="width: 55%;" alt="" class="logo">
+                    <img src="~/assets/Logo/logo1.png" style="width: 55%;" alt="" class="logo main-logo-text">
                 </a>
-                <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+                <a class="mobile-menu" id="mobile-collapse" href="#!">
+                    <span>
+                        
+                    </span>
+                </a>
             </div>
             <div class="navbar-content scroll-div">
                 <ul class="nav pcoded-inner-navbar">
@@ -117,14 +125,33 @@
     </nav>
     <!-- [ navigation menu ] end -->
     <!-- [ Header ] start -->
+
+    <!-- [ navigation menu ] start -->
+    <!--<nav class="pcoded-navbar theme-horizontal">
+        <div class="navbar-wrapper">
+            <div class="navbar-brand header-logo">
+                
+            </div>
+            <div class="navbar-content sidenav-horizontal" id="layout-sidenav">
+                <ul class="nav pcoded-inner-navbar sidenav-inner"></ul>
+            </div>
+        </div>
+    </nav>-->
+    <!-- [ navigation menu ] end -->
+
+
     <header class="navbar pcoded-header navbar-expand-lg navbar-light">
         <div class="m-header">
             <a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
             <a href="" class="b-brand">
                 <div class="b-bg">
-                    <i class="feather icon-trending-up"></i>
+                    <!-- <i class="feather icon-trending-up"></i> -->
+                    <a href="#!" class="b-brand top-scroll-header">
+                        <!-- ========   change your logo hear   ============ -->
+                       <!-- <img src="~/assets/Logo/logo.png" style="width: 123px;" alt="" class="logo"> -->
+                    </a>
                 </div>
-                <span class="b-title">SMS</span>
+                
             </a>
         </div>
         <a class="mobile-menu" id="mobile-header" href="#!">
@@ -156,16 +183,6 @@
                     </div>
                 </li>
             </ul>
-            <div class="row">
-                <div class="Cmpny name" style="height: auto; font-size: 35px; font-family:Open Sans; font-weight: 400;">
-                    <i class="fas fa-tools"></i>
-                    @*<img src="~/Assets/images/cardilogy-removebg.png" style="width: 90px;align-items: center;" />*@
-
-                    @*<img src="~/Assets/images/animat-essential/diamond/animat-diamond-color.gif"  style="width: 80px;"/>*@
-
-                    <label class="breadcrumb-item">Store Management System</label>
-                </div>
-            </div>
             <ul class="navbar-nav ml-auto">
 
                 <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-home"></i></a></li>

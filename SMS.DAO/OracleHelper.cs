@@ -12,7 +12,6 @@ using System.Data.OracleClient;
 using System.Configuration;
 using System.Transactions;
 using System.Reflection;
-using System.Web.Http;
 
 namespace SAMS.DAO
 {
