@@ -44,6 +44,8 @@ namespace SMS.UTILITY
             public const string SP_PHYMST_ACTION = "SP_PHYMST_ACTION";
             public const string SP_DRUGMST_ACTION = "SP_DRUGMST_ACTION";
             public const string SP_LOCATION_MASTER = "SP_LOCATION_MASTER";
+            public const string SP_VENDOR_MASTER = "SP_VENDOR_MASTER";
+            public const string SP_PART_MASTER = "SP_PART_MASTER";
             public const string SP_INVESTIGATIONMST_ACTION = "SP_INVESTIGATIONMST_ACTION";
             public const string SP_PRG_ACTION = "SP_PRG_ACTION";
             public const string SP_SAVE_CARDIOLOGYDETAILS = "SP_SAVE_CARDIOLOGYDETAILS";

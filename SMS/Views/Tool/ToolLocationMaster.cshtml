@@ -31,40 +31,57 @@
                         <div class="card-header">
                             <h5>ToolLocation Master List</h5>
                             <div style="float: right; margin-right: 25px;">
-                                <a class="" href="#" title="Add Drug" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-user-plus"></i></a>
+                                <a class="" href="#" title="Add Drug" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-user-plus"></i></a>
                             </div>
                         </div>
                         <div class="card-block">
                             <div class="">
                                 <div class="table-responsive m-t-20">
-                                    <table class="table table-hover" style="width: 100%; overflow-x: unset;" datatable="ng" dt-options="vm.dtOptions">
+                                    <table class="table table-hover" style="width: 100%" datatable="ng" dt-options="vm.dtOptions">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th style="display:none">Location Id</th>
                                                 <th>Location Name</th>
+                                                <th>Location Station</th>
+                                                <th>Location Row</th>
+                                                <th>Location Column</th>
                                                 <th>Is Active</th>
-                                                <th>Action</th>
+                                                @*<th>Action</th>*@
                                             </tr>
                                         </thead>
 
                                         <tbody>
 
-                                            <tr ng-repeat=" row in ToolLocationList">
+                                            <tr ng-repeat="row in ToolLocationList">
                                                 <td>{{ $index +   1 }}</td>
                                                 <td style="display:none">{{ row.LocationID }}</td>
                                                 <td>{{ row.LocationName }}</td>
-                                                <td>
+                                                <td>{{ row.LocationStation }}</td>
+                                                <td>{{ row.LocationRow }}</td>
+                                                <td>{{ row.LocationColumn }}</td>
+                                                @*<td>
                                                     <span ng-switch on="row.IsActive">
                                                         <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
                                                         <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
                                                     </span>
+                                                </td>*@
+                                                <td>
+                                                    <i class="fas fa-toggle-on" style="font-size:40px;cursor:pointer; color: #5cb85c"
+                                                       ng-if="row.IsActive == 'Y'"
+
+                                                       ng-click="editClick(row,'I')" title="Active">
+                                                    </i>
+                                                    <i class="fas fa-toggle-on fa-rotate-180" style="font-size:40px;cursor:pointer;color: #d9534f"
+                                                       ng-if="row.IsActive == 'N'"
+                                                       ng-click="editClick(row,'A')" title="InActive">
+                                                    </i>
                                                 </td>
 
-                                                <td>
-                                                    @*<a href="#!" class="btn btn-icon btn-outline-primary has-ripple" style="width: 36px; height: 40px;"><i class="feather icon-edit" ng-click="editClick(row,'E')" title="Edit"></i><span class="ripple ripple-animate" style="height: 45px; width: 45px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 1.5px; left: 5.5px;"></span></a>*@
+                                                @*<td>
+                                                  
                                                     <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
-                                                </td>
+                                                </td>*@
 
                                             </tr>
                                         </tbody>
@@ -85,17 +102,33 @@
                                 <div class="row">
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine,'has-success': ToollocationForm.Tcode.$valid }">
                                         <div class="form-group">
-                                            <label class="form-label">Tool LocationCode</label>
-                                            <input id="LocationCode" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.LocationCode" required>
+                                            <label class="form-label">Tool Station</label>
+                                            <input id="LocationStation" type="text"  alpha-only class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.LocationStation" required>
                                             <p ng-show="ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine,'has-success': ToollocationForm.Tname.$valid }">
                                         <div class="form-group">
-                                            <label class="form-label">Tool LocationName</label>
-                                            <input id="LocationName"  type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.LocationName" required>
+                                            <label class="form-label">Tool Row</label>
+                                            <input id="LocationRow"  type="text"   alpha-only   class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.LocationRow" required>
                                             <p ng-show="ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Cname.$invalid && !ToollocationForm.Cname.$pristine,'has-success': ToollocationForm.Cname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Column</label>
+                                            <input id="LocationColumn" type="text"  numeric-validation class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Cname" ng-model="obj.LocationColumn" required>
+                                            <p ng-show="ToollocationForm.Cname.$invalid && !ToollocationForm.Cname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Lname.$invalid && !ToollocationForm.Lname.$pristine,'has-success': ToollocationForm.Lname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Location</label>
+                                            <input id="LocationName" type="text" class="form-control" ng-disabled="true" autocomplete="off" maxlength="60" placeholder="Name" name="Lname" ng-model="obj.LocationName=obj.LocationStation+'-'+obj.LocationRow+obj.LocationColumn" required>
+                                            <p ng-show="ToollocationForm.Lname.$invalid && !ToollocationForm.Lname.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
 

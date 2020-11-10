@@ -182,10 +182,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AngularJS\Tool\PartMaster\PartMaster-app.js" />
+    <Content Include="AngularJS\Tool\PartMaster\PartMaster-controller.js" />
+    <Content Include="AngularJS\Tool\ToolVendorMaster\ToolVendorMaster-app.js" />
+    <Content Include="AngularJS\Tool\ToolVendorMaster\ToolVendorMaster-controller.js" />
     <Content Include="AngularJS\Tool\ToolLocationMaster\ToolLocationMaster-app.js" />
     <Content Include="AngularJS\Tool\ToolLocationMaster\ToolLocationMaster-controller.js" />
-    <Content Include="AngularJS\app.layout.js" />
-    <Content Include="AngularJS\controller.layout.js" />
     <Content Include="CommonJS\angualr-datatable.js" />
     <Content Include="CommonJS\angucomplete-alt.min.js" />
     <Content Include="CommonJS\angular-animate.js" />
@@ -241,9 +243,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Tool\ToolLocationMaster.cshtml" />
+    <Content Include="Views\Tool\ToolVendorMaster.cshtml" />
+    <Content Include="Views\Tool\PartMaster.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AngularJS\Account\Header\" />
+    <Folder Include="AngularJS\Account\" />
     <Folder Include="App_Data\" />
     <Folder Include="Assets\" />
     <Folder Include="Views\Base\" />
