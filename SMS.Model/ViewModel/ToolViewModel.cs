@@ -13,7 +13,7 @@ using System.Web;
 
 namespace SMS.Model.ViewModel
 {
-   public class ToolViewModel
+    public class ToolViewModel
     {
         #region Properties
         public List<ToolLocationmaster> liToolLocationmaster { get; set; }
@@ -54,7 +54,7 @@ namespace SMS.Model.ViewModel
             dv.Add("@VendorName", ToolVendorMaster.VendorName, EnumCommand.DataType.Varchar);
             dv.Add("@VendorCode", ToolVendorMaster.VendorCode, EnumCommand.DataType.Varchar);
 
-            dv.Add("@VendorAddress", ToolVendorMaster.VendorAddress , EnumCommand.DataType.Varchar);
+            dv.Add("@VendorAddress", ToolVendorMaster.VendorAddress, EnumCommand.DataType.Varchar);
             dv.Add("@VendorLocation", ToolVendorMaster.VendorLocation, EnumCommand.DataType.Varchar);
             dv.Add("@Pincode", ToolVendorMaster.Pincode, EnumCommand.DataType.Varchar);
             dv.Add("@PhoneNo", ToolVendorMaster.PhoneNo, EnumCommand.DataType.Varchar);

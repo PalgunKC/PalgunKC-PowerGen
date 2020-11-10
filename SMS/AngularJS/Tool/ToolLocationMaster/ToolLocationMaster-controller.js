@@ -2,6 +2,12 @@
     $scope.ToolLocationList = [];
     $scope.obj = new toollocationServices.toollocationData(null);
 
+    $scope.$watch('obj.LocationStation', function (val) {
+        $scope.obj.LocationStation = $filter('uppercase')(val);
+    }, true);
+    $scope.$watch('obj.LocationRow', function (val) {
+        $scope.obj.LocationRow = $filter('uppercase')(val);
+    }, true);
     $scope.init = function () {
         debugger;
         commonService.postWebService('Tool/BindListToolLocation', {}).then(function (response) {
@@ -28,9 +34,10 @@
 
     $scope.editClick = function (row, key, IsActive) {
         debugger;
-        $scope.IsEditDivVisible = true;
-        $scope.IsListDivVisible = false;
+
         if (key == 'E') {
+            $scope.IsEditDivVisible = true;
+            $scope.IsListDivVisible = false;
             $scope.obj = new toollocationServices.toollocationData(row);
             $scope.obj.KEY = key;
             if (row.IsActive == 'N') {
@@ -39,9 +46,24 @@
             else {
                 $scope.obj.IsActive = true;
             }
-            $scope.BindCity(row, "E");
+            //$scope.BindCity(row, "E");
         }
+        else if (key == 'I') {
+            $scope.obj = new toollocationServices.toollocationData(row);
+            $scope.obj.KEY = key;
+            $scope.obj.IsActive = 0;
+            $scope.submitForm(true, $scope.obj);
+        }
+        else if (key == 'A') {
+            $scope.obj = new toollocationServices.toollocationData(row);
+            $scope.obj.KEY = key;
+            $scope.obj.IsActive = 1;
+            $scope.submitForm(true, $scope.obj);
+        }
+
         else {
+            $scope.IsEditDivVisible = true;
+            $scope.IsListDivVisible = false;
             $scope.obj = new toollocationServices.toollocationData(null);
             $scope.disablecode = false;
             $scope.obj.IsActive = true;
@@ -60,15 +82,20 @@
             angular.forEach($scope.ToollocationForm.$error.required, function (field) {
                 field.$setDirty();
             });
-            var LocationCode = document.getElementById("LocationCode");
-            var LocationName = document.getElementById("LocationName");
-            if (LocationCode.value == "") {
-                LocationCode.focus();
+            var LocationStation = document.getElementById("LocationStation");
+            var LocationRow = document.getElementById("LocationRow");
+            var LocationColumn = document.getElementById("LocationColumn");
+            if (LocationStation.value == "") {
+                LocationStation.focus();
             }
 
-            else if (LocationName.value == "") {
+            else if (LocationRow.value == "") {
 
-                LocationName.focus();
+                LocationRow.focus();
+            }
+            else if (LocationColumn.value == "") {
+
+                LocationColumn.focus();
             }
         }
     };
@@ -89,15 +116,28 @@
                 if (response.liToolLocationmaster[0].MSG == "Updated Success") {
                     $("#Message").val('Updated !! ');//Messgae
                     $('#Title').html('Tool LocationMaster Updated Successfully');//Title
+                    $("#Message").trigger("click");
+                    $scope.init();
+                    $scope.obj = null;
+                    $scope.ToollocationForm.$setPristine();
                 }
+                else if (response.liToolLocationmaster[0].MSG == "Location Already Exists") {
+
+                    $("#Message").val('Alter !! ');//Messgae
+                    $('#Title').html('Location - "' + response.liToolLocationmaster[0].LocationName + '" Already Exists');//Title
+                    $("#Message").trigger("click");
+                    $scope.obj.IsActive = true;
+                }
+
                 else {
                     $("#Message").val('Saved !! ');//Messgae
                     $('#Title').html('Tool LocationMaster Saved Successfully');//Title
+                    $("#Message").trigger("click");
+                    $scope.init();
+                    $scope.obj = null;
+                    $scope.ToollocationForm.$setPristine();
                 }
-                $("#Message").trigger("click");
-                $scope.init();
-                $scope.obj = null;
-                $scope.ToollocationForm.$setPristine();
+
             }
             else {
                 $("#Message").val('Failed !! ');//Messgae

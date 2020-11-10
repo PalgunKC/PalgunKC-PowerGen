@@ -23,7 +23,7 @@ namespace SMS.Model.Model
         public string ModifyBy { get; set; }
         public string ModifyDate { get; set; }
         public string P_KEY { get; set; }
-       
+
         public string MSG { get; set; }
 
         public string dummycolumn1 { get; set; }

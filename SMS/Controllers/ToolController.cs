@@ -70,5 +70,102 @@ namespace SMS.Controllers
 
         #endregion
 
+        #region ToolVendorMaster
+
+        public ActionResult ToolVendorMaster()
+        {
+            return View();
+        }
+        public JsonResult BindListToolVendor()
+        {
+            try
+            {
+                ToolVendorMaster objModel = new ToolVendorMaster();
+                Statemaster obj = new Statemaster();
+                Citymaster city = new Citymaster();
+                objModel.P_KEY = "L";
+                objModel.OrgID = Session[Common.SESSION_VARIABLES.COMPANYCODE].ToString();
+                objViewModel.liToolVendorMaster = ToolViewModel.SaveToolVendorMaster(objModel);
+                //objViewModel.liCityMaster = Manage_InfoViewModel.ListCity(city);
+                objViewModel.liStateMaster = ToolViewModel.ListState(obj);
+                return Json(objViewModel, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
+        }
+
+        public JsonResult BindCity(ToolVendorMaster obj)
+        {
+            objViewModel.liCityMaster = ToolViewModel.ListCity(obj);
+            return Json(objViewModel, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SaveToolVendormaster(ToolVendorMaster ToolVendorMaster)
+        {
+            try
+            {
+                ToolVendorMaster.P_KEY = "S";
+                ToolVendorMaster.CreatedBy = Session[Common.SESSION_VARIABLES.USERNAME].ToString();
+                //PhysicianMaster.ORGID = "1";
+                ToolVendorMaster.OrgID = Session[Common.SESSION_VARIABLES.COMPANYCODE].ToString();
+                ToolVendorMaster.IsActive = (ToolVendorMaster.IsActive == Common.ActiveLog.Active) ? "Y" : "N";
+                objViewModel.liToolVendorMaster = ToolViewModel.SaveToolVendorMaster(ToolVendorMaster);
+                return Json(objViewModel, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
+        }
+
+
+        #endregion
+
+        #region PartMaster
+
+        public ActionResult PartMaster()
+        {
+            return View();
+        }
+        public JsonResult BindListPartMaster()
+        {
+            try
+            {
+                Partmaster objModel = new Partmaster();
+
+                objModel.P_KEY = "L";
+                objModel.OrgID = Session[Common.SESSION_VARIABLES.COMPANYCODE].ToString();
+                objViewModel.liPartmaster = ToolViewModel.SavePartmaster(objModel);
+                return Json(objViewModel, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
+        }
+
+
+        public JsonResult SavePartMaster(Partmaster ToolVendorMaster)
+        {
+            try
+            {
+                ToolVendorMaster.P_KEY = "S";
+                ToolVendorMaster.CreatedBy = Session[Common.SESSION_VARIABLES.USERNAME].ToString();
+                //PhysicianMaster.ORGID = "1";
+                ToolVendorMaster.OrgID = Session[Common.SESSION_VARIABLES.COMPANYCODE].ToString();
+                ToolVendorMaster.IsActive = (ToolVendorMaster.IsActive == Common.ActiveLog.Active) ? "Y" : "N";
+                objViewModel.liPartmaster = ToolViewModel.SavePartmaster(ToolVendorMaster);
+                return Json(objViewModel, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
+        }
+
+
+        #endregion
     }
 }

@@ -61,15 +61,14 @@
                                                 <td>{{ row.LocationRow }}</td>
                                                 <td>{{ row.LocationColumn }}</td>
                                                 @*<td>
-                                                    <span ng-switch on="row.IsActive">
-                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
-                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
-                                                    </span>
-                                                </td>*@
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
                                                 <td>
                                                     <i class="fas fa-toggle-on" style="font-size:40px;cursor:pointer; color: #5cb85c"
                                                        ng-if="row.IsActive == 'Y'"
-
                                                        ng-click="editClick(row,'I')" title="Active">
                                                     </i>
                                                     <i class="fas fa-toggle-on fa-rotate-180" style="font-size:40px;cursor:pointer;color: #d9534f"
@@ -79,9 +78,9 @@
                                                 </td>
 
                                                 @*<td>
-                                                  
-                                                    <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
-                                                </td>*@
+
+                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    </td>*@
 
                                             </tr>
                                         </tbody>
@@ -103,7 +102,7 @@
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine,'has-success': ToollocationForm.Tcode.$valid }">
                                         <div class="form-group">
                                             <label class="form-label">Tool Station</label>
-                                            <input id="LocationStation" type="text"  alpha-only class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.LocationStation" required>
+                                            <input id="LocationStation" type="text" alpha-only class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.LocationStation" required>
                                             <p ng-show="ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
@@ -111,7 +110,7 @@
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine,'has-success': ToollocationForm.Tname.$valid }">
                                         <div class="form-group">
                                             <label class="form-label">Tool Row</label>
-                                            <input id="LocationRow"  type="text"   alpha-only   class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.LocationRow" required>
+                                            <input id="LocationRow" type="text" alpha-only class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.LocationRow" required>
                                             <p ng-show="ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
@@ -119,7 +118,7 @@
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Cname.$invalid && !ToollocationForm.Cname.$pristine,'has-success': ToollocationForm.Cname.$valid }">
                                         <div class="form-group">
                                             <label class="form-label">Tool Column</label>
-                                            <input id="LocationColumn" type="text"  numeric-validation class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Cname" ng-model="obj.LocationColumn" required>
+                                            <input id="LocationColumn" type="text" numeric-validation class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Cname" ng-model="obj.LocationColumn" required>
                                             <p ng-show="ToollocationForm.Cname.$invalid && !ToollocationForm.Cname.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>

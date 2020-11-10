@@ -176,7 +176,7 @@ namespace SMS.UTILITY
             public static string IZonalMaster = "ZC";
             public static string EZonalMaster = "ZM";
             public static string RoleKey = "-1";
-            
+
         }
         public static class GCMKeys
         {
