@@ -1,0 +1,397 @@
+﻿
+@{
+    ViewBag.Title = "SpareVendorMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+}
+<div ng-app="sparevendorApp" ng-controller="sparevendorCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Spare VendorMaster</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Spare/SpareVendorMaster">Spare VendorMaster</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Spare Vendor Master List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add NewVendor" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#VendorMasterList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('VendorMasterList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="VendorMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Vendor Id</th>
+                                                <th>Vendor Name</th>
+                                                <th>Vendor Code</th>
+                                                @*<th>Department</th>*@
+                                                <th>GST No</th>
+                                                <th>Contanct Person</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in SpareVendorList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.VendorID }}</td>
+                                                <td>{{ row.VendorName }}</td>
+                                                <td>{{ row.VendorCode }}</td>
+                                                <td>{{ row.GSTNo }}</td>
+                                                <td>{{ row.Contact_name1 }}</td>
+                                                @*<td>{{ row.Department }}</td>*@
+                                                @*<td>
+                                                        <span ng-if="row.Department==='M'">
+                                                            {{'Maintenance'}}
+                                                        </span>
+                                                        <span ng-if="row.Department==='C'">
+                                                            {{'Clearance'}}
+                                                        </span>
+                                                    </td>*@
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add SpareVendor</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelSpareVendor()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="SparevendorForm" ng-submit="submitForm(SparevendorForm.$valid,obj)" novalidate>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.Tcode.$invalid && !SparevendorForm.Tcode.$pristine,'has-success': SparevendorForm.Tcode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor Code</label>
+                                            <input id="VendorCode" type="text" class="form-control" autocomplete="off" placeholder="Code" name="Tcode" ng-model="obj.VendorCode" required>
+                                            <p ng-show="SparevendorForm.Tcode.$invalid && !SparevendorForm.Tcode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.Tname.$invalid && !SparevendorForm.Tname.$pristine,'has-success': SparevendorForm.Tname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor Name</label>
+                                            <input id="VendorName" type="text" class="form-control" autocomplete="off" placeholder="Name" name="Tname" ng-model="obj.VendorName" required>
+                                            <p ng-show="SparevendorForm.Tname.$invalid && !SparevendorForm.Tname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.GSTNo.$invalid && !SparevendorForm.GSTNo.$pristine,'has-success': SparevendorForm.GSTNo.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">GST No</label>
+                                            <input id="GST" type="text" class="form-control" autocomplete="off" placeholder="GSTNO" name="GSTNo" ng-model="obj.GSTNo" required>
+                                            <p ng-show="SparevendorForm.GSTNo.$invalid && !SparevendorForm.GSTNo.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.PANNo.$invalid && !SparevendorForm.PANNo.$pristine,'has-success': SparevendorForm.PANNo.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">PAN No</label>
+                                            <input id="PANNo" type="text" class="form-control" autocomplete="off" placeholder="PANNO" name="PANNo" ng-model="obj.PANNo">
+                                            <p ng-show="SparevendorForm.PANNo.$invalid && !SparevendorForm.PANNo.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.Account_Number.$invalid && !SparevendorForm.Account_Number.$pristine,'has-success': SparevendorForm.Account_Number.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Account Number</label>
+                                            <input id="Account_Number" type="text" class="form-control" autocomplete="off" placeholder="AccountNumber" name="Account_Number" ng-model="obj.Account_Number">
+                                            <p ng-show="SparevendorForm.Account_Number.$invalid && !SparevendorForm.Account_Number.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.Bank_Name.$invalid && !SparevendorForm.Bank_Name.$pristine,'has-success': SparevendorForm.Bank_Name.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Name</label>
+                                            <select class="bank-dropdown form-control">
+                                                <option></option>
+                                            </select>
+                                            <p ng-show="SparevendorForm.Bank_Name.$invalid && !SparevendorForm.Bank_Name.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.EmailId.$invalid && !SparevendorForm.EmailId.$pristine,'has-success': SparevendorForm.EmailId.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor EmailAddress</label>
+                                            <input type="email" id="EmailId" class="form-control email" autocomplete="off" placeholder="johnsmith@ashburton.com" name="EmailId" ng-model="obj.EmailId" required>
+                                            <p ng-show="SparevendorForm.EmailId.$invalid && !SparevendorForm.EmailId.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.Account_Name.$invalid && !SparevendorForm.Account_Name.$pristine,'has-success': SparevendorForm.Account_Name.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Account Name</label>
+                                            <input id="Account_Name" type="text" class="form-control" autocomplete="off" placeholder="AccountName" name="Account_Name" ng-model="obj.Account_Name">
+                                            <p ng-show="SparevendorForm.Account_Name.$invalid && !SparevendorForm.Account_Name.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" ng-class="{'has-error':SparevendorForm.VendorAddress.$invalid && !SparevendorForm.VendorAddress.$pristine,'has-success': SparevendorForm.VendorAddress.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">VendorAddress</label>
+                                            @* <input id="VendorAddress" type="text" class="form-control" autocomplete="off"  placeholder="Address" name="VendorAddress" ng-model="obj.VendorAddress" required>*@
+
+                                            <textarea class="form-control" placeholder="1234 Main St" name="VendorAddress" ng-model="obj.VendorAddress" rows="3"></textarea>
+                                            <p ng-show="SparevendorForm.VendorAddress.$invalid && !SparevendorForm.VendorAddress.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <h5>Contact Person Details</h5>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cname.$invalid && !SparevendorForm.Cname.$pristine,'has-success': SparevendorForm.Cname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Name1</label>
+                                            <input id="Cname" type="text" class="form-control" autocomplete="off" placeholder="Name" name="Cname" ng-model="obj.Contact_name1" required>
+                                            <p ng-show="SparevendorForm.Cname.$invalid && !SparevendorForm.Cname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cmobile.$invalid && !SparevendorForm.Cmobile.$pristine,'has-success': SparevendorForm.Cmobile.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Mobile Number1</label>
+                                            <input id="Cmobile" type="text" class="form-control" autocomplete="off" placeholder="Mobile No" name="Cmobile" ng-model="obj.Contact_mobileno1" required>
+                                            <p ng-show="SparevendorForm.Cmobile.$invalid && !SparevendorForm.Cmobile.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cemail.$invalid && !SparevendorForm.Cemail.$pristine,'has-success': SparevendorForm.Cemail.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Email Address1</label>
+                                            @*<input type="email" id="EmailId" class="form-control email" autocomplete="off"  placeholder="johnsmith@ashburton.com" name="EmailId" ng-model="obj.EmailId" required>*@
+
+                                            <input id="Cemail" type="email" class="form-control email" autocomplete="off" placeholder="johnsmith@ashburton.com" name="Cemail" ng-model="obj.Contact_emailid1" required>
+                                            <p ng-show="SparevendorForm.Cemail.$invalid && !SparevendorForm.Cemail.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>
+
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cemail.$invalid && !SparevendorForm.Cemail.$pristine,'has-success': SparevendorForm.Cemail.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Email Address1</label>
+                                                <input id="Cemail" type="text" class="form-control" autocomplete="off"  placeholder="Emailid" name="Cemail" ng-model="obj.Contact_emailid1" required>
+                                                <p ng-show="SparevendorForm.Cemail.$invalid && !SparevendorForm.Cemail.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>
+                                            </div>
+                                        </div>*@
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cname1.$invalid && !SparevendorForm.Cname1.$pristine,'has-success': SparevendorForm.Cname1.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Name2</label>
+                                            <input id="Cname1" type="text" class="form-control" autocomplete="off" placeholder="Name" name="Cname1" ng-model="obj.Contact_name2">
+                                            <p ng-show="SparevendorForm.Cname1.$invalid && !SparevendorForm.Cname1.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cmobile1.$invalid && !SparevendorForm.Cmobile1.$pristine,'has-success': SparevendorForm.Cmobile1.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Mobile Number2</label>
+                                            <input id="Cmobile1" type="text" class="form-control" autocomplete="off" placeholder="Mobile No" name="Cmobile1" ng-model="obj.Contact_mobileno2">
+                                            <p ng-show="SparevendorForm.Cmobile1.$invalid && !SparevendorForm.Cmobile1.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-class="{'has-error':SparevendorForm.Cemail1.$invalid && !SparevendorForm.Cemail1.$pristine,'has-success': SparevendorForm.Cemail1.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Email Address2</label>
+                                            <input id="Cemail1" type="email" class="form-control" autocomplete="off" placeholder="johnsmith@ashburton.com" name="Cemail1" ng-model="obj.Contact_emailid2">
+                                            <p ng-show="SparevendorForm.Cemail1.$invalid && !SparevendorForm.Cemail1.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6" ng-class="{'has-error':SparevendorForm.FromDate.$invalid && !SparevendorForm.FromDate.$pristine,'has-success': SparevendorForm.FromDate.$valid }">
+                                        <div class="">
+                                            <label class="form-label">Start Date</label>
+                                        </div>
+                                        <div class="input-group">
+
+                                            <input id="Fromdate" type="text" name="FromDate" ng-model="obj.Vend_StartDate" placeholder="From Date" class="form-control datepickerFuction" autocomplete="off" required>
+                                            <label class="input-group-addon date-label btn" for="Fromdate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                        <p ng-show="SparevendorForm.FromDate.$invalid && !SparevendorForm.FromDate.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <label class="form-label">End Date</label>
+                                        </div>
+                                        <div class="input-group">
+
+                                            <input id="Todate" type="text" name="SED" ng-model="obj.Vend_EndDate" @*ng-click="SetDisable(obj)"*@ placeholder="To Date" class="form-control datepickerFuction" autocomplete="off">
+                                            <label class="input-group-addon date-label btn" for="Todate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6"  style="display:none">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelSpareVendor()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+
+    <script src="~/AngularJS/Spare/SpareVendorMaster/SpareVendorMaster-app.js"></script>
+    <script src="~/AngularJS/Spare/SpareVendorMaster/SpareVendorMaster-controller.js"></script>
+    <script>
+        var bankNames = [{
+            id: "HDFC",
+            text: "HDFC BANK"
+        },{
+            id: "IDBI",
+            text: "IDBI BANK"
+        },{
+            id: "DEUTSCHE",
+            text: "DEUTSCHE BANK"
+        },{
+            id: "AXIS",
+            text: "AXIS BANK"
+        },{
+            id: "INDIAN",
+            text: "INDIAN BANK"
+        },{
+            id: "CITI_UNION",
+            text: "CITI UNION BANK"
+        },{
+            id: "BANK_OF_BARODA",
+            text: "BANK OF BARODA"
+        },{
+            id: "ICICI",
+            text: "ICICI BANK"
+        },{
+            id: "KEB_HANA",
+            text: "KEB HANA BANK"
+        },{
+            id: "HSBC",
+            text: "HSBC BANK"
+        },{
+            id: "UNION_BANK_OF_INDIA",
+            text: "UNION BANK OF INDIA"
+        },{
+            id: "KARUR_VYSYA_BANK",
+            text: "KARUR VYSYA BANK"
+        },{
+            id: "SYNDICATE",
+            text: "SYNDICATE BANK"
+        },{
+            id: "KOTAK_MAHENDIRA",
+            text: "KOTAK MAHENDIRA BANK"
+        },{
+            id: "ORIENTAL_BANK_OF_COMMERCE",
+            text: "ORIENTAL BANK OF COMMERCE"
+        },{
+            id: "BANK_OF_INDIA",
+            text: "BANK OF INDIA"
+        },{
+            id: "CITY_UNION_BANK",
+            text: "CITY UNION BANK"
+        },{
+            id: "SARASWATI_COOPERATIVE_BANK_LIMITED",
+            text: "SARASWATI COOPERATIVE BANK LIMITED"
+        },{
+            id: "STATE_BANK_OF_INDIA",
+            text: "STATE BANK OF INDIA"
+        },{
+            id: "KOTAK_MAHENDIRA",
+            text: "KOTAK MAHENDIRA BANK"
+        },{
+            id: "PUNJAB_NATIONAL_BANK",
+            text: "PUNJAB NATIONAL BANK"
+        },{
+            id: "WOORI_BANK",
+            text: "WOORI BANK"
+        },{
+            id: "CANARA_BANK",
+            text: "CANARA BANK"
+        },{
+            id: "LAKSHMI_VILAS_BANK",
+            text: "LAKSHMI VILAS BANK"
+        }];
+
+
+        $(".bank-dropdown").select2({
+            data: bankNames,
+            placeholder: "--Select Bank--",
+            allowClear: true
+        })
+    </script>
+
+}

@@ -7,6 +7,132 @@
 @section styles{
     <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
 }
+<style>
+    .pagination {
+        margin: 20px 0;
+    }
+
+        .pagination ul {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            margin-left: 0;
+            margin-bottom: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+            .pagination ul > li {
+                display: inline;
+            }
+
+                .pagination ul > li > a, .pagination ul > li > span {
+                    float: left;
+                    padding: 4px 12px;
+                    line-height: 20px;
+                    text-decoration: none;
+                    background-color: #ffffff;
+                    border: 1px solid #dddddd;
+                    border-left-width: 0;
+                }
+
+                    .pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span {
+                        background-color: #f5f5f5;
+                    }
+
+            .pagination ul > .active > a, .pagination ul > .active > span {
+                color: #999999;
+                cursor: default;
+            }
+
+            .pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus {
+                color: #999999;
+                background-color: transparent;
+                cursor: default;
+            }
+
+            .pagination ul > li:first-child > a, .pagination ul > li:first-child > span {
+                border-left-width: 1px;
+                -webkit-border-top-left-radius: 4px;
+                -moz-border-radius-topleft: 4px;
+                border-top-left-radius: 4px;
+                -webkit-border-bottom-left-radius: 4px;
+                -moz-border-radius-bottomleft: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            .pagination ul > li:last-child > a, .pagination ul > li:last-child > span {
+                -webkit-border-top-right-radius: 4px;
+                -moz-border-radius-topright: 4px;
+                border-top-right-radius: 4px;
+                -webkit-border-bottom-right-radius: 4px;
+                -moz-border-radius-bottomright: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+    .pagination-centered {
+        text-align: center;
+    }
+
+    .pagination-right {
+        text-align: right;
+    }
+
+    .pagination-large ul > li > a, .pagination-large ul > li > span {
+        padding: 11px 19px;
+        font-size: 17.5px;
+    }
+
+    .pagination-large ul > li:first-child > a, .pagination-large ul > li:first-child > span {
+        -webkit-border-top-left-radius: 6px;
+        -moz-border-radius-topleft: 6px;
+        border-top-left-radius: 6px;
+        -webkit-border-bottom-left-radius: 6px;
+        -moz-border-radius-bottomleft: 6px;
+        border-bottom-left-radius: 6px;
+    }
+
+    .pagination-large ul > li:last-child > a, .pagination-large ul > li:last-child > span {
+        -webkit-border-top-right-radius: 6px;
+        -moz-border-radius-topright: 6px;
+        border-top-right-radius: 6px;
+        -webkit-border-bottom-right-radius: 6px;
+        -moz-border-radius-bottomright: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .pagination-mini ul > li:first-child > a, .pagination-small ul > li:first-child > a, .pagination-mini ul > li:first-child > span, .pagination-small ul > li:first-child > span {
+        -webkit-border-top-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-bottomleft: 3px;
+        border-bottom-left-radius: 3px;
+    }
+
+    .pagination-mini ul > li:last-child > a, .pagination-small ul > li:last-child > a, .pagination-mini ul > li:last-child > span, .pagination-small ul > li:last-child > span {
+        -webkit-border-top-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 3px;
+        -moz-border-radius-bottomright: 3px;
+        border-bottom-right-radius: 3px;
+    }
+
+    .pagination-small ul > li > a, .pagination-small ul > li > span {
+        padding: 2px 10px;
+        font-size: 11.9px;
+    }
+
+    .pagination-mini ul > li > a, .pagination-mini ul > li > span {
+        padding: 0 6px;
+        font-size: 10.5px;
+    }
+</style>
 <div ng-app="toolvendorApp" ng-controller="toolvendorCtrl" ng-cloak>
     <div class="page-header">
         <div class="page-block">
@@ -16,8 +142,8 @@
                         <h5 class="m-b-10">Tool VendorMaster</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="#!">Tool Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master Module</a></li>
                         <li class="breadcrumb-item"><a href="/Tool/ToolVendorMaster">Tool VendorMaster</a></li>
                     </ul>
                 </div>
@@ -30,20 +156,50 @@
                 <div class="col-sm-12">
                     <div class="card" ng-show="IsListDivVisible">
                         <div class="card-header">
-                            <h5>ToolVendor Master List</h5>
+                            <h5>Tool Vendor Master List</h5>
                             <div style="float: right; margin-right: 25px;">
-                                <a class="" href="#" title="Add Vendor" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-user-plus"></i></a>
+                                <a class="" href="#" title="Add NewVendor" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
                             </div>
                         </div>
                         <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                            </div>
                             <div class="">
+                                <div class="row" style="padding-left:17%">
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" style="height:90%" data-live-search="true" data-actions-box="true" ng-model="obj.SearchField" name="IsReusable">
+                                            <option value="">--Select Search Field--</option>
+                                            <option value="VendorName">Vendor Name</option>
+                                            <option value="VendorCode">Vendor Code</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="main-search open">
+                                            <div class="input-group">
+                                                <input type="text" id="" ng-model="obj.SearchData" class="form-control" placeholder="Search . . ." style="width: 90px;">
+
+                                                <span class="input-group-append search-btn btn btn-primary">
+                                                    <i class="feather icon-search input-group-text" ng-click="FunctionSearch(obj)"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<i class="fa fa-refresh" aria-hidden="true"></i>*@
+                                    <a href="#!" class="btn  btn-primary" ng-click="init()"><i class="feather icon-refresh-cw f-30"></i>&nbsp;Refresh <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+
+                                </div>
                                 <div class="table-responsive m-t-20">
-                                    <table class="table table-hover" style="width: 100%" datatable="ng" dt-options="vm.dtOptions">
+                                    <table class="table table-bordered table-striped mb-0  no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="VendorMasterList">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th style="display:none">Vendor Id</th>
                                                 <th>Vendor Name</th>
+                                                <th>Vendor Code</th>
+                                                @*<th>Department</th>*@
+                                                <th>GST No</th>
+                                                <th>Contanct Person</th>
                                                 <th>Is Active</th>
                                                 <th>Action</th>
                                             </tr>
@@ -51,10 +207,22 @@
 
                                         <tbody>
 
-                                            <tr ng-repeat=" row in ToolVendorList">
-                                                <td>{{ $index +   1 }}</td>
+                                            <tr ng-repeat="row in ToolVendorList">
+                                                <td>{{row.Row_no}}</td>
                                                 <td style="display:none">{{ row.VendorID }}</td>
                                                 <td>{{ row.VendorName }}</td>
+                                                <td>{{ row.VendorCode }}</td>
+                                                <td>{{ row.GSTNo }}</td>
+                                                <td>{{ row.Contact_name1 }}</td>
+                                                @*<td>{{ row.Department }}</td>*@
+                                                @*<td>
+                                                        <span ng-if="row.Department==='M'">
+                                                            {{'Maintenance'}}
+                                                        </span>
+                                                        <span ng-if="row.Department==='C'">
+                                                            {{'Clearance'}}
+                                                        </span>
+                                                    </td>*@
                                                 <td>
                                                     <span ng-switch on="row.IsActive">
                                                         <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
@@ -63,223 +231,316 @@
                                                 </td>
 
                                                 <td>
-                                                    @*<a href="#!" class="btn btn-icon btn-outline-primary has-ripple" style="width: 36px; height: 40px;"><i class="feather icon-edit" ng-click="editClick(row,'E')" title="Edit"></i><span class="ripple ripple-animate" style="height: 45px; width: 45px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: 1.5px; left: 5.5px;"></span></a>*@
-                                                    <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
                                                 </td>
 
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div data-pagination="" data-num-pages="numPages()"
+                                         data-current-page="currentPage" data-max-size="maxSize"
+                                         data-boundary-links="true" ng-click="BindFilterData()"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card" ng-show="IsEditDivVisible">
-                        <div class="card-header">
-                            <h5>Add ToolVendor</h5>
-                            <div style="float: right; margin-right: 25px;">
-                                <a class="" href="#" title="Cancel" style="font-size: 25px;" ng-click="CancelToolVendor()"><i class="feather icon-user-x"></i></a>
+                </div>
+                <div class="card" ng-show="IsEditDivVisible">
+                    <div class="card-header">
+                        <h5>Add ToolVendor</h5>
+                        <div style="float: right; margin-right: 25px;">
+                            <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelToolVendor()"><i class="feather icon-x-square f-30"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <form name="ToolvendorForm" ng-submit="submitForm(ToolvendorForm.$valid,obj)" novalidate>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Tcode.$invalid && !ToolvendorForm.Tcode.$pristine,'has-success': ToolvendorForm.Tcode.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Vendor Code</label>
+                                        <input id="VendorCode" type="text" class="form-control" autocomplete="off" placeholder="Code" name="Tcode" ng-model="obj.VendorCode" required>
+                                        <p ng-show="ToolvendorForm.Tcode.$invalid && !ToolvendorForm.Tcode.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Tname.$invalid && !ToolvendorForm.Tname.$pristine,'has-success': ToolvendorForm.Tname.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Vendor Name</label>
+                                        <input id="VendorName" type="text" class="form-control" autocomplete="off" placeholder="Name" name="Tname" ng-model="obj.VendorName" required>
+                                        <p ng-show="ToolvendorForm.Tname.$invalid && !ToolvendorForm.Tname.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.GSTNo.$invalid && !ToolvendorForm.GSTNo.$pristine,'has-success': ToolvendorForm.GSTNo.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">GST No</label>
+                                        <input id="GST" type="text" class="form-control" autocomplete="off" placeholder="GSTNO" name="GSTNo" ng-model="obj.GSTNo" required>
+                                        <p ng-show="ToolvendorForm.GSTNo.$invalid && !ToolvendorForm.GSTNo.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.PANNo.$invalid && !ToolvendorForm.PANNo.$pristine,'has-success': ToolvendorForm.PANNo.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">PAN No</label>
+                                        <input id="PANNo" type="text" class="form-control" autocomplete="off" placeholder="PANNO" name="PANNo" ng-model="obj.PANNo">
+                                        <p ng-show="ToolvendorForm.PANNo.$invalid && !ToolvendorForm.PANNo.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Account_Number.$invalid && !ToolvendorForm.Account_Number.$pristine,'has-success': ToolvendorForm.Account_Number.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Account Number</label>
+                                        <input id="Account_Number" type="text" class="form-control" autocomplete="off" placeholder="AccountNumber" name="Account_Number" ng-model="obj.Account_Number">
+                                        <p ng-show="ToolvendorForm.Account_Number.$invalid && !ToolvendorForm.Account_Number.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Bank_Name.$invalid && !ToolvendorForm.Bank_Name.$pristine,'has-success': ToolvendorForm.Bank_Name.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Bank Name</label>
+                                        <select class="bank-dropdown form-control">
+                                            <option></option>
+                                        </select>
+                                        <p ng-show="ToolvendorForm.Bank_Name.$invalid && !ToolvendorForm.Bank_Name.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.EmailId.$invalid && !ToolvendorForm.EmailId.$pristine,'has-success': ToolvendorForm.EmailId.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Vendor EmailAddress</label>
+                                        <input type="email" id="EmailId" class="form-control email" autocomplete="off" placeholder="johnsmith@ashburton.com" name="EmailId" ng-model="obj.EmailId" required>
+                                        <p ng-show="ToolvendorForm.EmailId.$invalid && !ToolvendorForm.EmailId.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Account_Name.$invalid && !ToolvendorForm.Account_Name.$pristine,'has-success': ToolvendorForm.Account_Name.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Account Name</label>
+                                        <input id="Account_Name" type="text" class="form-control" autocomplete="off" placeholder="AccountName" name="Account_Name" ng-model="obj.Account_Name">
+                                        <p ng-show="ToolvendorForm.Account_Name.$invalid && !ToolvendorForm.Account_Name.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" ng-class="{'has-error':ToolvendorForm.VendorAddress.$invalid && !ToolvendorForm.VendorAddress.$pristine,'has-success': ToolvendorForm.VendorAddress.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">VendorAddress</label>
+                                        @* <input id="VendorAddress" type="text" class="form-control" autocomplete="off"  placeholder="Address" name="VendorAddress" ng-model="obj.VendorAddress" required>*@
+
+                                        <textarea class="form-control" placeholder="1234 Main St" name="VendorAddress" ng-model="obj.VendorAddress" rows="3"></textarea>
+                                        <p ng-show="ToolvendorForm.VendorAddress.$invalid && !ToolvendorForm.VendorAddress.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-block">
-                            <form name="ToolvendorForm" ng-submit="submitForm(ToolvendorForm.$valid,obj)" novalidate>
-                                <div class="row">
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Tcode.$invalid && !ToolvendorForm.Tcode.$pristine,'has-success': ToolvendorForm.Tcode.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Vendor Code</label>
-                                            <input id="VendorCode" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.VendorCode" required>
-                                            <p ng-show="ToolvendorForm.Tcode.$invalid && !ToolvendorForm.Tcode.$pristine" class="help-block">This field is required..</p>
-                                        </div>
+                            <hr />
+                            <h5>Contact Person Details</h5>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cname.$invalid && !ToolvendorForm.Cname.$pristine,'has-success': ToolvendorForm.Cname.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Name1</label>
+                                        <input id="Cname" type="text" class="form-control" autocomplete="off" placeholder="Name" name="Cname" ng-model="obj.Contact_name1" required>
+                                        <p ng-show="ToolvendorForm.Cname.$invalid && !ToolvendorForm.Cname.$pristine" class="help-block">This field is required..</p>
                                     </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Tname.$invalid && !ToolvendorForm.Tname.$pristine,'has-success': ToolvendorForm.Tname.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Vendor Name</label>
-                                            <input id="VendorName" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.VendorName" required>
-                                            <p ng-show="ToolvendorForm.Tname.$invalid && !ToolvendorForm.Tname.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Department.$invalid && !ToolvendorForm.Department.$pristine,'has-success': ToolvendorForm.Department.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Department</label>
-                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="Department" data-live-search="true" data-actions-box="true" ng-model="obj.Department" name="Department" required>
-                                                <option value="">--Select Department--</option>
-                                                <option value="M">Maintenance</option>
-                                                <option value="C">Customs Clearance</option>
-                                            </select>
-                                            <p ng-show="ToolvendorForm.Department.$invalid && !ToolvendorForm.Department.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.GSTNo.$invalid && !ToolvendorForm.GSTNo.$pristine,'has-success': ToolvendorForm.GSTNo.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">GST No</label>
-                                            <input id="GSTNo" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="GSTNo" ng-model="obj.GSTNo" required>
-                                            <p ng-show="ToolvendorForm.GSTNo.$invalid && !ToolvendorForm.GSTNo.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.PANNo.$invalid && !ToolvendorForm.PANNo.$pristine,'has-success': ToolvendorForm.PANNo.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">PAN No</label>
-                                            <input id="PANNo" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="PANNo" ng-model="obj.PANNo" required>
-                                            <p ng-show="ToolvendorForm.PANNo.$invalid && !ToolvendorForm.PANNo.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Account_Number.$invalid && !ToolvendorForm.Account_Number.$pristine,'has-success': ToolvendorForm.Account_Number.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Account Number</label>
-                                            <input id="Account_Number" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Account_Number" ng-model="obj.Account_Number" required>
-                                            <p ng-show="ToolvendorForm.Account_Number.$invalid && !ToolvendorForm.Account_Number.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12" ng-class="{'has-error':ToolvendorForm.VendorAddress.$invalid && !ToolvendorForm.VendorAddress.$pristine,'has-success': ToolvendorForm.VendorAddress.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">VendorAddress</label>
-                                            <input id="VendorAddress" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Address" name="VendorAddress" ng-model="obj.VendorAddress" required>
-                                            <p ng-show="ToolvendorForm.VendorAddress.$invalid && !ToolvendorForm.VendorAddress.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" @*ng-class="{'has-error':ToolvendorForm.Emailid.$invalid && !ToolvendorForm.Emailid.$pristine,'has-success': ToolvendorForm.Emailid.$valid }"*@>
-                                        <div class="form-group">
-                                            <label class="form-label">Email Address</label>
-                                            <input type="email" class="form-control email" autocomplete="off" maxlength="60" placeholder="johnsmith@ashburton.com" name="Emailid" ng-model="obj.Emailid" validate-email>
-                                            @*<p ng-show="ToolvendorForm.Emailid.$invalid && !ToolvendorForm.Emailid.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>*@
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Site_Pay_Group.$invalid && !ToolvendorForm.Site_Pay_Group.$pristine,'has-success': ToolvendorForm.Site_Pay_Group.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Pay Group</label>
-                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.Site_Pay_Group" name="Site_Pay_Group" required>
-                                                <option value="">--Select Pay Group--</option>
-                                                <option value="OE">ORDINARY EXPENSES</option>
-                                                <option value="IRM">IRREGULAR MATERIALS</option>
-                                                <option value="RM">REGULAR MATERIALS</option>
-                                                
-                                            </select>
-                                            <p ng-show="ToolvendorForm.Site_Pay_Group.$invalid && !ToolvendorForm.Site_Pay_Group.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Bank_Name.$invalid && !ToolvendorForm.Bank_Name.$pristine,'has-success': ToolvendorForm.Bank_Name.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Bank Name</label>
-                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.Bank_Name" name="Bank_Name" required>
-                                                <option value="">--Select Bank--</option>
-                                                <option value="HDFC">HDFC BANK</option>
-                                                <option value="IDBI">IDBI BANK</option>
-                                                <option value="DEUTSCHE">DEUTSCHE BANK</option>
-                                                <option value="AXIS">AXIS BANK</option>
-                                                
-                                                <option value="INDIAN">INDIAN BANK</option>
-                                                <option value="CITI_UNION">CITI UNION BANK</option>
-                                                <option value="BANK_OF_+BARODA">BANK OF BARODA</option>
-                                                <option value="ICICI">ICICI BANK</option>
-                                                <option value="KEB_HANA">KEB HANA BANK</option>
-                                                <option value="HSBC">HSBC BANK</option>
-                                                <option value="UNION_BANK_OF_INDIA">UNION BANK OF INDIA</option>
-                                                <option value="KARUR_VYSYA_BANK">KARUR VYSYA BANK</option>
-                                                <option value="SYNDICATE">SYNDICATE BANK</option>
-                                                <option value="KOTAK_MAHENDIRA">KOTAK MAHENDIRA BANK</option>
-                                                <option value="ORIENTAL_BANK_OF_COMMERCE">ORIENTAL BANK OF COMMERCE</option>
-                                                <option value="BANK_OF_INDIA">BANK OF INDIA</option>
-                                                <option value="CITY_UNION_BANK">CITY UNION BANK</option>
-                                                <option value="SARASWATI_COOPERATIVE_BANK_LIMITED">SARASWATI COOPERATIVE BANK LIMITED</option>
-                                                <option value="STATE_BANK_OF_INDIA">STATE BANK OF INDIA</option>
-                                                <option value="PUNJAB_NATIONAL_BANK">PUNJAB NATIONAL BANK</option>
-                                                <option value="WOORI_BANK">WOORI BANK</option>
-                                                <option value="CANARA_BANK">CANARA BANK</option>
-                                                <option value="LAKSHMI_VILAS_BANK">LAKSHMI VILAS BANK</option>
-
-                                            </select>
-                                            <p ng-show="ToolvendorForm.Bank_Name.$invalid && !ToolvendorForm.Bank_Name.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.VendorLocation.$invalid && !ToolvendorForm.VendorLocation.$pristine,'has-success': ToolvendorForm.VendorLocation.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Vendor Location</label>
-                                            <input id="VendorLocation" type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Location" name="VendorLocation" ng-model="obj.VendorLocation" required>
-                                            <p ng-show="ToolvendorForm.VendorLocation.$invalid && !ToolvendorForm.VendorLocation.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.VendorType.$invalid && !ToolvendorForm.VendorType.$pristine,'has-success': ToolvendorForm.VendorType.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Vendor Type</label>
-                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.VendorType" name="VendorType" required>
-                                                <option value="">--Select Vendor Type--</option>
-                                                <option value="S">Spare</option>
-                                                <option value="T">Tool</option>
-                                            </select>
-                                            <p ng-show="ToolvendorForm.VendorType.$invalid && !ToolvendorForm.VendorType.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    
-
-
-
-
-                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Pincode</label>
-                                            <input type="text" class="form-control" autocomplete="off" maxlength="60" placeholder="Pincode" name="Pincode" ng-model="obj.Pincode">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6" ng-class="{'has-error':ToolvendorForm.State.$invalid && !ToolvendorForm.State.$pristine,'has-success': ToolvendorForm.State.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">State</label>
-
-                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-change="BindCity(obj)" ng-model="obj.StateId" name="State" ng-options="State.STATE_CODE as (State.STATE_NAME) for State in StateList" required>
-                                                <option value="">--Select State--</option>
-                                            </select>
-                                            <p ng-show="ToolvendorForm.State.$invalid && !ToolvendorForm.State.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-md-6" ng-class="{'has-error':ToolvendorForm.City.$invalid && !ToolvendorForm.City.$pristine,'has-success': ToolvendorForm.City.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">City</label>
-                                            <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="!obj.StateId" data-live-search="true" data-actions-box="true" ng-model="obj.CityId" name="City" ng-options="City.CITY_CODE as (City.CITY_NAME) for City in CityList" required>
-                                                <option value="">--Select City--</option>
-                                            </select>
-                                            <p ng-show="ToolvendorForm.City.$invalid && !ToolvendorForm.City.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.Mobileno.$invalid && !ToolvendorForm.Mobileno.$pristine,'has-success': ToolvendorForm.Mobileno.$valid }">
-                                        <div class="form-group">
-                                            <label class="form-label">Mobile Number</label>
-                                            <input type="text" class="form-control mob_no" autocomplete="off" maxlength="60" data-mask="9999-999-999" placeholder="Mobile No" name="Mobileno" ng-model="obj.PhoneNo" id="mobno" required>
-                                            <p ng-show="ToolvendorForm.Mobileno.$invalid && !ToolvendorForm.Mobileno.$pristine" class="help-block">This field is required..</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkbox checkbox-info d-inline">
-                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
-                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
-                                        </div>
-                                    </div>
-
                                 </div>
-                                <div style="float: right;">
-                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
-                                    <button type="button" ng-click="CancelToolVendor()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+
+                                <div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cmobile.$invalid && !ToolvendorForm.Cmobile.$pristine,'has-success': ToolvendorForm.Cmobile.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile Number1</label>
+                                        <input id="Cmobile" type="text" class="form-control" autocomplete="off" placeholder="Mobile No" name="Cmobile" ng-model="obj.Contact_mobileno1" required>
+                                        <p ng-show="ToolvendorForm.Cmobile.$invalid && !ToolvendorForm.Cmobile.$pristine" class="help-block">This field is required..</p>
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cemail.$invalid && !ToolvendorForm.Cemail.$pristine,'has-success': ToolvendorForm.Cemail.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Email Address1</label>
+                                        @*<input type="email" id="EmailId" class="form-control email" autocomplete="off"  placeholder="johnsmith@ashburton.com" name="EmailId" ng-model="obj.EmailId" required>*@
+
+                                        <input id="Cemail" type="email" class="form-control email" autocomplete="off" placeholder="johnsmith@ashburton.com" name="Cemail" ng-model="obj.Contact_emailid1" required>
+                                        <p ng-show="ToolvendorForm.Cemail.$invalid && !ToolvendorForm.Cemail.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>
+
+                                    </div>
+                                </div>
+                                @*<div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cemail.$invalid && !ToolvendorForm.Cemail.$pristine,'has-success': ToolvendorForm.Cemail.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Email Address1</label>
+                                            <input id="Cemail" type="text" class="form-control" autocomplete="off"  placeholder="Emailid" name="Cemail" ng-model="obj.Contact_emailid1" required>
+                                            <p ng-show="ToolvendorForm.Cemail.$invalid && !ToolvendorForm.Cemail.$pristine" style="white-space: pre-wrap; color: yellow;" class="form-text text-muted">Please enter Valid email address.</p>
+                                        </div>
+                                    </div>*@
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cname1.$invalid && !ToolvendorForm.Cname1.$pristine,'has-success': ToolvendorForm.Cname1.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Name2</label>
+                                        <input id="Cname1" type="text" class="form-control" autocomplete="off" placeholder="Name" name="Cname1" ng-model="obj.Contact_name2">
+                                        <p ng-show="ToolvendorForm.Cname1.$invalid && !ToolvendorForm.Cname1.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cmobile1.$invalid && !ToolvendorForm.Cmobile1.$pristine,'has-success': ToolvendorForm.Cmobile1.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile Number2</label>
+                                        <input id="Cmobile1" type="text" class="form-control" autocomplete="off" placeholder="Mobile No" name="Cmobile1" ng-model="obj.Contact_mobileno2">
+                                        <p ng-show="ToolvendorForm.Cmobile1.$invalid && !ToolvendorForm.Cmobile1.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" ng-class="{'has-error':ToolvendorForm.Cemail1.$invalid && !ToolvendorForm.Cemail1.$pristine,'has-success': ToolvendorForm.Cemail1.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Email Address2</label>
+                                        <input id="Cemail1" type="email" class="form-control" autocomplete="off" placeholder="johnsmith@ashburton.com" name="Cemail1" ng-model="obj.Contact_emailid2">
+                                        <p ng-show="ToolvendorForm.Cemail1.$invalid && !ToolvendorForm.Cemail1.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6" ng-class="{'has-error':ToolvendorForm.FromDate.$invalid && !ToolvendorForm.FromDate.$pristine,'has-success': ToolvendorForm.FromDate.$valid }">
+                                    <div class="">
+                                        <label class="form-label">Start Date</label>
+                                    </div>
+                                    <div class="input-group">
+
+                                        <input id="Fromdate" type="text" name="FromDate" ng-model="obj.Vend_StartDate" placeholder="From Date" class="form-control datepickerFuction" autocomplete="off" required>
+                                        <label class="input-group-addon date-label btn" for="Fromdate">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                        </label>
+
+                                    </div>
+                                    <p ng-show="ToolvendorForm.FromDate.$invalid && !ToolvendorForm.FromDate.$pristine" class="help-block">This field is required..</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="">
+                                        <label class="form-label">End Date</label>
+                                    </div>
+                                    <div class="input-group">
+
+                                        <input id="Todate" type="text" name="SED" ng-model="obj.Vend_EndDate" @*ng-click="SetDisable(obj)"*@ placeholder="To Date" class="form-control datepickerFuction" autocomplete="off">
+                                        <label class="input-group-addon date-label btn" for="Todate">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                        </label>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="checkbox checkbox-info d-inline">
+                                        <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                        <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                    </div>
+                                </div>
+
+                                <hr />
+                            </div>
+                            <div style="float: right;">
+                                <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                <button type="button" ng-click="CancelToolVendor()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 @section scripts{
     <script src="../CommonJS/jquery.dataTables.min.js"></script>
     <script src="../CommonJS/angular-datatable.min.js"></script>
+
     <script src="~/AngularJS/Tool/ToolVendorMaster/ToolVendorMaster-app.js"></script>
     <script src="~/AngularJS/Tool/ToolVendorMaster/ToolVendorMaster-controller.js"></script>
+    <script>
+        var bankNames = [{
+            id: "HDFC",
+            text: "HDFC BANK"
+        }, {
+            id: "IDBI",
+            text: "IDBI BANK"
+        }, {
+            id: "DEUTSCHE",
+            text: "DEUTSCHE BANK"
+        }, {
+            id: "AXIS",
+            text: "AXIS BANK"
+        }, {
+            id: "INDIAN",
+            text: "INDIAN BANK"
+        }, {
+            id: "CITI_UNION",
+            text: "CITI UNION BANK"
+        }, {
+            id: "BANK_OF_BARODA",
+            text: "BANK OF BARODA"
+        }, {
+            id: "ICICI",
+            text: "ICICI BANK"
+        }, {
+            id: "KEB_HANA",
+            text: "KEB HANA BANK"
+        }, {
+            id: "HSBC",
+            text: "HSBC BANK"
+        }, {
+            id: "UNION_BANK_OF_INDIA",
+            text: "UNION BANK OF INDIA"
+        }, {
+            id: "KARUR_VYSYA_BANK",
+            text: "KARUR VYSYA BANK"
+        }, {
+            id: "SYNDICATE",
+            text: "SYNDICATE BANK"
+        }, {
+            id: "KOTAK_MAHENDIRA",
+            text: "KOTAK MAHENDIRA BANK"
+        }, {
+            id: "ORIENTAL_BANK_OF_COMMERCE",
+            text: "ORIENTAL BANK OF COMMERCE"
+        }, {
+            id: "BANK_OF_INDIA",
+            text: "BANK OF INDIA"
+        }, {
+            id: "CITY_UNION_BANK",
+            text: "CITY UNION BANK"
+        }, {
+            id: "SARASWATI_COOPERATIVE_BANK_LIMITED",
+            text: "SARASWATI COOPERATIVE BANK LIMITED"
+        }, {
+            id: "STATE_BANK_OF_INDIA",
+            text: "STATE BANK OF INDIA"
+        }, {
+            id: "KOTAK_MAHENDIRA",
+            text: "KOTAK MAHENDIRA BANK"
+        }, {
+            id: "PUNJAB_NATIONAL_BANK",
+            text: "PUNJAB NATIONAL BANK"
+        }, {
+            id: "WOORI_BANK",
+            text: "WOORI BANK"
+        }, {
+            id: "CANARA_BANK",
+            text: "CANARA BANK"
+        }, {
+            id: "LAKSHMI_VILAS_BANK",
+            text: "LAKSHMI VILAS BANK"
+        }];
+
+
+        $(".bank-dropdown").select2({
+            data: bankNames,
+            placeholder: "--Select Bank--",
+            allowClear: true
+        })
+    </script>
+
 }
 

@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "SparePartLifeCycleReport";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+<div ng-app="PartLifeCycleReportApp" ng-controller="PartLifeCycleReportCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Part Life Cycle Report</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Report</a></li>
+                        <li class="breadcrumb-item"><a href="/Manage_Info/ProductReport">Spare Part Life Cycle Report</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+
+                        <div class="card-body collapse show">
+                            <div class="row">
+                                @*<div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input id="Fromdate" type="text" name="SED" ng-model="obj.FromDate" placeholder="From Date"
+                                                   class="form-control datepickerFuction" autocomplete="off">
+                                            <label class="input-group-addon date-label btn" for="Fromdate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input id="Todate" type="text" name="SED" ng-model="obj.Todate" placeholder="To Date" class="form-control datepickerFuction" autocomplete="off">
+                                            <label class="input-group-addon date-label btn" for="Todate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>*@
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Number</label>
+                                        <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="PartNumber" ng-change="BindPartName(obj)" ng-model="obj.PartNumber" name="PartNumber"
+                                                ng-options="SpareIsu_Partno.SpareIsu_Partno as (SpareIsu_Partno.PartName+ '  -  ' +SpareIsu_Partno.SpareIsu_Partno+' - '+SpareIsu_Partno.PartSpecification) for SpareIsu_Partno in filterSparePartNumber"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Current Unique Code</label>
+                                        <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="Uniquecode" data-live-search="true" data-actions-box="true" ng-change="BindIsuId(obj)" ng-model="obj.UniqueCode" name="Uniquecode"
+                                                ng-options="unicode.SpareIsu_CurUnicode as (unicode.SpareIsu_CurUnicode) for unicode in filterSpareUnicodeList"></select>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="input-group-right">
+                                        <input type="button" class="btn btn-outline-primary" ng-click="FetchPartLifeCycleReport(obj)" value="View" />
+                                        @*<input type="button" class="btn btn-success" ng-disabled="!obj.Todate" ng-click="GetQuantityReport(obj)" value="Download Excel" />*@
+                                        <input type="button" class="btn btn-outline-danger" ng-click="CancelPartLifeCycleReport()" value="Cancel" />
+                                        @*  <a href="#!" class="btn btn-outline-primary" ng-click="GetQuantityReport(obj)"><i class="fas fa-file-excel f-30"></i>&nbsp;Return <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12" ng-show="IsListDivVisible">
+                                <div class="table-responsive m-t-20">
+
+                                    <div class="dropdown-secondary dropdown d-inline">
+                                        <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                        <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                            <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#ProductList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item  " href="#!" ng-click="exportToPDF('ProductList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ProductList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                @*<th style="display:none">Spare Return id</th>*@
+                                                @* <th>S.No</th>*@
+                                                <th>Description</th>
+                                                <th>Date</th>
+                                                <th>Spare Supplier</th>
+                                                <th>Line</th>
+                                                <th>Machine</th>
+                                                <th>Issued By</th>
+                                                <th>Received By</th>
+                                                <th>Storage</th>
+                                                <th>Life</th>
+                                                <th>Cause</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="row in PartLifeCycleReportList">
+                                                <td>{{ $index +   1 }}</td>
+                                                @*<td style="display:none">{{ row.SpareReq_id }}</td>*@
+                                                <td>{{ row.Description }}</td>
+                                                <td>{{ row.Date }}</td>
+                                                <td>{{ row.Spare_Supplier }}</td>
+                                                <td>{{ row.Line }}</td>
+                                                <td>{{ row.Machine }}</td>
+                                                <td>{{ row.Issued_by }}</td>
+                                                <td>{{ row.Received_By  }}</td>
+                                                <td>{{ row.Storage }}</td>
+                                                <td>{{ row.Life }}</td>
+                                                <td>{{ row.Cause }}</td>
+                                                <td>{{ row.Remarks }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Spare/SparePartLifeCycleReport/SparePartLifeCycleReport-app.js"></script>
+    <script src="~/AngularJS/Spare/SparePartLifeCycleReport/SparePartLifeCycleReport-controller.js"></script>
+
+
+}
+
+

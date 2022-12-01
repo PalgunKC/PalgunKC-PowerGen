@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "MasterToolUpdate";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+
+
+<div ng-app="toolupdateApp" ng-controller="toolupdateCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Tool Update</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolUpdate">Tool Update</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Tool Update List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add Tool Update" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="width: 100%" datatable="ng" dt-options="vm.dtOptions">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Part Master Id</th>
+                                                <th>Parts Number</th>
+                                                <th>Parts Name</th>
+                                                <th>Quantity</th>
+                                                <th>Min Qty</th>
+                                                <th>Max Qty</th>
+                                                <th>Tool Location</th>
+                                                <th>Life Time</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in ToolUpdateList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.ToolUpdateId }}</td>
+                                                <td>{{ row.PartNumber }}</td>
+                                                <td>{{ row.PartName }}</td>
+                                                <td>{{ row.Quantity }}</td>
+                                                <td>{{ row.Min_qty }}</td>
+                                                <td>{{ row.Max_qty }}</td>
+                                                <td>{{ row.Tool_Location }}</td>
+                                                <td>{{ row.LifeTime }}</td>
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Tool Update</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Cancel"  data-toggle="tooltip" style="font-size: 25px;" ng-click="CancelToolUpdate()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="ToolUpdateMasterForm" ng-submit="submitForm(ToolUpdateMasterForm.$valid,obj)" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.SubInv.$invalid && !ToolUpdateMasterForm.SubInv.$pristine,'has-success': ToolUpdateMasterForm.SubInv.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Sub Invoice</label>
+                                            <input id="SubInv" type="text" class="form-control" autocomplete="off"  placeholder="SubInvoice" name="SubInv" ng-model="obj.SubInv" required>
+                                            <p ng-show="ToolUpdateMasterForm.SubInv.$invalid && !ToolUpdateMasterForm.SubInv.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.ItemType.$invalid && !ToolUpdateMasterForm.ItemType.$pristine,'has-success': ToolUpdateMasterForm.ItemType.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Item Type</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="ItemType" data-live-search="true" data-actions-box="true" ng-model="obj.ItemType" name="ItemType" required>
+                                                <option value="">--Select Item Type--</option>
+                                                <option value="MRO">MRO</option>
+                                                <option value="NON MRO">NON MRO</option>
+
+                                            </select>
+                                            <p ng-show="ToolUpdateMasterForm.ItemType.$invalid && !ToolUpdateMasterForm.ItemType.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.PartNumber.$invalid && !ToolUpdateMasterForm.PartNumber.$pristine,'has-success': ToolUpdateMasterForm.PartNumber.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Number</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="PartNumber" data-live-search="true" data-actions-box="true" ng-change="BindPartName(obj)" ng-model="obj.PartNumber" name="PartNumber" ng-options="PartNumber.PartNumber as (PartNumber.PartNumber) for PartNumber in PartMasterList|filter:filterPartMasterList" required>
+                                                <option value="">--Select PartNumber--</option>
+                                            </select>
+                                            <p ng-show="ToolUpdateMasterForm.PartNumber.$invalid && !ToolUpdateMasterForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <input id="ToolUploadId" type="text" class="form-control" ng-show="false" autocomplete="off"  placeholder="Name" name="ToolUploadId" ng-model="obj.ToolUploadId" >
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.PartName.$invalid && !ToolUpdateMasterForm.PartName.$pristine,'has-success': ToolUpdateMasterForm.PartName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Name</label>
+                                            <input id="PartName" type="text" class="form-control" ng-disabled="true" autocomplete="off"  placeholder="Name" name="PartName" ng-model="obj.PartName" required>
+                                            <p ng-show="ToolUpdateMasterForm.PartName.$invalid && !ToolUpdateMasterForm.PartName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.Quantity.$invalid && !ToolUpdateMasterForm.Quantity.$pristine,'has-success': ToolUpdateMasterForm.Quantity.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Quantity</label>
+                                            <input id="Quantity" type="text" class="form-control" decimal-only autocomplete="off"  ng-disabled="true" placeholder="Qty" name="Quantity" ng-model="obj.Quantity" required>
+                                            <p ng-show="ToolUpdateMasterForm.Quantity.$invalid && !ToolUpdateMasterForm.Quantity.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.ToolUniqueCode.$invalid && !ToolUpdateMasterForm.ToolUniqueCode.$pristine,'has-success': ToolUpdateMasterForm.ToolUniqueCode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Unique Code</label>
+                                            <input id="ToolUniqueCode" type="text"  class="form-control" autocomplete="off"  placeholder="ToolUniqueCode" name="ToolUniqueCode" ng-model="obj.ToolUniqueCode" required>
+                                            <p ng-show="ToolUpdateMasterForm.ToolUniqueCode.$invalid && !ToolUpdateMasterForm.ToolUniqueCode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.Min_qty.$invalid && !ToolUpdateMasterForm.Min_qty.$pristine,'has-success': ToolUpdateMasterForm.Min_qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Minimun Quantity</label>
+                                            <input id="Min_qty" type="text" class="form-control" decimal-only autocomplete="off"  placeholder="Minqty" name="Min_qty" ng-min="{{obj.Min_qty}}" ng-max="{{obj.Quantity}}" ng-model="obj.Min_qty" required>
+                                            @*<p ng-show="ToolUpdateMasterForm.Min_qty.$invalid && !ToolUpdateMasterForm.Min_qty.$pristine" class="help-block">This field is required..</p>*@
+                                            <p ng-show="ToolUpdateMasterForm.Min_qty.$invalid && !ToolUpdateMasterForm.Min_qty.$pristine && ToolUpdateMasterForm.Max_qty.$error" class="help-block">Enter Less than qty..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.Max_qty.$invalid && !ToolUpdateMasterForm.Max_qty.$pristine,'has-success': ToolUpdateMasterForm.Max_qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Maximun Quantity</label>
+                                            <input id="Max_qty" type="text" class="form-control" decimal-only  autocomplete="off"  placeholder="Maxqty" name="Max_qty"  ng-min="{{obj.Min_qty}}" ng-max="{{obj.Max_qty}}" ng-model="obj.Max_qty" required>
+                                            @*<p ng-show="ToolUpdateMasterForm.Max_qty.$invalid && !ToolUpdateMasterForm.Max_qty.$pristine" class="help-block">This field is required..</p>*@
+                                            <p ng-show="ToolUpdateMasterForm.Max_qty.$invalid && !ToolUpdateMasterForm.Max_qty.$pristine && ToolUpdateMasterForm.Max_qty.$error" class="help-block">Enter Greater than minimum qty..</p>
+                                   
+                                            @*<tt>value = {{Max_qty}}</tt><br>
+                                            <tt>value.$valid = {{ToolUpdateMasterForm.Max_qty.$valid}}</tt><br>
+                                            <tt>value.$error = {{ToolUpdateMasterForm.Max_qty.$error}}</tt>*@
+                                         </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.Reorder_qty.$invalid && !ToolUpdateMasterForm.Reorder_qty.$pristine,'has-success': ToolUpdateMasterForm.Reorder_qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Reorder Quantity</label>
+                                            <input id="Reorder_qty" type="text" class="form-control" decimal-only autocomplete="off"  placeholder="Reorderqty" name="Reorder_qty" ng-model="obj.Reorder_qty" required>
+                                            <p ng-show="ToolUpdateMasterForm.Reorder_qty.$invalid && !ToolUpdateMasterForm.Reorder_qty.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.Tool_Location.$invalid && !ToolUpdateMasterForm.Tool_Location.$pristine,'has-success': ToolUpdateMasterForm.Tool_Location.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Location</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="Tool_Location" data-live-search="true" data-actions-box="true" ng-model="obj.Tool_Location" name="Tool_Location" ng-options='Tool_Location.LocationName as (Tool_Location.LocationName) for Tool_Location in ToolLocationList' required>
+                                                <option value="">--Select Tool Location--</option>
+                                            </select>
+                                            <p ng-show="ToolUpdateMasterForm.Tool_Location.$invalid && !ToolUpdateMasterForm.Tool_Location.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="col-md-6" ng-class="{'has-error':ToolUpdateMasterForm.LifeTime.$invalid && !ToolUpdateMasterForm.LifeTime.$pristine,'has-success': ToolUpdateMasterForm.LifeTime.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Life Time</label>
+                                            <input id="LifeTime" type="text" class="form-control" decimal-only autocomplete="off"  placeholder="LifeTime" name="LifeTime" ng-model="obj.LifeTime" required>
+                                            <p ng-show="ToolUpdateMasterForm.LifeTime.$invalid && !ToolUpdateMasterForm.LifeTime.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                   
+
+
+
+
+
+                                    <div class="col-md-6"  style="display:none">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolUpdate()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Tool/ToolUpdate/ToolUpdate-app.js"></script>
+    <script src="~/AngularJS/Tool/ToolUpdate/ToolUpdate-controller.js"></script>
+}

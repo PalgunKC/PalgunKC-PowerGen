@@ -1,0 +1,296 @@
+﻿@{
+    ViewBag.Title = "PartGroupMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+}
+<style>
+    .pagination {
+        margin: 20px 0;
+    }
+
+        .pagination ul {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            margin-left: 0;
+            margin-bottom: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+            .pagination ul > li {
+                display: inline;
+            }
+
+                .pagination ul > li > a, .pagination ul > li > span {
+                    float: left;
+                    padding: 4px 12px;
+                    line-height: 20px;
+                    text-decoration: none;
+                    background-color: #ffffff;
+                    border: 1px solid #dddddd;
+                    border-left-width: 0;
+                }
+
+                    .pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span {
+                        background-color: #f5f5f5;
+                    }
+
+            .pagination ul > .active > a, .pagination ul > .active > span {
+                color: #999999;
+                cursor: default;
+            }
+
+            .pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus {
+                color: #999999;
+                background-color: transparent;
+                cursor: default;
+            }
+
+            .pagination ul > li:first-child > a, .pagination ul > li:first-child > span {
+                border-left-width: 1px;
+                -webkit-border-top-left-radius: 4px;
+                -moz-border-radius-topleft: 4px;
+                border-top-left-radius: 4px;
+                -webkit-border-bottom-left-radius: 4px;
+                -moz-border-radius-bottomleft: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            .pagination ul > li:last-child > a, .pagination ul > li:last-child > span {
+                -webkit-border-top-right-radius: 4px;
+                -moz-border-radius-topright: 4px;
+                border-top-right-radius: 4px;
+                -webkit-border-bottom-right-radius: 4px;
+                -moz-border-radius-bottomright: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+    .pagination-centered {
+        text-align: center;
+    }
+
+    .pagination-right {
+        text-align: right;
+    }
+
+    .pagination-large ul > li > a, .pagination-large ul > li > span {
+        padding: 11px 19px;
+        font-size: 17.5px;
+    }
+
+    .pagination-large ul > li:first-child > a, .pagination-large ul > li:first-child > span {
+        -webkit-border-top-left-radius: 6px;
+        -moz-border-radius-topleft: 6px;
+        border-top-left-radius: 6px;
+        -webkit-border-bottom-left-radius: 6px;
+        -moz-border-radius-bottomleft: 6px;
+        border-bottom-left-radius: 6px;
+    }
+
+    .pagination-large ul > li:last-child > a, .pagination-large ul > li:last-child > span {
+        -webkit-border-top-right-radius: 6px;
+        -moz-border-radius-topright: 6px;
+        border-top-right-radius: 6px;
+        -webkit-border-bottom-right-radius: 6px;
+        -moz-border-radius-bottomright: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .pagination-mini ul > li:first-child > a, .pagination-small ul > li:first-child > a, .pagination-mini ul > li:first-child > span, .pagination-small ul > li:first-child > span {
+        -webkit-border-top-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-bottomleft: 3px;
+        border-bottom-left-radius: 3px;
+    }
+
+    .pagination-mini ul > li:last-child > a, .pagination-small ul > li:last-child > a, .pagination-mini ul > li:last-child > span, .pagination-small ul > li:last-child > span {
+        -webkit-border-top-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 3px;
+        -moz-border-radius-bottomright: 3px;
+        border-bottom-right-radius: 3px;
+    }
+
+    .pagination-small ul > li > a, .pagination-small ul > li > span {
+        padding: 2px 10px;
+        font-size: 11.9px;
+    }
+
+    .pagination-mini ul > li > a, .pagination-mini ul > li > span {
+        padding: 0 6px;
+        font-size: 10.5px;
+    }
+</style>
+<div ng-app="PartgroupMstApp" ng-controller="PartgroupMstCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">PartGroup Master</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Tool</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolLocationMaster">PartGroupMaster</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>PartGroupMaster List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="AddNew PartGroup" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                            </div>
+                            <div class="">
+                                <div class="row" style="padding-left: 17%">
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" style="height: 90%" data-live-search="true" data-actions-box="true" ng-model="obj.SearchField" name="IsReusable">
+                                            <option value="">--Select Search Field--</option>
+                                            <option value="Productgroup">Productgroup</option>
+
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="main-search open">
+                                            <div class="input-group">
+                                                <input type="text" id="" ng-model="obj.SearchData" class="form-control" placeholder="Search . . ." style="width: 90px;">
+
+                                                <span class="input-group-append search-btn btn btn-primary">
+                                                    <i class="feather icon-search input-group-text" ng-click="FunctionSearch(obj)"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<i class="fa fa-refresh" aria-hidden="true"></i>*@
+                                    <a href="#!" class="btn  btn-primary" ng-click="init()"><i class="feather icon-refresh-cw f-30"></i>&nbsp;Refresh <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+
+                                </div>
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0  no-footer" style="font-weight: bolder; width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ToollocationMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display: none">Product Id</th>
+                                                <th>Product group</th>
+                                                <th>Product group desc</th>
+
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in PartGroupList">
+                                                <td>{{row.Row_no }}</td>
+                                                <td style="display: none">{{ row.ProductID }}</td>
+                                                <td>{{ row.Productgroup }}</td>
+                                                <td>{{ row.Productgroup_desc }}</td>
+
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+                                                @*<td>
+                                                        <i class="fas fa-toggle-on" style="font-size: 29px; cursor: pointer; color: #5cb85c; padding-left: 31px; padding-top: 0px;"
+                                                            ng-if="row.IsActive == 'Y'"
+                                                            ng-click="editClick(row,'I')" title="Active"></i>
+                                                        <i class="fas fa-toggle-on fa-rotate-180" style="font-size: 29px; cursor: pointer; color: #d9534f; padding-left: 31px; padding-top: 0px;"
+                                                            ng-if="row.IsActive == 'N'"
+                                                            ng-click="editClick(row,'A')" title="InActive"></i>
+                                                    </td>
+                                                *@
+
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div data-pagination="" data-num-pages="numPages()"
+                                         data-current-page="currentPage" data-max-size="maxSize"
+                                         data-boundary-links="true" ng-click="BindFilterData()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add Product Group</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelToolLocation()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="PartgroupmstForm" ng-submit="submitForm(PartgroupmstForm.$valid,obj)" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6" ng-class="{'has-error':PartgroupmstForm.Tcode.$invalid && !PartgroupmstForm.Tcode.$pristine,'has-success': PartgroupmstForm.Tcode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Product Group</label>
+                                            <input id="LocationStation" type="text" class="form-control" autocomplete="off" placeholder="Group" name="Tcode" ng-disabled="disableCtrl" ng-model="obj.Productgroup" required>
+                                            <p ng-show="PartgroupmstForm.Tcode.$invalid && !PartgroupmstForm.Tcode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':PartgroupmstForm.desc.$invalid && !PartgroupmstForm.desc.$pristine,'has-success': PartgroupmstForm.desc.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Product Group Desc</label>
+                                            <input id="LocationStation" type="text" class="form-control" autocomplete="off" placeholder="Product Desc" ng-disabled="disableCtrl" name="desc" ng-model="obj.Productgroup_desc" required>
+                                            <p ng-show="PartgroupmstForm.desc.$invalid && !PartgroupmstForm.desc.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolLocation()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Tool/PartGroupMst/PartGroupMst-app.js"></script>
+    <script src="~/AngularJS/Tool/PartGroupMst/PartGroupMst-controller.js"></script>
+}
+
+

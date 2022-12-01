@@ -3,6 +3,12 @@ $(document).ready(function () {
     $(".date").inputmask({
         mask: "99/99/9999"
     });
+    $(".uniqueno").inputmask({
+        mask: "99999999/99"
+    });
+     $(".mmyyyy").inputmask({
+        mask: "99/9999"
+    });
 
     $(".date2").inputmask({
         mask: "99-99-9999"

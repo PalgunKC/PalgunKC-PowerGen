@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "SpareRequestReason";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+}
+
+<div ng-app="sparerequestApp" ng-controller="sparerequestCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Spare RequestReason</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolRequestReason">Spare RequestReason</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Spare Request Reason List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add NewReason" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                                @*<button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#ToolRequestList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('ToolRequestList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>*@
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ToolRequestList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Spare Request id</th>
+                                                <th>Reason Code</th>
+                                                <th>Reason Name</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in SpareRequestReasonList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.SpareReqReasonId }}</td>
+                                                <td>{{ row.ReasonCode }}</td>
+                                                <td>{{ row.ReasonDetails }}</td>
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add Reason</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelSpareReason()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="SpareReasonForm" ng-submit="submitForm(SpareReasonForm.$valid,obj)" novalidate>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReasonForm.Rcode.$invalid && !SpareReasonForm.Rcode.$pristine,'has-success': SpareReasonForm.Rcode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Reason Code</label>
+                                            <input id="Rcode" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Code" name="Rcode" ng-model="obj.ReasonCode" required>
+                                            <p ng-show="SpareReasonForm.Rcode.$invalid && !SpareReasonForm.Rcode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReasonForm.RName.$invalid && !SpareReasonForm.RName.$pristine,'has-success': SpareReasonForm.RName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Reason Name</label>
+                                            <input id="RName" type="text" class="form-control" autocomplete="off" placeholder="Name" name="RName" ng-model="obj.ReasonDetails" required>
+                                            <p ng-show="SpareReasonForm.RName.$invalid && !SpareReasonForm.RName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolReason()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+
+    <script src="~/AngularJS/Spare/SpareRequestReason/SpareRequestReason-app.js"></script>
+    <script src="~/AngularJS/Spare/SpareRequestReason/SpareRequestReason-controller.js"></script>
+
+}
+

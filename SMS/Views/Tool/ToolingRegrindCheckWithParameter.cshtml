@@ -1,0 +1,486 @@
+﻿
+@{
+    ViewBag.Title = "ToolingRegrindCheckWithParameter";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+    <style>
+        .dropdown-header {
+            padding: 0.5rem 0;
+        }
+
+        .multiselect-parent {
+            width: 100%;
+        }
+
+            .multiselect-parent > button {
+                width: 100%;
+                background: none;
+            }
+
+        .checkbox {
+            padding: 0 10px;
+            font-size: 14px;
+        }
+
+        .dropdown-menu > li > a {
+            padding: 0;
+        }
+
+        .dropdown-menu {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<div ng-app="ToolRegrindcheckApp" ng-controller="ToolingregrindcheckCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Tool Regrain Check</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Tool</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolingRegrindCheck">Tool Regrain Check</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Tool Regrain List</h5>
+                            @*<div style="float: right; margin-right: 25px;">
+                                    <a class="" href="#" title="Add New Return" style="font-size: 25px;" ng-disabled="true" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                                </div>*@
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#ToolReturnList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('ToolReturnList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ToolReturnList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Tool Return id</th>
+                                                <th>Action</th>
+                                                <th>Regrain Date</th>
+                                                <th>Regrain Number</th>
+                                                <th>Part No</th>
+                                                <th>Part Name</th>
+                                                <th>Part Number</th>
+                                                <th>Vendor Name</th>
+                                                <th>Return Quantity</th>
+                                                <th>Regrain Quantity</th>
+                                                <th>Return Status</th>
+                                                @*<th>Is Active</th>*@
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in ToolingRegrain|orderBy : '-ToolReg_id'">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.ToolReg_id }}</td>
+                                                <td ng-switch on="row.Return_Status" class="text-wrap">
+                                                    <span ng-switch-default ng-click="editClick(row,'V')"> <i class="feather icon-eye btn btn-success " title="View" style="margin-left: 15%;"> </i></span>
+                                                    <span ng-switch-when='RE' ng-click="editClick(row,'E')"><i class="feather icon-edit btn btn-primary" title="Edit" style="margin-left: 15%;"> </i></span>
+
+                                                </td>
+                                                <td>{{row.OrderCreatedAt}}</td>
+                                                <td>{{ row.ToolReg_Regrain_no }}</td>
+                                                <td>{{ row.ToolRts_Partno }}</td>
+                                                <td>{{ row.ToolRts_Partname }}</td>
+                                                <td>{{ row.ToolRts_Linename }}</td>
+                                                <td>{{ row.ToolRts_MachineName }}</td>
+                                                <td>{{ row.ToolRts_Qty }}</td>
+                                                <td>{{ row.ToolReg_Qty }}</td>
+                                                @*<td>{{ row.Tool_Status }}</td>*@
+                                                @*<td>
+                                                        <span ng-if="row.Tool_Status==='RT'">
+                                                            {{'Return'}}
+                                                        </span>
+                                                    </td>*@
+                                                <td ng-switch on="row.Return_Status" class="text-wrap">
+                                                    <span ng-switch-when="RE" class="label theme-bg f-12 text-white" style="border-radius: 15px;">Regrain</span>
+                                                    <span ng-switch-when="ST" class="label theme-bg2 f-12 text-white" style="border-radius: 15px;">Stock</span>
+                                                    <span ng-switch-when="SC" class="label theme-bg3 f-12 text-white" style="border-radius: 15px;">Scarp</span>
+                                                </td>
+                                                @*<td>
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
+                                                @*<td>
+                                                        <a href="#!" class="btn btn-rounded btn-outline-primary" ng-click="editClick(row,'E')"><i class="fa fa-recycle"></i>&nbsp;Regrind <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+                                                    </td>*@
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Tooling Regrind</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelToolingReturn()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="ToolReturnForm" ng-submit="submitForm(ToolReturnForm.$valid,obj)" novalidate>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Date&Time</label>
+                                            <input id="ToolRts_datetime" type="text" class="form-control" autocomplete="off" placeholder="Date&Time" name="Rtime" ng-model="obj.ToolReg_datetime" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Shift</label>
+                                            <input id="ToolRts_shift" type="text" class="form-control" autocomplete="off" placeholder="Shift" name="Rshift" ng-model="obj.ToolReg_shift" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">RequestNumber</label>
+                                            <input id="ToolRts_Return_no" type="text" class="form-control" autocomplete="off" placeholder="ReturnNumber" name="Rno" ng-model="obj.ToolReg_Regrain_no" disabled>
+                                        </div>
+                                    </div>
+                                    <input id="ToolIsu_id" type="text" style="display:none" class="form-control" autocomplete="off" placeholder="ReturnNumber" name="Rno" ng-model="obj.ToolIsu_id" disabled>
+                                    @*<div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Plant</label>
+                                                <input id="Plant" type="text" class="form-control" autocomplete="off"  placeholder="Plant" name="Plant" ng-model="obj.ToolRts_plant" disabled>
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolReturnForm.PartNumber.$invalid && !ToolReturnForm.PartNumber.$pristine,'has-success': ToolReturnForm.PartNumber.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Part Number</label>
+                                                <select class="form-control" id="PartNumber" ng-disabled="true" ng-change="BindPartName(obj)" ng-model="obj.ToolRts_Partno" name="PartNumber" ng-options="ToolIsu_Partno.ToolIsu_Partno as (ToolIsu_Partno.ToolIsu_Partname+ '  -  ' +ToolIsu_Partno.ToolIsu_Partno) for ToolIsu_Partno in ToolIssueList" required>
+
+                                                    <option value="">--Select PartNumber--</option>
+                                                </select>
+                                                <p ng-show="ToolReturnForm.PartNumber.$invalid && !ToolReturnForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Number</label>
+                                            <input id="ToolRts_Partno" type="text" class="form-control" autocomplete="off" placeholder="Number" name="ToolRts_Partno" ng-model="obj.ToolRts_Partno">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.PartName.$invalid && !ToolReturnForm.PartName.$pristine,'has-success': ToolReturnForm.PartName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Name</label>
+                                            <input id="PartName" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Part Name" name="PartName" ng-model="obj.ToolRts_Partname" required disabled>
+                                            <p ng-show="ToolReturnForm.PartName.$invalid && !ToolReturnForm.PartName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.Lname.$invalid && !ToolReturnForm.Lname.$pristine,'has-success': ToolReturnForm.Lname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">LineName</label>
+                                            <select name="Lname" id="Lname" class="form-control" ng-disabled="true" ng-model="obj.LineMachine_Line_Code" nam="Lname" ng-change="getLineDetails(obj)" required>
+                                                <option value="">--Select Line--</option>
+                                                <option data-ng-repeat="list in LineList" value="{{list.LineName}}">{{list.LineName}}</option>
+                                            </select>
+                                            @*<div ng-dropdown-multiselect=""  options="example14data"  selected-model="example13model" extra-settings="setting2"></div>*@
+                                            <p ng-show="ToolReturnForm.Lname.$invalid && !ToolReturnForm.Lname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.Mname.$invalid && !ToolReturnForm.Mname.$pristine,'has-success': ToolReturnForm.Mname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">MachineName</label>
+                                            @*<div class="col-md-12" ng-dropdown-multiselect="" ng-disabled="disableCtrl" options="MachineList" selected-model="obj.Machinecode" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></div>*@
+
+                                            <fieldset class="col-md-12" ng-disabled="true" ng-dropdown-multiselect="" options="MachineList" selected-model="obj.Machinecode" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></fieldset>
+                                            <p ng-show="machinecodeError" class="help-block" style="color:red;margin-top:20px;">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Issue Date</label>
+                                            <input id="ToolIsu_datetime" type="text" ng-disabled="true" class="form-control" autocomplete="off" placeholder="Issue Date" name="AvailableQty" ng-model="obj.ToolIsu_datetime">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Received Date</label>
+                                            <input id="ToolRqt_datetime" type="text" ng-disabled="true" class="form-control" autocomplete="off" placeholder="Number" name="ToolRqt_datetime" ng-model="obj.ToolRqt_datetime">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ErrUnicodeMust || ToolUploadMasterForm.ToolUniqueCode.$invalid && !ToolUploadMasterForm.ToolUniqueCode.$pristine,'has-success': ToolUpdateMasterForm.ToolUniqueCode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Unique Number</label>
+                                            <input id="ToolUniqueCode" type="text" class="form-control" autocomplete="off" ng-disabled="true" placeholder="ToolUniqueNumber" name="ToolUniqueCode" ng-model="obj.ToolRts_Unicode">
+                                            <p ng-show="ErrUnicodeMust" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Life Achived</label>
+                                            <input id="ToolRts_LifeAchived" type="text" ng-disabled="disableCtrl" class="form-control" decimal-only autocomplete="off" placeholder="LifeAchived" name="ToolReg_LifeAchived" ng-model="obj.ToolReg_LifeAchived">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Model</label>
+                                            <input id="ToolRts_Model" type="text" class="form-control" ng-disabled="disableCtrl" autocomplete="off" placeholder="Model" name="ToolReg_Model" ng-model="obj.ToolReg_Model">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_Responsible_Dept.$invalid && !ToolReturnForm.ToolReg_Responsible_Dept.$pristine,'has-success': ToolReturnForm.ToolReg_Responsible_Dept.$valid }">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Responsible Department</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="disableCtrl" id="ToolReg_Responsible_Dept" name="ToolReg_Responsible_Dept" ng-model="obj.ToolReg_Responsible_Dept" data-live-search="true" data-actions-box="true" required>
+                                                <option value="">--Select Department--</option>
+                                                <option value="MI">Maintainance</option>
+                                                <option value="S">Stores</option>
+                                                <option value="O">Othters</option>
+                                                <option value="T">Tooling</option>
+                                                <option value="P">Production</option>
+                                                <option value="PED">Production Engineering</option>
+                                                <option value="SQA">Supplier Quality Assurance</option>
+                                                <option value="MT">Maintenance</option>
+                                                <option value="UT">Utility</option>
+                                                <option value="AC">Auto Cycle</option>
+                                            </select>
+                                            <p ng-show="ToolReturnForm.ToolReg_Responsible_Dept.$invalid && !ToolReturnForm.ToolReg_Responsible_Dept.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Responsible Person</label>
+                                            <input id="ToolReg_Responsible_Person" type="text" class="form-control" ng-disabled="disableCtrl" autocomplete="off" placeholder="Responsible Person" name="ToolReg_Responsible_Person" ng-model="obj.ToolReg_Responsible_Person">
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Corrective Action</label>
+                                            <input id="ToolReg_Corrective_Action" type="text" class="form-control" ng-disabled="disableCtrl" autocomplete="off" placeholder="Corrective Action" name="ToolReg_Corrective_Action" ng-model="obj.ToolReg_Corrective_Action">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applied Employee Number</label>
+                                            <input id="Emp_Number" type="text" class="form-control" autocomplete="off" ng-disabled="true" placeholder="Emp Number" name="Emp_Number" ng-model="obj.Regrained_Emp_Number">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Applied Employee Name</label>
+                                            <input id="Emp_Name" type="text" class="form-control" autocomplete="off" ng-disabled="true" placeholder="Emp Name" name="Emp_Name" ng-model="obj.Regrained_Emp_Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_Reason.$invalid && !ToolReturnForm.ToolReg_Reason.$pristine,'has-success': ToolReturnForm.ToolReg_Reason.$valid }">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Reason</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="disableCtrl" id="ToolReg_Reason" name="ToolReg_Reason" ng-model="obj.ToolReg_Reason" data-live-search="true" data-actions-box="true" required>
+                                                <option value="TB">Tool Breakage</option>
+                                                <option value="TLO">Tool Life Over</option>
+                                                <option value="O">Othters</option>
+                                            </select>
+                                            <p ng-show="ToolReturnForm.ToolReg_Reason.$invalid && !ToolReturnForm.ToolReg_Reason.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_Unit_Cost.$invalid && !ToolReturnForm.ToolReg_Unit_Cost.$pristine,'has-success': ToolReturnForm.ToolReg_Unit_Cost.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Unit Cost</label>
+                                            <input id="ToolReg_Unit_Cost" type="number" class="form-control" ng-disabled="disableCtrl" autocomplete="off" placeholder="Cost" name="ToolReg_Unit_Cost" ng-model="obj.ToolReg_Unit_Cost" onmousewheel="return false" required>
+                                            <p ng-show="ToolReturnForm.ToolReg_Unit_Cost.$invalid && !ToolReturnForm.ToolReg_Unit_Cost.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_VendorCode.$invalid && !ToolReturnForm.ToolReg_VendorCode.$pristine,'has-success': ToolReturnForm.ToolReg_VendorCode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor</label>
+                                            <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" ng-disabled="disableCtrl" id="ToolReg_VendorCode" data-live-search="true" data-actions-box="true" ng-change="BindVendorName(obj)" ng-model="obj.ToolReg_VendorCode" name="VendorCode" ng-options='VendorCode.VendorCode as (VendorCode.VendorName + "  -  " + VendorCode.VendorCode) for VendorCode in ToolVendorList|filter:filterToolVendorList' required>
+                                                @*<option value="">--Choose here--</option>*@
+                                            </select>
+                                            <p ng-show="ToolReturnForm.ToolReg_VendorCode.$invalid && !ToolReturnForm.ToolReg_VendorCode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_VendorName.$invalid && !ToolReturnForm.ToolReg_VendorName.$pristine,'has-success': ToolReturnForm.ToolReg_VendorName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor Name</label>
+                                            <input id="ToolReg_VendorName" type="text" class="form-control" autocomplete="off" ng-disabled="disableCtrl" placeholder="VendorName" name="ToolReg_VendorName" ng-model="obj.ToolReg_VendorName" required>
+                                            <p ng-show="ToolReturnForm.ToolReg_VendorName.$invalid && !ToolReturnForm.ToolReg_VendorName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_RDC_Number.$invalid && !ToolReturnForm.ToolReg_RDC_Number.$pristine,'has-success': ToolReturnForm.ToolReg_RDC_Number.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">RDC Number</label>
+                                            <input id="ToolReg_RDC_Number" type="text" class="form-control" autocomplete="off" ng-disabled="disableCtrl" placeholder="RDC Number" name="ToolReg_RDC_Number" ng-model="obj.ToolReg_RDC_Number" required>
+                                            <p ng-show="ToolReturnForm.ToolReg_RDC_Number.$invalid && !ToolReturnForm.ToolReg_RDC_Number.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <label class="form-label">Expect return date</label>
+                                        </div>
+                                        <div class="input-group">
+
+                                            <input id="Todate" type="text" name="SED" ng-model="obj.ToolReg_Vend_ExpDate" ng-disabled="disableCtrl" @*ng-click="SetDisable(obj)"*@ placeholder="Expect return date" class="form-control datepickerFuction" autocomplete="off">
+                                            <label class="input-group-addon date-label btn" for="Todate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_Qty.$invalid && !ToolReturnForm.ToolReg_Qty.$pristine,'has-success': ToolReturnForm.ToolReg_Qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Regrain Qty</label>
+                                            @*<input id="Max_qty" type="number" class="form-control" autocomplete="off" placeholder="Maxqty" ng-model="obj.Max_qty" ng-min="obj.Min_qty" ng-max="obj.Max_qty" name="value1" required />
+                                                <p ng-show="PartMasterForm.value1.$invalid && !PartMasterForm.value1.$pristine" class="help-block">Value Invalid..</p>*@
+                                            <input id="ToolReg_Qty" type="number" class="form-control" autocomplete="off" ng-disabled="disableCtrl" placeholder="ToolReg_Qty" name="ToolReg_Qty" ng-model="obj.ToolReg_Qty" ng-min="Min" onmousewheel="return false" required>
+                                            <p ng-show="ToolReturnForm.ToolReg_Qty.$invalid && !ToolReturnForm.ToolReg_Qty.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-12" ng-class="{'has-error':ToolReturnForm.Remarks.$invalid && !ToolReturnForm.Remarks.$pristine,'has-success': ToolReturnForm.Remarks.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Remarks</label>
+                                                <textarea class="form-control" placeholder="Remarks" name="VendorAddress" ng-model="obj.ToolRts_Remarks" rows="2"></textarea>
+                                                <p ng-show="ToolReturnForm.Remarks.$invalid && !ToolReturnForm.Remarks.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.ToolReg_Remarks.$invalid && !ToolReturnForm.ToolReg_Remarks.$pristine,'has-success': ToolReturnForm.ToolReg_Remarks.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Remarks</label>
+                                            <input id="ToolReg_Remarks" type="text" class="form-control" autocomplete="off" ng-disabled="disableCtrl" placeholder="Remarks" name="ToolReg_Remarks" ng-model="obj.ToolReg_Remarks" required>
+                                            <p ng-show="ToolReturnForm.ToolReg_Remarks.$invalid && !ToolReturnForm.ToolReg_Remarks.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolReturnForm.Return_Status.$invalid && !ToolReturnForm.Return_Status.$pristine,'has-success': ToolReturnForm.Return_Status.$valid }">
+
+                                            <div class="form-group">
+                                                <label class="form-label">Return Status</label>
+                                                <select class="form-control selectpicker show-menu-arrow show-tick" id="Return_Status" ng-disabled="disableCtrl"  name="Return_Status" ng-model="obj.Return_Status" data-live-search="true" data-actions-box="true" required>
+                                                    <option value="">Select Status</option>
+                                                    <option value="ST">Stock</option>
+                                                    <option value="SC">Scrap</option>
+                                                </select>
+                                                <p ng-show="ToolReturnForm.Return_Status.$invalid && !ToolReturnForm.Return_Status.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+
+
+                                        </div>*@
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.Emp_Number.$invalid && !ToolReturnForm.Emp_Number.$pristine,'has-success': ToolReturnForm.Emp_Number.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Employee Number</label>
+                                            <input id="Emp_Number" type="text" class="form-control" autocomplete="off" placeholder="Emp Number" name="Emp_Number" ng-model="obj.Regrained_Emp_Number_Update" required>
+                                            <p ng-show="ToolReturnForm.Emp_Number.$invalid && !ToolReturnForm.Emp_Number.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.Emp_Name.$invalid && !ToolReturnForm.Emp_Name.$pristine,'has-success': ToolReturnForm.Emp_Name.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Employee Name</label>
+                                            <input id="Emp_Name" type="text" class="form-control" autocomplete="off" placeholder="Emp Name" name="Emp_Name" ng-model="obj.Regrained_Emp_Name_Update" required>
+                                            <p ng-show="ToolReturnForm.Emp_Name.$invalid && !ToolReturnForm.Emp_Name.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolReturnForm.Return_St.$invalid && !ToolReturnForm.Return_St.$pristine,'has-success': ToolReturnForm.Return_St.$valid }">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Return Status</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="disableCtrl" id="Return_Status" name="Return_St" ng-model="obj.Return_Status" data-live-search="true" data-actions-box="true" required>
+                                                <option value="">--Select Status--</option>
+                                                <option style="display:none" value="RE">Regrain</option>
+                                                <option value="ST">Stock</option>
+                                                <option value="SC">Scrap</option>
+                                            </select>
+                                            <p ng-show="ToolReturnForm.Return_St.$invalid && !ToolReturnForm.Return_St.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':obj.Return_Status=='ST'&&ToolReturnForm.Tool_Location.$invalid && !ToolReturnForm.Tool_Location.$pristine,'has-success': ToolReturnForm.Tool_Location.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Location</label>
+                                            <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="Tool_Location" data-live-search="true" data-actions-box="true" ng-model="obj.Tool_Location" name="Tool_Location" ng-options='Tool_Location.LocationName as (Tool_Location.LocationName) for Tool_Location in ToolLocationList|filter:filterToolLocationList' required>
+                                                @*<option value="">--Select Tool Location--</option>*@
+                                            </select>
+                                            <p ng-show="ToolReturnForm.Tool_Location.$invalid && !ToolReturnForm.Tool_Location.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Part Number</label>
+                                            <input id="ToolReg_RegrainPartNo" type="text" class="form-control" autocomplete="off" ng-disabled="true" placeholder="Remarks" name="ToolReg_RegrainPartNo" ng-model="obj.ToolReg_RegrainPartNo=obj.ToolRts_Partno.substr(0,8)+'S'" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" ng-disabled="disableCtrl" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolingReturn()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+
+    <script src="~/AngularJS/Tool/ToolRegainCheckWithParameter/ToolRegrindCheck-app.js"></script>
+    <script src="~/AngularJS/Tool/ToolRegainCheckWithParameter/ToolRegrindCheck-controller.js"></script>
+    <script src="../CommonJS/lodash.min.js"></script>
+    <script>
+        $('.Tool-request-reason-form-select2').select2({
+            placeholder: "--select return reason--",
+            allowClear: true
+        })
+        //.on("change", function (e) { angular.element(document.getElementById("ToolingreturnCtrl")).scope().setReturnReason(e); })
+    </script>
+
+}
+

@@ -31,6 +31,10 @@ namespace SMS.UTILITY
             public const string SP_GET_LOGIN_USER = "SP_GET_LOGIN_USER";
             public const string SP_GET_DOSE = "SP_GET_DOSE";
             public const string SP_GET_CITYLIST = "SP_GET_CITYLIST";
+            public const string SP_GET_PARTQTY = "SP_GET_PARTQTY";
+            public const string SP_GET_TOOLSCRAP = "SP_GET_TOOLSCRAP";
+            public const string SP_GET_SPARESCRAP = "SP_GET_SPARESCRAP";
+            public const string SP_GET_EMPOLYEE_MASTER = "SP_GET_EMPOLYEE_MASTER";
             public const string SP_GET_PRODUCT = "SP_GET_PRODUCT";
             public const string SP_GET_COMPANY_MST = "SP_GET_COMPANY_MST";
             public const string SP_GET_COMPANY = "SP_GET_COMPANY";
@@ -44,8 +48,60 @@ namespace SMS.UTILITY
             public const string SP_PHYMST_ACTION = "SP_PHYMST_ACTION";
             public const string SP_DRUGMST_ACTION = "SP_DRUGMST_ACTION";
             public const string SP_LOCATION_MASTER = "SP_LOCATION_MASTER";
+            public const string SP_SPARELOCATION_MASTER = "SP_SPARELOCATION_MASTER";
+            public const string SP_LINE_MASTER = "SP_LINE_MASTER";
+            public const string SP_MACHINE_MASTER = "SP_MACHINE_MASTER";
+            public const string SP_LINE_MACHINE_MAP_MASTER = "SP_LINE_MACHINE_MAP_MASTER";
+            public const string SP_SHIFT_MASTER = "SP_SHIFT_MASTER";
+            public const string SP_TOOLREQESTREASON_MASTER = "SP_TOOLREQESTREASON_MASTER";
+            public const string SP_SPAREREQESTREASON_MASTER = "SP_SPAREREQESTREASON_MASTER";
+            public const string SP_TOOLRETURNREASON_MASTER = "SP_TOOLRETURNREASON_MASTER";
+            public const string SP_SPARERETURNREASON_MASTER = "SP_SPARERETURNREASON_MASTER";
+            public const string SP_TOOLINGREQUEST = "SP_TOOLINGREQUEST";
+            public const string SP_SPAREINGREQUEST = "SP_SPAREINGREQUEST";
+
+            public const string SP_TOOLING_ISSUE = "SP_TOOLING_ISSUE";
+            public const string SP_SPAREING_ISSUE = "SP_SPAREING_ISSUE";
+            public const string SP_TOOLINGRETURN = "SP_TOOLINGRETURN";
+            public const string SP_SPAREINGRETURN = "SP_SPAREINGRETURN";
+            public const string SP_TOOLING_REGRAIN = "SP_TOOLING_REGRAIN";
+            public const string SP_SPAREING_REGRAIN = "SP_SPAREING_REGRAIN";
+            public const string SP_GET_QUANTITY_REPORT= "SP_GET_QUANTITY_REPORT_NEW";
+            public const string SP_GET_SPARE_QUANTITY_REPORT = "SP_GET_SPARE_QUANTITY_REPORT_NEW";
+            public const string SP_GET_SPARE_MACHINE_REPORT = "SP_GET_SPARE_MACHINE_REPORT";
+            public const string SP_GET_SPARE_MACHINE_QTY_ANALYTIC_REPORT = "SP_GET_SPARE_MACHINE_QTY_ANAL€YTIC_REPORT";
+            public const string SP_GET_SPARE_MACHINE_COST_ANALYTIC_REPORT = "SP_GET_SPARE_MACHINE_COST_ANALYTIC_REPORT";
+
+            public const string SP_GET_QUANTITY_ANALYTIC_REPORT = "SP_GET_QUANTITY_ANALYTIC_REPORT_NEW";
+            public const string SP_GET_RETURN_ANALYTIC_REPORT = "SP_GET_RETURN_ANALYTIC_REPORT";
+            public const string SP_GET_SPARE_RETURN_ANALYTIC_REPORT = "SP_GET_SPARE_RETURN_ANALYTIC_REPORT";
+
+            public const string SP_GET_SPARE_QUANTITY_ANALYTIC_REPORT = "SP_GET_SPARE_QUANTITY_ANALYTIC_REPORT_NEW";
+
+            public const string SP_GET_COST_ANALYTIC_REPORT = "SP_GET_COST_ANALYTIC_REPORT";
+            public const string SP_GET_SPARE_COST_ANALYTIC_REPORT = "SP_GET_SPARE_COST_ANALYTIC_REPORT";
+
+
+            public const string SP_GET_BREAKAGE_REPORT = "SP_GET_BREAKAGE_REPORT";
+            public const string SP_GET_SPARE_BREAKAGE_REPORT = "SP_GET_SPARE_BREAKAGE_REPORT";
+            public const string SP_PART_LIFE_CYCLE_REPORT = "SP_PART_LIFE_CYCLE_REPORT";
+            public const string SP_SPARE_PART_LIFE_CYCLE_REPORT = "SP_SPARE_PART_LIFE_CYCLE_REPORT";
+
             public const string SP_VENDOR_MASTER = "SP_VENDOR_MASTER";
             public const string SP_PART_MASTER = "SP_PART_MASTER";
+            public const string SP_TOOL_Dashboard = "SP_TOOL_Dashboard";
+            public const string SP_STOCK_VERIFICATION = "SP_STOCK_VERIFICATION";
+            public const string SP_SPARE_STOCK_VERIFICATION = "SP_SPARE_STOCK_VERIFICATION";
+            public const string SP_GET_TOOL_MACHINE_REPORT = "SP_GET_TOOL_MACHINE_REPORT";
+            public const string SP_GET_TOOL_MACHINE_QTY_ANALYTIC_REPORT = "SP_GET_TOOL_MACHINE_QTY_ANALYTIC_REPORT";
+            public const string SP_GET_TOOL_MACHINE_COST_ANALYTIC_REPORT = "SP_GET_TOOL_MACHINE_COST_ANALYTIC_REPORT";
+
+            public const string SP_SPAREPART_MASTER = "SP_SPAREPART_MASTER";
+            public const string SP_SPARE_Dashboard = "SP_SPARE_Dashboard";
+            public const string SP_TOOLMASTER_UPLOAD = "SP_TOOLMASTER_UPLOAD";
+            public const string SP_SPAREMASTER_UPLOAD = "SP_SPAREMASTER_UPLOAD";
+
+            public const string SP_TOOLMASTER_UPDATE = "SP_TOOLMASTER_UPDATE";
             public const string SP_INVESTIGATIONMST_ACTION = "SP_INVESTIGATIONMST_ACTION";
             public const string SP_PRG_ACTION = "SP_PRG_ACTION";
             public const string SP_SAVE_CARDIOLOGYDETAILS = "SP_SAVE_CARDIOLOGYDETAILS";
@@ -117,6 +173,9 @@ namespace SMS.UTILITY
             #region Employee Master
             public const string POS_SP_GET_EMP_MAST = "POS_SP_GET_EMP_MAST";
             #endregion
+            #region Product group Master
+            public const string SP_PRODUCTGROUP_MASTER = "SP_PRODUCTGROUP_MASTER";
+            #endregion
 
             #region Bank Master
             //public const string POS_SP_GET_GCM_DET = "POS_SP_GET_GCM_DET";//Bind bank type dropdown
@@ -159,7 +218,7 @@ namespace SMS.UTILITY
             public const string POS_SP_GET_COLLC_FOLLOWUP = "POS_SP_GET_COLLC_FOLLOWUP";
             public const string POS_SP_GET_YARD_DTLS = "POS_SP_GET_YARD_DTLS";
             public const string POS_SP_GET_SALE_OR_RELEASE = "POS_SP_GET_SALE_OR_RELEASE";
-            public const string POS_SP_GET_DASHBOARD_GRID = "POS_SP_GET_DASHBOARD_GRID";
+            public const string POS_SP_GET_Dashboard_GRID = "POS_SP_GET_Dashboard_GRID";
             #endregion
             #endregion
         }
@@ -329,7 +388,7 @@ namespace SMS.UTILITY
             public static string DTSEIZURE = "DTSEIZURE";
             public static string DTYARD = "DTYARD";
             public static string DTSALERELEASE = "DTSALERELEASE";
-            public static string DTDASHBOARDGRID = "DTDASHBOARDGRID";
+            public static string DTDashboardGRID = "DTDashboardGRID";
             public static string LI_POS_MONTHLY_PLAN = "LI_POS_MONTHLY_PLAN";
         }
         public static class CMS_SP_INSERT_USER_MANAGER

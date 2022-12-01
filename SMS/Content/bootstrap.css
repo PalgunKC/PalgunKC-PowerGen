@@ -2515,7 +2515,7 @@ input[type="button"].btn-block {
   content: "\e020";
 }
 
-.glyphicon-home:before {
+.glyphicon-Dashboard:before {
   content: "\e021";
 }
 
@@ -2947,7 +2947,7 @@ input[type="button"].btn-block {
   content: "\e140";
 }
 
-.glyphicon-dashboard:before {
+.glyphicon-Dashboard:before {
   content: "\e141";
 }
 

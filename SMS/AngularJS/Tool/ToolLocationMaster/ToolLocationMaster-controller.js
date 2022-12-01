@@ -1,5 +1,6 @@
-﻿toollocationApp.controller('toollocationCtrl', function ($scope, $filter, toollocationServices, commonService, DTOptionsBuilder, DTColumnBuilder) {
+﻿toollocationApp.controller('toollocationCtrl', function (Excel, $timeout, $scope, $filter, toollocationServices, commonService) {
     $scope.ToolLocationList = [];
+    //$scope.obj.LocationBin ="";
     $scope.obj = new toollocationServices.toollocationData(null);
 
     $scope.$watch('obj.LocationStation', function (val) {
@@ -8,16 +9,94 @@
     $scope.$watch('obj.LocationRow', function (val) {
         $scope.obj.LocationRow = $filter('uppercase')(val);
     }, true);
+    $scope.$watch('obj.LocationBinData', function (val) {
+        $scope.obj.LocationBinData = $filter('uppercase')(val);
+    }, true);
+
+    $scope.GetExcelData = function () {
+        commonService.postWebService('Tool/GetexcelToolLocation', { 'P_KEY': 'EXCEL', 'dummycolumn1': 'Part' }).then(function (response) {
+
+            $scope.DownloadTab(response);
+        });
+    }
+
+    $scope.DownloadTab = function (response) {
+        window.location = '/Tool/Download?ID=' + response.ID + '&Name=' + response.FileName;
+    };
     $scope.init = function () {
         debugger;
-        commonService.postWebService('Tool/BindListToolLocation', {}).then(function (response) {
+        $scope.IsListDivVisible = true;
+        $scope.IsEditDivVisible = false;
+        $scope.filteredTodos = []
+            , $scope.currentPage = 1
+            , $scope.numPerPage = 10
+            , $scope.maxSize = 5
+            , $scope.TotalCount = 0;
+        commonService.postWebService('Tool/BindListToolLocation', { 'P_KEY': 'Location', 'P_PAGE_INDEX': '1', 'P_PAGE_SIZE': '10' }).then(function (response) {
             $scope.ToolLocationList = response.liToolLocationmaster;
-            $scope.IsListDivVisible = true;
-            $scope.IsEditDivVisible = false;
+            $scope.TotalCount = parseInt($scope.ToolLocationList[0].TotalCount)
         });
-        $scope.DatatableInitialize();
+        // $scope.DatatableInitialize();
+    };
+    $scope.numPages = function () {
+        return Math.ceil($scope.TotalCount / $scope.numPerPage);
+    };
+    $scope.BindFilterData = function () {
+        //var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+        //, end = begin + $scope.numPerPage;
+
+        //$scope.SparePartMasterList = $scope.todos.slice(begin, end);
+        commonService.postWebService('Tool/BindListToolLocation', { 'P_KEY': 'Location', 'P_PAGE_INDEX': $scope.currentPage, 'P_PAGE_SIZE': '10' }).then(function (response) {
+            $scope.ToolLocationList = response.liToolLocationmaster;
+            $scope.TotalCount = parseInt($scope.ToolLocationList[0].TotalCount)
+        });
     };
 
+    $scope.exportToExcel = function (tableId) { // ex: '#my-table'
+        debugger;
+        var exportHref = Excel.tableToExcel(tableId, 'madasamy');
+        $timeout(function () {
+            var a = document.createElement('a');
+            a.href = exportHref;
+            a.download = "ToolLocationMaster.xls";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }, 100); // trigger download
+    };
+
+    $scope.FunctionSearch = function (obj) {
+        debugger;
+        if (obj.SearchField == '') {
+            $scope.init()
+            return false;
+        }
+        if (obj.SearchData == '') {
+            $scope.init()
+            return false;
+        }
+        commonService.postWebService('Tool/BindListToolLocation', { 'P_KEY': 'Search', 'SearchField': obj.SearchField, 'SearchData': obj.SearchData }).then(function (response) {
+            $scope.ToolLocationList = response.liToolLocationmaster;
+            $scope.TotalCount = parseInt($scope.ToolLocationList[0].TotalCount)
+        });
+    }
+
+    $scope.exportToPDF = function (tableId) {
+        debugger;
+        html2canvas(document.getElementById(tableId), {
+            onrendered: function (canvas) {
+                debugger;
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("ToolLocationMaster.pdf");
+            }
+        });
+    };
     $scope.DatatableInitialize = function () {
         $scope.vm = {};
         $scope.vm.dtOptions = DTOptionsBuilder.newOptions()
@@ -34,10 +113,9 @@
 
     $scope.editClick = function (row, key, IsActive) {
         debugger;
-
+        $scope.IsEditDivVisible = true;
+        $scope.IsListDivVisible = false;
         if (key == 'E') {
-            $scope.IsEditDivVisible = true;
-            $scope.IsListDivVisible = false;
             $scope.obj = new toollocationServices.toollocationData(row);
             $scope.obj.KEY = key;
             if (row.IsActive == 'N') {
@@ -46,24 +124,8 @@
             else {
                 $scope.obj.IsActive = true;
             }
-            //$scope.BindCity(row, "E");
         }
-        else if (key == 'I') {
-            $scope.obj = new toollocationServices.toollocationData(row);
-            $scope.obj.KEY = key;
-            $scope.obj.IsActive = 0;
-            $scope.submitForm(true, $scope.obj);
-        }
-        else if (key == 'A') {
-            $scope.obj = new toollocationServices.toollocationData(row);
-            $scope.obj.KEY = key;
-            $scope.obj.IsActive = 1;
-            $scope.submitForm(true, $scope.obj);
-        }
-
         else {
-            $scope.IsEditDivVisible = true;
-            $scope.IsListDivVisible = false;
             $scope.obj = new toollocationServices.toollocationData(null);
             $scope.disablecode = false;
             $scope.obj.IsActive = true;
@@ -85,6 +147,7 @@
             var LocationStation = document.getElementById("LocationStation");
             var LocationRow = document.getElementById("LocationRow");
             var LocationColumn = document.getElementById("LocationColumn");
+            var LocationBinData = document.getElementById("LocationBinData");
             if (LocationStation.value == "") {
                 LocationStation.focus();
             }
@@ -97,6 +160,10 @@
 
                 LocationColumn.focus();
             }
+            else if (LocationBinData.value == "") {
+
+                LocationBinData.focus();
+            }
         }
     };
 
@@ -108,6 +175,10 @@
         else {
             toolLocationmaster.IsActive = "0";
         }
+        //toolLocationmaster.LocationBinData = $scope.obj.LocationBin;
+        if (toolLocationmaster.LocationName.slice(-1) == '-') {
+            toolLocationmaster.LocationName = toolLocationmaster.LocationName.slice(0, -1);
+        }
         var request = new toollocationServices.SaveToolLocationmaster(toolLocationmaster);
         commonService.postWebService(request.url, request.param).then(function (response) {
             debugger;
@@ -115,7 +186,7 @@
             if (response.liToolLocationmaster != null) {
                 if (response.liToolLocationmaster[0].MSG == "Updated Success") {
                     $("#Message").val('Updated !! ');//Messgae
-                    $('#Title').html('Tool LocationMaster Updated Successfully');//Title
+                    $('#Title').html('ToolCrib Location Updated Successfully');//Title
                     $("#Message").trigger("click");
                     $scope.init();
                     $scope.obj = null;
@@ -131,7 +202,7 @@
 
                 else {
                     $("#Message").val('Saved !! ');//Messgae
-                    $('#Title').html('Tool LocationMaster Saved Successfully');//Title
+                    $('#Title').html('ToolCrib Location Saved Successfully');//Title
                     $("#Message").trigger("click");
                     $scope.init();
                     $scope.obj = null;

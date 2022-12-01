@@ -125,7 +125,7 @@
 .icon-pencil,
 .icon-note,
 .icon-loop,
-.icon-home,
+.icon-Dashboard,
 .icon-grid,
 .icon-graph,
 .icon-microphone,
@@ -557,7 +557,7 @@
 .icon-loop:before {
   content: "\e064";
 }
-.icon-home:before {
+.icon-Dashboard:before {
   content: "\e069";
 }
 .icon-grid:before {

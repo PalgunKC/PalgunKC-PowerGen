@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace SMS.Controllers
 {
-    public class DashBoardController : Controller
+    public class DashboardController : Controller
     {
-        // GET: DashBoard
+        // GET: Dashboard
         public ActionResult Index()
         {
             return View();

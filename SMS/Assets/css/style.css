@@ -143,6 +143,9 @@ strong {
 .theme-bg2 {
     background: linear-gradient(-135deg, #899FD4 0%, #A389D4 100%);
 }
+.theme-bg3 {
+    background: linear-gradient(-135deg, #451919 0%, #676272 100%);
+}
 
 /* ==========  card css start  =========== */
 .anim-rotate {
@@ -292,6 +295,44 @@ p.text-muted {
     border-top: 1px solid #f1f1f1;
     background: transparent;
     padding: 25px;
+}
+
+
+.f2 {
+    border-top: 1px solid #475f82;
+    background: #56aaf6;
+}
+
+.outter-footer {
+     width:100%;
+     float:left;
+     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.pcoded-navbar.mob-open ~ .footer, .pcoded-navbar.navbar-collapsed:hover ~ .footer{
+    margin-left:80px;
+}
+
+.pcoded-navbar.navbar-collapsed ~ .footer {
+    margin-left: 80px;
+}
+
+footer{
+    margin-left: 264px;
+}
+.outter-footer p {
+      display:inline-block;
+      color:#5e5f5d;
+      padding: 15px 0;
+      margin: 0;
+      font-size:14px;
+      margin-right: 50px;
+      margin-left: 50px;
+      display: inline-block;
+      float:left;
 }
 
 .card .card-block,
@@ -1982,6 +2023,23 @@ p.text-muted {
         display: none;
     }
 
+    .input-group label.date-label {
+        padding: 0;
+    }
+
+    .select2-container--default .select2-selection--single{
+        background: #f4f7fa!important;
+        border-color: #26c6da!important;
+        height: 42px!important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 41px!important;
+    }
+
+    .input-group span>i.fa-calendar-alt{
+        line-height: 1.7;
+    }
     .pcoded-header .navbar-nav {
         padding-left: 0;
         list-style: none;
@@ -7065,21 +7123,21 @@ body.layout-8 .card {
     }
 
 .Design-sprint .design-image,
-.dashboard-kit .design-image {
+.Dashboard-kit .design-image {
     padding: 0;
     margin: 30px 0 0;
     list-style: none;
 }
 
 .Design-sprint li,
-.dashboard-kit li {
+.Dashboard-kit li {
     display: inline-block;
     text-align: center;
     margin-right: 3px;
 }
 
 .Design-sprint .btn,
-.dashboard-kit .btn {
+.Dashboard-kit .btn {
     border-radius: 50px;
     border: 0;
     width: 40px;
@@ -7089,7 +7147,7 @@ body.layout-8 .card {
 }
 
 .Design-sprint i,
-.dashboard-kit i {
+.Dashboard-kit i {
     opacity: 0.3;
 }
 

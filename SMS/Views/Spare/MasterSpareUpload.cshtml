@@ -1,0 +1,554 @@
+﻿
+@{
+    ViewBag.Title = "MasterSpareUpload";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+<style>
+    .pagination {
+        margin: 20px 0;
+    }
+
+        .pagination ul {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            margin-left: 0;
+            margin-bottom: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+            .pagination ul > li {
+                display: inline;
+            }
+
+                .pagination ul > li > a, .pagination ul > li > span {
+                    float: left;
+                    padding: 4px 12px;
+                    line-height: 20px;
+                    text-decoration: none;
+                    background-color: #ffffff;
+                    border: 1px solid #dddddd;
+                    border-left-width: 0;
+                }
+
+                    .pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span {
+                        background-color: #f5f5f5;
+                    }
+
+            .pagination ul > .active > a, .pagination ul > .active > span {
+                color: #999999;
+                cursor: default;
+            }
+
+            .pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus {
+                color: #999999;
+                background-color: transparent;
+                cursor: default;
+            }
+
+            .pagination ul > li:first-child > a, .pagination ul > li:first-child > span {
+                border-left-width: 1px;
+                -webkit-border-top-left-radius: 4px;
+                -moz-border-radius-topleft: 4px;
+                border-top-left-radius: 4px;
+                -webkit-border-bottom-left-radius: 4px;
+                -moz-border-radius-bottomleft: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            .pagination ul > li:last-child > a, .pagination ul > li:last-child > span {
+                -webkit-border-top-right-radius: 4px;
+                -moz-border-radius-topright: 4px;
+                border-top-right-radius: 4px;
+                -webkit-border-bottom-right-radius: 4px;
+                -moz-border-radius-bottomright: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+    .pagination-centered {
+        text-align: center;
+    }
+
+    .pagination-right {
+        text-align: right;
+    }
+
+    .pagination-large ul > li > a, .pagination-large ul > li > span {
+        padding: 11px 19px;
+        font-size: 17.5px;
+    }
+
+    .pagination-large ul > li:first-child > a, .pagination-large ul > li:first-child > span {
+        -webkit-border-top-left-radius: 6px;
+        -moz-border-radius-topleft: 6px;
+        border-top-left-radius: 6px;
+        -webkit-border-bottom-left-radius: 6px;
+        -moz-border-radius-bottomleft: 6px;
+        border-bottom-left-radius: 6px;
+    }
+
+    .pagination-large ul > li:last-child > a, .pagination-large ul > li:last-child > span {
+        -webkit-border-top-right-radius: 6px;
+        -moz-border-radius-topright: 6px;
+        border-top-right-radius: 6px;
+        -webkit-border-bottom-right-radius: 6px;
+        -moz-border-radius-bottomright: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .pagination-mini ul > li:first-child > a, .pagination-small ul > li:first-child > a, .pagination-mini ul > li:first-child > span, .pagination-small ul > li:first-child > span {
+        -webkit-border-top-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-bottomleft: 3px;
+        border-bottom-left-radius: 3px;
+    }
+
+    .pagination-mini ul > li:last-child > a, .pagination-small ul > li:last-child > a, .pagination-mini ul > li:last-child > span, .pagination-small ul > li:last-child > span {
+        -webkit-border-top-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 3px;
+        -moz-border-radius-bottomright: 3px;
+        border-bottom-right-radius: 3px;
+    }
+
+    .pagination-small ul > li > a, .pagination-small ul > li > span {
+        padding: 2px 10px;
+        font-size: 11.9px;
+    }
+
+    .pagination-mini ul > li > a, .pagination-mini ul > li > span {
+        padding: 0 6px;
+        font-size: 10.5px;
+    }
+    .div-disabled-tab {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+</style>
+<div ng-app="spareuploadApp" ng-controller="spareuploadCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Spare Inward</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Spare Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Spare/MasterSpareUpload">Spare Inward</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Spare Inward List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add NewSpare" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                                <button class="btn btn-primary" type="button" id="fakeButton" style="display:none"></button>
+                            </div>
+                            <div class="">
+                                <div class="row" style="padding-left:17%">
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" style="height:90%" data-live-search="true" data-actions-box="true" ng-model="obj.SearchField" name="IsReusable">
+                                            <option value="">--Select Search Field--</option>
+                                            <option value="PartName">PartName</option>
+                                            <option value="PartNumber">PartNumber</option>
+                                            <option value="PartSpecification">PartSpec</option>
+                                            <option value="Spare_Location">Location</option>
+
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="main-search open">
+                                            <div class="input-group">
+                                                <input type="text" id="" ng-model="obj.SearchData" class="form-control" placeholder="Search . . ." style="width: 90px;">
+
+                                                <span class="input-group-append search-btn btn btn-primary">
+                                                    <i class="feather icon-search input-group-text" ng-click="FunctionSearch(obj)"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<i class="fa fa-refresh" aria-hidden="true"></i>*@
+                                    <a href="#!" class="btn  btn-primary" ng-click="init()"><i class="feather icon-refresh-cw f-30"></i>&nbsp;Refresh <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+
+                                </div>
+                                <div class="table-responsive m-t-20"  ng-class="{ 'div-disabled-tab':!isAddTab_Visblity}">
+                                    <table class="table table-bordered table-striped mb-0  no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="SpareInwardList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Part Master Id</th>
+                                                <th>Action</th>
+                                                <th>Inward Date</th>
+                                                <th>Inward Number</th>
+                                                <th>Part Number</th>
+                                                <th>Part Name</th>
+                                                <th>Part Spec</th>
+                                                <th>Quantity</th>
+                                                @*<th>Vendor Code</th>*@
+                                                @*<th>Vendor Name</th>*@
+                                                <th>Spare Location</th>
+                                                @* <th>UOM</th>*@
+                                                @*<th>Cost per unit</th>*@
+                                                <th>Resuable(Y/N)</th>
+                                                @*<th>Is Active</th>*@
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in SpareUploadList">
+                                                <td>{{row.Row_Id}}</td>
+                                                <td style="display:none">{{ row.SpareUploadId }}</td>
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+                                                <td>{{row.CreatedAt}}</td>
+                                                <td>{{row.SpareInward_no}}</td>
+                                                <td>{{ row.PartNumber }}</td>
+                                                <td>{{ row.PartName }}</td>
+                                                <td>{{ row.PartSpecification }}</td>
+                                                <td>{{ row.Quantity }}</td>
+                                                @*<td>{{ row.VendorCode }}</td>*@
+                                                @*<td>{{ row.VendorName }}</td>*@
+                                                <td>{{ row.Spare_Location }}</td>
+                                                @*<td>
+                                                        <span ng-if="row.UOM==='L'">
+                                                            {{'Liter'}}
+                                                        </span>
+                                                        <span ng-if="row.UOM==='ML'">
+                                                            {{'Mililiter'}}
+                                                        </span>
+                                                        <span ng-if="row.UOM==='KG'">
+                                                            {{'Kilogram'}}
+                                                        </span>
+                                                        <span ng-if="row.UOM==='M'">
+                                                            {{'Meter'}}
+                                                        </span>
+                                                        <span ng-if="row.UOM==='Qty'">
+                                                            {{'Quantity'}}
+                                                        </span>
+                                                    </td>*@
+                                                @*<td>{{ row.CostPerUnit }}</td>*@
+                                                @*<td>
+                                                        <span ng-if="row.Sparetype==='Y'">
+                                                            {{'Yes'}}
+                                                        </span>
+                                                        <span ng-if="row.Sparetype==='N'">
+                                                            {{'No'}}
+                                                        </span>
+                                                    </td>*@
+                                                <td ng-switch on="row.Sparetype" class="text-wrap">
+                                                    <span ng-switch-when="Y" class="label theme-bg f-12 text-white" style="border-radius: 15px;">Yes</span>
+                                                    <span ng-switch-default class="label theme-bg2 f-12 text-white" style="border-radius: 15px;">No</span>
+                                                </td>
+
+                                                @*<td>
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
+
+                                                @*<td>
+                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    </td>*@
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div data-pagination="" data-num-pages="numPages()"
+                                         data-current-page="currentPage" data-max-size="maxSize"
+                                         data-boundary-links="true" ng-click="BindFilterData()"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" ng-show="IsEditDivVisible">
+                    <div class="card-header">
+                        <h5>Add Spare Inward</h5>
+                        <div style="float: right; margin-right: 25px;">
+                            <a class="" href="#" title="Cancel" data-toggle="tooltip" style="font-size: 25px;" ng-click="CancelSpareUpload()"><i class="feather icon-x-square f-30"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-block">
+                        <form name="SpareUploadMasterForm" ng-submit="submitForm(SpareUploadMasterForm.$valid,obj)" novalidate>
+                            <div class="row">
+
+                                @*<div class="col-md-6">
+                                    <div class="form-group">*@
+                                @*<label class="form-label">InwardNumber</label>*@
+                                <input id="Rnumber" type="text" class="form-control" autocomplete="off" placeholder="InwardNumber" style="display:none" name="Rno" ng-model="obj.SpareInward_no" disabled>
+                                @*</div>
+                                    </div>*@
+
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.BU_Number.$invalid && !SpareUploadMasterForm.BU_Number.$pristine,'has-success': SpareUploadMasterForm.BU_Number.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Business Unit</label>
+                                        <input id="BU_Number" type="text" class="form-control" autocomplete="off" placeholder="BU" name="BU_Number" ng-model="obj.BusinessUnit" >
+                                        <p ng-show="SpareUploadMasterForm.BU_Number.$invalid && !SpareUploadMasterForm.BU_Number.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.PartNumber.$invalid && !SpareUploadMasterForm.PartNumber.$pristine,'has-success': SpareUploadMasterForm.PartNumber.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Description</label>
+                                        <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" ng-disabled="disableCtrl" placeholder="BU" id="PartNumber" data-live-search="true" data-actions-box="true" ng-change="BindPartName(obj,'');ChkReusableQty(obj)" ng-model="obj.PartNumber" name="PartNumber" ng-options="PartNumber.PartNumber as (PartNumber.PartName+ '  -  ' +PartNumber.PartNumber+' - '+PartNumber.PartSpecification) for PartNumber in PartMasterList|filter:filterPartMasterList" required>
+                                            @*<option value="" selected="selected">--Choose here--</option>*@
+                                        </select>
+                                        <p ng-show="SpareUploadMasterForm.PartNumber.$invalid && !SpareUploadMasterForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <input id="PartId" type="text" style="display:none" class="form-control" ng-disabled="true" name="PartId" ng-model="obj.PartId">
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.Revsion.$invalid && !SpareUploadMasterForm.Revision.$pristine,'has-success': SpareUploadMasterForm.Revision.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Revision</label>
+                                        <input id="Revsion" type="text" class="form-control" autocomplete="off" placeholder="Rev" name="Revision" ng-model="obj.REV">
+                                        <p ng-show="SpareUploadMasterForm.Revision.$invalid && !SpareUploadMasterForm.Revision.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.PartName.$invalid && !SpareUploadMasterForm.PartName.$pristine,'has-success': SpareUploadMasterForm.PartName.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Name</label>
+                                        <input id="PartName" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Name" name="PartName" ng-model="obj.PartName" required>
+                                        <p ng-show="SpareUploadMasterForm.PartName.$invalid && !SpareUploadMasterForm.PartName.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.PartSpecifi.$invalid && !SpareUploadMasterForm.PartSpecifi.$pristine,'has-success': SpareUploadMasterForm.PartSpecifi.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Part Specification</label>
+                                        <input id="PartSpecifi" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Part Specification" name="PartSpecifi" ng-model="obj.PartSpecification">
+                                        <p ng-show="SpareUploadMasterForm.PartSpecifi.$invalid && !SpareUploadMasterForm.PartSpecifi.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-md-6" ng-class="{'has-error':ErrChkAlreadyExists||ErrChkPartSelect||ErrUnicodeMust || SpareUploadMasterForm.SpareUniqueCode.$invalid && !SpareUploadMasterForm.SpareUniqueCode.$pristine,'has-success': SpareUpdateMasterForm.SpareUniqueCode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Spare Serial No</label>
+                                            <input id="SpareUniqueCode" type="text" class="form-control " autocomplete="off" name="SpareUniqueCode" ng-change="ChkReusableQty(obj)" ng-model="obj.SpareUniqueCode">
+                                            <p ng-show="ErrUnicodeMust" class="help-block">This field is required..</p>
+                                            <p ng-show="ErrChkPartSelect" class="help-block">Please Select Part..</p>
+                                            <p ng-show="ErrChkAlreadyExists" class="help-block">Unicode Already Exists..</p>
+
+                                        </div>
+                                    </div>*@
+
+
+
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.Spare_Location.$invalid && !SpareUploadMasterForm.Spare_Location.$pristine,'has-success': SpareUpdateMasterForm.Spare_Location.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Spare Location</label>
+                                        <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="Spare_Location" data-live-search="true" data-actions-box="true" ng-model="obj.Spare_Location" name="Spare_Location" ng-options='Spare_Location.LocationName as (Spare_Location.LocationName) for Spare_Location in SpareLocationList|filter:filterSpareLocationList' required>
+                                            @*<option value="">--Select Spare Location--</option>*@
+                                        </select>
+                                        <p ng-show="SpareUploadMasterForm.Spare_Location.$invalid && !SpareUploadMasterForm.Spare_Location.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.UOM.$invalid && !SpareUploadMasterForm.UOM.$pristine,'has-success': SpareUploadMasterForm.UOM.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">UOM</label>
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="true" data-live-search="true" data-actions-box="true" ng-model="obj.UOM" name="UOM" required>
+                                            <option value="">--Select UOM Type--</option>
+                                            <option value="L">Liter</option>
+                                            <option value="ML">Mililiter</option>
+                                            <option value="KG">Kilogram</option>
+                                            <option value="M">Meter</option>
+                                            <option value="Qty">Quantity</option>
+                                            <option value="Set">Set</option>
+                                        </select>
+                                        <p ng-show="SpareUploadMasterForm.UOM.$invalid && !SpareUploadMasterForm.UOM.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.CostPerUnit.$invalid && !SpareUploadMasterForm.CostPerUnit.$pristine,'has-success': SpareUploadMasterForm.CostPerUnit.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Cost Per Unit</label>
+                                        <input id="CostPerUnit" type="text" decimal-only class="form-control" autocomplete="off" placeholder="CPU" name="CostPerUnit" ng-model="obj.CostPerUnit" required>
+                                        <p ng-show="SpareUploadMasterForm.CostPerUnit.$invalid && !SpareUploadMasterForm.CostPerUnit.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.IsReusable.$invalid && !SpareUploadMasterForm.IsReusable.$pristine,'has-success': SpareUploadMasterForm.IsReusable.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Is Reusable</label>
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="true" data-live-search="true" data-actions-box="true" ng-model="obj.Sparetype" name="IsReusable" required>
+                                            <option value="">--Select Is Reusable--</option>
+                                            <option value="Y">Yes</option>
+                                            <option value="N">No</option>
+                                        </select>
+                                        <p ng-show="SpareUploadMasterForm.IsReusable.$invalid && !SpareUploadMasterForm.IsReusable.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                @*<div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.Quantity.$invalid && !SpareUploadMasterForm.Quantity.$pristine,'has-success': SpareUploadMasterForm.Quantity.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Quantity</label>
+                                            <input id="Quantity" type="text" class="form-control" decimal-only autocomplete="off"  placeholder="Qty" name="Quantity" ng-model="obj.Quantity" required>
+                                            <p ng-show="SpareUploadMasterForm.Quantity.$invalid && !SpareUploadMasterForm.Quantity.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>*@
+
+
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.VendorCode.$invalid && !SpareUploadMasterForm.VendorCode.$pristine,'has-success': SpareUploadMasterForm.VendorCode.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Vendor</label>
+                                        <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="VendorCode" data-live-search="true" data-actions-box="true" ng-change="BindVendorName(obj)" ng-model="obj.VendorCode" name="VendorCode" ng-options='VendorCode.VendorCode as (VendorCode.VendorName + "  -  " + VendorCode.VendorCode) for VendorCode in SpareVendorList|filter:filterSpareVendorList' required>
+                                            @*<option value="">--Choose here--</option>*@
+                                        </select>
+                                        <p ng-show="SpareUploadMasterForm.VendorCode.$invalid && !SpareUploadMasterForm.VendorCode.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.VendorName.$invalid && !SpareUploadMasterForm.VendorName.$pristine,'has-success': SpareUploadMasterForm.VendorName.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Vendor Name</label>
+                                        <input id="VendorName" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="VendorName" name="VendorName" ng-model="obj.VendorName" required>
+                                        <p ng-show="SpareUploadMasterForm.VendorName.$invalid && !SpareUploadMasterForm.VendorName.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.Budgetry.$invalid && !SpareUploadMasterForm.Budgetry.$pristine,'has-success': SpareUploadMasterForm.Budgetry.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Budgetry</label>
+                                        <input id="Budgetry" type="text" class="form-control" autocomplete="off" placeholder="Budgetry" name="Budgetry" ng-model="obj.BudgetryDetails">
+                                        <p ng-show="SpareUploadMasterForm.Budgetry.$invalid && !SpareUploadMasterForm.Budgetry.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Invoice No</label>
+                                        <input id="SpareInvoice_no" type="text" class="form-control" autocomplete="off" placeholder="Invoice No" name="SpareInvoice_no" ng-model="obj.SpareInvoice_no">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="">
+                                        <label class="form-label">Invoice date</label>
+                                    </div>
+                                    <div class="input-group">
+
+                                        <input id="Todate" type="text" name="SED" ng-model="obj.SpareInvoice_Date" placeholder="Invoice date" class="form-control datepickerFuction" autocomplete="off">
+                                        <label class="input-group-addon date-label btn" for="Todate">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <tt style="color: white;background-color: darkcyan;">MinQty = {{Min}} and MaxQty = {{Max}}</tt>
+                                </div>
+                                <div class="col-md-6" ng-class="{'has-error':ErrChkReusableQty||SpareUploadMasterForm.Quantity.$invalid && !SpareUploadMasterForm.Quantity.$pristine,'has-success': SpareUploadMasterForm.Quantity.$valid }">
+                                    <div class="form-group">
+                                        <label class="form-label">Quantity</label>
+                                        @*                                            <input id="Quantity" type="number" class="form-control" autocomplete="off" placeholder="Qty" ng-model="obj.Quantity" ng-change="ChkReusableQty(obj)" ng-min="0" ng-max="Max" name="Quantity" required />*@
+                                        <input id="Quantity" type="number" class="form-control" autocomplete="off" ng-disabled="disableCtrl" placeholder="Qty" ng-model="obj.Quantity" ng-change="ChkReusableQty(obj);" ng-blur="addUnicodeValNewRow(obj)" ng-min="0" name="Quantity" onmousewheel="return false" required />
+
+                                        <p ng-show="SpareUploadMasterForm.Quantity.$invalid && !SpareUploadMasterForm.Quantity.$pristine" class="help-block">Value Invalid..</p>
+                                        <p ng-show="ErrChkReusableQty" class="help-block">It is Reuable Part,One Quantity Can Inward</p>
+
+                                    </div>
+                                </div>
+                                <div style="max-height:300px;overflow-y:auto" class="col-md-6" ng-class="{'has-error':ErrUnicodeMust}">
+                                    <label class="form-label">Spare Serial No</label>
+                                    <table id="PivotValueData" class="table">
+                                        <thead>
+
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in UnicodeValueRows">
+                                                <td>
+                                                    <input type="text" id="browser" name="browser" ng-disabled="disableCtrl" class="form-control" ng-model="row.UNICODE_VALUE" ng-blur="ChkAlreadyExitsUnicode(row,UnicodeValueRows.indexOf(row))" />
+                                                </td>
+                                                @*<td>
+                                                        <input type="button" id="addColumn" style="float: left" class="btn btn-default pull-right active" value="Add" ng-click="addPivotValNewRow(row,'A',$first)" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" id="removeColumn" style="float: left" class="btn btn-default pull-right active" value="Remove" ng-click="addPivotValNewRow(row,'R',$first)" />
+                                                    </td>*@
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <p ng-show="ErrUnicodeMust" class="help-block">Please Enter Unicode</p>
+                                </div>
+                                @*<div class="col-md-6" ng-class="{'has-error':SpareUploadMasterForm.IsReusable.$invalid && !SpareUploadMasterForm.IsReusable.$pristine,'has-success': SpareUploadMasterForm.IsReusable.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Reusable</label>
+                                            <input id="IsReusable" type="text" class="form-control" autocomplete="off"  placeholder="Name" name="IsReusable" ng-model="obj.IsReusable" required>
+                                            <p ng-show="ToolUploadMasterForm.IsReusable.$invalid && !ToolUploadMasterForm.IsReusable.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>*@
+
+
+                                @*<div class="col-md-6" ng-class="{'has-error':ToolUploadMasterForm.IsReusable.$invalid && !ToolUploadMasterForm.IsReusable.$pristine,'has-success': ToolUploadMasterForm.IsReusable.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Reusable</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.IsReusable" name="IsReusable" required>
+                                                <option value="">--Select Is Reusable--</option>
+                                                <option value="Y">Yes</option>
+                                                <option value="S">No</option>
+                                            </select>
+                                            <p ng-show="ToolUploadMasterForm.IsReusable.$invalid && !ToolUploadMasterForm.IsReusable.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>*@
+
+
+
+
+
+                                <div class="col-md-6" style="display:none">
+                                    <div class="checkbox checkbox-info d-inline">
+                                        <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                        <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div style="float: right;">
+                                <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                <button type="button" ng-click="CancelSpareUpload()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Spare/SpareUpload/SpareUpload-app.js"></script>
+    <script src="~/AngularJS/Spare/SpareUpload/SpareUpload-controller.js"></script>
+}
+
+

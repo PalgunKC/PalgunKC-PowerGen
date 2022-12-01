@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "MonthlyStockReport";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+@*<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet" />*@
+<link href="../Assets/css/datepicker.min.css" rel="stylesheet" />
+<style type="text/css">
+    .datepicker {
+        font-size: 0.875em;
+    }
+        /* solution 2: the original datepicker use 20px so replace with the following:*/
+
+        .datepicker td, .datepicker th {
+            width: 1.5em;
+            height: 1.5em;
+        }
+</style>
+<div ng-app="MonthlyStockReportApp" ng-controller="MonthlyStockReportCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">MonthWise Stock Report</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Report</a></li>
+                        <li class="breadcrumb-item"><a href="/Manage_Info/MonthlyStockReport">MonthWise Stock Report</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+
+                        <div class="card-body collapse show">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type='text' class="form-control mmyyyy" data-date-format="mm/yyyy" @*id="datepicker"*@ placeholder="MM/YYYY" ng-model="obj.MONYEAR">
+                                    </div>
+                                </div>
+
+
+                                @*<div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input id="Todate" type="text" name="SED" ng-model="obj.Todate" placeholder="To Date" class="form-control datepickerFuction" autocomplete="off">
+                                        <label class="input-group-addon date-label btn" for="Todate">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>*@
+                                <div class="col-sm-4">
+                                    <div class="input-group-right">
+                                        <input type="button" class="btn btn-outline-primary" ng-disabled="!obj.MONYEAR" ng-click="FetchMonthlyStockReport(obj)" value="View" />
+                                        <input type="button" class="btn btn-success" ng-disabled="!obj.MONYEAR" ng-click="GetMonthlyStockReport(obj)" value="Download Excel" />
+                                        <input type="button" class="btn btn-outline-danger" ng-click="CancelMonthlyStockReport()" value="Cancel" />
+                                        @*  <a href="#!" class="btn btn-outline-primary" ng-click="GetQuantityReport(obj)"><i class="fas fa-file-excel f-30"></i>&nbsp;Return <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12" ng-show="IsListDivVisible">
+                                <div class="table-responsive m-t-20">
+
+                                    <div class="dropdown-secondary dropdown d-inline">
+                                        <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                        <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                            <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#ProductList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item  " href="#!" ng-click="exportToPDF('ProductList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ProductList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                @*<th style="display:none">Tool Return id</th>*@
+                                                @* <th>S.No</th>*@
+                                               
+                                                <th>Part Number</th>
+                                                <th>Part Name</th>
+                                                <th>Part Specification</th>
+                                                <th>Systen Qty</th>
+                                                <th>Physical qty</th>
+                                                <th>Diffrence qty</th>
+                                                <th>Remarks</th>
+                                               
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="row in MonthlyStockReportList">
+                                                <td>{{ $index +   1 }}</td>
+                                                @*<td style="display:none">{{ row.ToolReq_id }}</td>*@
+                                                @*<td>{{ row.S_No }}</td>*@
+                                                <td>{{ row.PartNumber }}</td>
+                                                <td>{{ row.PartName }}</td>
+                                                <td>{{ row.PartSpecification }}</td>
+                                                <td>{{ row.SYS_QTY }}</td>
+                                                <td>{{ row.PHY_QTY }}</td>
+                                                <td>{{ row.Diffrence }}</td>
+                                                <td>{{ row.REMARKS }}</td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+<script src="../CommonJS/datepicker.min.js"></script>
+    <script src="~/AngularJS/Tool/MonthlyStockReport/MonthlyStockReport-app.js"></script>
+    <script src="~/AngularJS/Tool/MonthlyStockReport/MonthlyStockReport-controller.js"></script>
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>*@
+<script type="text/javascript">
+        $('#datepicker').datepicker({
+            format: 'mm/yyyy',
+            orientation: 'bottom',
+            viewMode: "months",
+            minViewMode: "months",
+            endDate: '+0m'
+        });
+        var dateObj = new Date();
+        $('#datepicker').datepicker("setDate", (new Date().getMonth() + 1) + '/' + new Date().getFullYear());
+</script>
+}
+

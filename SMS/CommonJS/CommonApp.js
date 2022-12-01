@@ -9,7 +9,7 @@ commonApp.factory('Excel', function ($window) {
         tableToExcel: function (tableId, worksheetName) {
             debugger;
             var table = $(tableId),
-                ctx = { workbook: 'lenin', worksheet: worksheetName, table: table.html() },
+                ctx = { workbook: 'madasamy', worksheet: worksheetName, table: table.html() },
                 href = uri + base64(format(template, ctx));
             return href;
         }
@@ -42,13 +42,19 @@ commonApp.service('commonService', function ($http, $q) {
     this.postWebService = function (url, param) {
         var weburl = this.webURL + url;
         var deferred = $q.defer();
+        $("#page-loader").show();
+
         $http({
             method: "POST",
             url: weburl,
             data: param
         }).then(function (response) {
+            $("#page-loader").hide();
+
             deferred.resolve(response.data);
         }, function (error) {
+            $("#page-loader").hide();
+
             deferred.reject(error);
         });
         return deferred.promise;
@@ -90,7 +96,7 @@ commonApp.service('commonService', function ($http, $q) {
     }
 
     this.userPhoto = function (UserID) {
-        return this.webURL + "Home/UserImage/" + UserID;
+        return this.webURL + "Dashboard/UserImage/" + UserID;
     };
 
 });

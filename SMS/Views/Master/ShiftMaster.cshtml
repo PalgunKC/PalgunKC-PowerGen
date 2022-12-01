@@ -1,0 +1,190 @@
+﻿
+@{
+    ViewBag.Title = "ShiftMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+    <!-- animation css -->
+    <link rel="stylesheet" href="../assets/plugins/animation/css/animate.min.css">
+    <!-- material datetimepicker css -->
+    <link rel="stylesheet" href="../assets/plugins/material-datetimepicker/css/bootstrap-material-datetimepicker.css">
+    <!-- Bootstrap datetimepicker css -->
+    <link rel="stylesheet" href="../assets/plugins/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="../assets/fonts/material/css/materialdesignicons.min.css">
+
+}
+
+<div ng-app="shiftApp" ng-controller="shiftCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Shift Timing</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ShiftMaster">Shift Timing</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Shift Timing List</h5>
+                            <div style="float: right; margin-right: 25px; display:none;">
+                                <a class="" href="#" title="Add NewShift" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#ShiftMasterList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('ShiftMasterList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ShiftMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Shift Id</th>
+                                                <th>Action</th>
+                                                <th>Shift Name</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th>Is Active</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in ShiftList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.ShiftId }}</td>
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+                                                <td>{{ row.ShiftName }}</td>
+                                                <td>{{ row.Shift_StartTime }}</td>
+                                                <td>{{ row.Shift_endTime }}</td>
+
+                                                <td>
+                                                    <span ng-switch on="row.IsUse">
+                                                        <img ng-switch-when="1" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+                                                @*<td>
+                                                        <i class="fas fa-toggle-on" style="font-size:29px;cursor:pointer; color: #5cb85c;padding-left: 31px;padding-top: 0px;"
+                                                           ng-if="row.IsUse == '1'"
+                                                           ng-click="editClick(row,'I')" title="Active">
+                                                        </i>
+                                                        <i class="fas fa-toggle-on fa-rotate-180" style="font-size:29px;cursor:pointer;color: #d9534f;padding-left: 31px;padding-top: 0px;"
+                                                           ng-if="row.IsUse == '0'"
+                                                           ng-click="editClick(row,'A')" title="InActive">
+                                                        </i>
+                                                    </td>*@
+
+                                                @*<td>
+
+                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    </td>*@
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add Shift</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelShift()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="ShiftForm" ng-submit="submitForm(ShiftForm.$valid,obj)" novalidate>
+                                <div class="row">
+
+                                    <div class="col-md-6" ng-class="{'has-error':ShiftForm.Lname.$invalid && !ShiftForm.Lname.$pristine,'has-success': ShiftForm.Lname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Solar Panel</label>
+                                            <input id="LineName" type="text" class="form-control" autocomplete="off" placeholder="Line Name" name="Lname" ng-model="obj.ShiftName" required>
+                                            <p ng-show="ShiftForm.Lname.$invalid && !ShiftForm.Lname.$pristine" class="help-block">This field is required..</p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ShiftForm.Shift_StartTime.$invalid && !ShiftForm.Shift_StartTime.$pristine,'has-success': ShiftForm.Shift_StartTime.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Start Time</label>
+
+                                            <input type="text" id="time1" class="form-control" placeholder="Time" ng-model="obj.Shift_StartTime" name="Shift_StartTime" data-dtp="dtp_nvjdR" required>
+                                            <p ng-show="ShiftForm.Shift_StartTime.$invalid && !ShiftForm.Shift_StartTime.$pristine" class="help-block">This field is required..</p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ShiftForm.Shift_endTime.$invalid && !ShiftForm.Shift_endTime.$pristine,'has-success': ShiftForm.Shift_endTime.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">End Time</label>
+
+                                            <input type="text" id="time" class="form-control" placeholder="Time" ng-model="obj.Shift_endTime" name="Shift_endTime" data-dtp="dtp_nvjdR" required>
+                                            <p ng-show="ShiftForm.Shift_endTime.$invalid && !ShiftForm.Shift_endTime.$pristine" class="help-block">This field is required..</p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsUse">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelShift()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Master/ShiftMaster/ShiftMaster-app.js"></script>
+    <script src="~/AngularJS/Master/ShiftMaster/ShiftMaster-controller.js"></script>
+
+    <!-- material datetimepicker Js -->
+    <script src="../assets/js/moment-with-locales.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-material-datetimepicker.js"></script>
+
+    <!-- form-picker-custom Js -->
+    <script src="../assets/js/pages/form-picker-custom.js"></script>
+}
+
+
+
+

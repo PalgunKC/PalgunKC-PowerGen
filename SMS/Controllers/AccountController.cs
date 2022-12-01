@@ -74,11 +74,48 @@ namespace SMS.Controllers
                 TempData["ErrorMessage"] = Common.Message.InvalidUserOrNotExist;
                 return RedirectToAction("Login", "Account");
             }
-            //return RedirectToAction(objUserDetails.E_ROLE_CODE, "DashBoard");
-            return RedirectToAction("ADMIN", "DashBoard");
-
-
-
+            //return RedirectToAction(objUserDetails.E_ROLE_CODE, "Dashboard");
+            if(objUserDetails.E_ROLE_CODE == "ADMIN")
+            {
+                return RedirectToAction("ADMIN", "Dashboard");
+            }
+            if (objUserDetails.E_ROLE_CODE == "Manager")
+            {
+                return RedirectToAction("ADMIN", "Dashboard");
+            }
+            if (objUserDetails.E_ROLE_CODE == "Employee")
+            {
+                return RedirectToAction("ADMIN", "Dashboard");
+            }
+            if (objUserDetails.E_ROLE_CODE == "StoreIncharge")
+            {
+                return RedirectToAction("ADMIN", "Dashboard");
+            }
+            if (objUserDetails.E_ROLE_CODE == "Tool")
+            {
+                return RedirectToAction("ToolDashboard", "Tool");
+            }
+            if (objUserDetails.E_ROLE_CODE == "Spare")
+            {
+                return RedirectToAction("SpareDashboard", "Spare");
+            }
+            if (objUserDetails.E_ROLE_CODE == "ToolStoreIncharge")
+            {
+                return RedirectToAction("ToolDashboard", "Tool");
+            }
+            if (objUserDetails.E_ROLE_CODE == "SpareStoreIncharge")
+            {
+                return RedirectToAction("SpareDashboard", "Spare");
+            }
+            if (objUserDetails.E_ROLE_CODE == "SpareCL")
+            {
+                return RedirectToAction("ToolDashboard", "Tool");
+            }
+            if (objUserDetails.E_ROLE_CODE == "SpareCL")
+            {
+                return RedirectToAction("SpareDashboard", "Spare");
+            }
+            return RedirectToAction("ADMIN", "Dashboard");
 
         }
 

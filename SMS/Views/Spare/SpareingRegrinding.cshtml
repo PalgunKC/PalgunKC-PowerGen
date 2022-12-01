@@ -1,0 +1,428 @@
+﻿
+@{
+    ViewBag.Title = "SpareingRegrinding";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+    <style>
+        .dropdown-header {
+            padding: 0.5rem 0;
+        }
+
+        .multiselect-parent {
+            width: 100%;
+        }
+
+            .multiselect-parent > button {
+                width: 100%;
+                background: none;
+            }
+
+        .checkbox {
+            padding: 0 10px;
+            font-size: 14px;
+        }
+
+        .dropdown-menu > li > a {
+            padding: 0;
+        }
+
+        .dropdown-menu {
+            overflow-x: hidden;
+        }
+        .div-disabled-tab {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+}
+<div ng-app="spareingregrindApp" ng-controller="spareingregrindCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Spare Service</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Spare</a></li>
+                        <li class="breadcrumb-item"><a href="/Spare/SpareingRegrinding">Spare Service</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Spare Service List</h5>
+                            @*<div style="float: right; margin-right: 25px;">
+                                    <a class="" href="#" title="Add New Return" style="font-size: 25px;" ng-disabled="true" data-toggle="sparetip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                                </div>*@
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                                <button class="btn btn-primary" type="button" id="fakeButton" style="display:none"></button>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20" ng-class="{ 'div-disabled-tab':disableTabCtrl}">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="SpareReturnList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Spare Return id</th>
+                                                <th>Action</th>
+                                                <th>Return Number</th>
+                                                <th>PartNo</th>
+                                                <th>PartName</th>
+                                                <th>PartSpecification</th>
+                                                <th>Line Name</th>
+                                                <th>Machine Name</th>
+                                                <th>Quantity</th>
+                                                <th>Return Status</th>
+                                                @*<th>Is Active</th>*@
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in SpareingReturnList|filter:filterSpareingReturnList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.SpareReq_id }}</td>
+                                                <td>
+                                                    <a href="#!" class="btn btn-rounded btn-outline-primary" ng-click="editClick(row,'E')"><i class="fa fa-recycle"></i>&nbsp;Service <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+                                                </td>
+                                                <td>{{ row.SpareRts_Return_no }}</td>
+                                                <td>{{ row.SpareRts_Partno }}</td>
+                                                <td>{{ row.SpareRts_Partname }}</td>
+                                                <td>{{row.SpareRts_PartSpecification}}</td>
+                                                <td>{{ row.SpareRts_Linename }}</td>
+                                                <td>{{ row.SpareRts_MachineName }}</td>
+                                                <td>{{ row.SpareRts_Qty }}</td>
+                                                @*<td>{{ row.Spare_Status }}</td>*@
+                                                <td ng-switch on="row.Return_Status" class="text-wrap">
+                                                    <span ng-switch-when="RE" class="label theme-bg f-12 text-white" style="border-radius: 15px;">Service</span>
+                                                    <span ng-switch-when="ST" class="label theme-bg2 f-12 text-white" style="border-radius: 15px;">Stock</span>
+                                                    <span ng-switch-when="SC" class="label theme-bg3 f-12 text-white" style="border-radius: 15px;">Scarp</span>
+                                                </td>
+                                                @*<td>
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Spare Service</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelSpareingReturn()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="SpareReturnForm" ng-submit="submitForm(SpareReturnForm.$valid,obj)" novalidate>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Date&Time</label>
+                                            <input id="SpareRts_datetime" type="text" class="form-control" autocomplete="off" placeholder="Date&Time" name="Rtime" ng-model="obj.SpareReg_datetime" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Shift</label>
+                                            <input id="SpareRts_shift" type="text" class="form-control" autocomplete="off" placeholder="Shift" name="Rshift" ng-model="obj.SpareReg_shift" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">RequestNumber</label>
+                                            <input id="SpareRts_Return_no" type="text" class="form-control" autocomplete="off" placeholder="ReturnNumber" name="Rno" ng-model="obj.SpareReg_Regrain_no" disabled>
+                                        </div>
+                                    </div>
+                                    <input id="SpareIsu_id" type="text" style="display:none" class="form-control" autocomplete="off" placeholder="ReturnNumber" name="Rno" ng-model="obj.SpareIsu_id" disabled>
+                                    @*<div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Plant</label>
+                                                <input id="Plant" type="text" class="form-control" autocomplete="off"  placeholder="Plant" name="Plant" ng-model="obj.SpareRts_plant" disabled>
+                                            </div>
+                                        </div>*@
+
+                                    @*<div class="col-md-6" ng-class="{'has-error':SpareReturnForm.PartNumber.$invalid && !SpareReturnForm.PartNumber.$pristine,'has-success': SpareReturnForm.PartNumber.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Part Number</label>
+                                                <select class="form-control" id="PartNumber" ng-disabled="true" ng-change="BindPartName(obj)" ng-model="obj.SpareRts_Partno" name="PartNumber" ng-options="SpareIsu_Partno.SpareIsu_Partno as (SpareIsu_Partno.SpareIsu_Partname+ '  -  ' +SpareIsu_Partno.SpareIsu_Partno) for SpareIsu_Partno in SpareIssueList" required>
+
+                                                    <option value="">--Select PartNumber--</option>
+                                                </select>
+                                                <p ng-show="SpareReturnForm.PartNumber.$invalid && !SpareReturnForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Number</label>
+                                            <input id="SpareRts_Partno" type="text" class="form-control" autocomplete="off"  ng-disabled="true" placeholder="Number" name="SpareRts_Partno" ng-model="obj.SpareRts_Partno">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.PartName.$invalid && !SpareReturnForm.PartName.$pristine,'has-success': SpareReturnForm.PartName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Name</label>
+                                            <input id="PartName" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Part Name" name="PartName" ng-model="obj.SpareRts_Partname" required disabled>
+                                            <p ng-show="SpareReturnForm.PartName.$invalid && !SpareReturnForm.PartName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.Lname.$invalid && !SpareReturnForm.Lname.$pristine,'has-success': SpareReturnForm.Lname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">LineName</label>
+                                            <select name="Lname" id="Lname" class="form-control" ng-disabled="true" ng-model="obj.LineMachine_Line_Code" nam="Lname" ng-change="getLineDetails(obj)" required>
+                                                <option value="">--Select Line--</option>
+                                                <option data-ng-repeat="list in LineList" value="{{list.LineName}}">{{list.LineName}}</option>
+                                            </select>
+                                            @*<div ng-dropdown-multiselect=""  options="example14data"  selected-model="example13model" extra-settings="setting2"></div>*@
+                                            <p ng-show="SpareReturnForm.Lname.$invalid && !SpareReturnForm.Lname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.Mname.$invalid && !SpareReturnForm.Mname.$pristine,'has-success': SpareReturnForm.Mname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">MachineName</label>
+                                            @*<div class="col-md-12" ng-dropdown-multiselect="" ng-disabled="disableCtrl" options="MachineList" selected-model="obj.Machinecode" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></div>*@
+
+                                            <fieldset class="col-md-12" ng-disabled="true" ng-dropdown-multiselect="" options="MachineList" selected-model="obj.Machinecode" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></fieldset>
+                                            <p ng-show="machinecodeError" class="help-block" style="color:red;margin-top:20px;">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Issue Date</label>
+                                            <input id="SpareIsu_datetime" type="text" ng-disabled="true" class="form-control" autocomplete="off" placeholder="Issue Date" name="AvailableQty" ng-model="obj.SpareIsu_datetime">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Spare Received Date</label>
+                                            <input id="SpareRqt_datetime" type="text" ng-disabled="true" class="form-control" autocomplete="off" placeholder="Number" name="SpareRqt_datetime" ng-model="obj.SpareRqt_datetime">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ErrUnicodeMust || SpareUploadMasterForm.SpareUniqueCode.$invalid && !SpareUploadMasterForm.SpareUniqueCode.$pristine,'has-success': SpareUpdateMasterForm.SpareUniqueCode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Spare Serial No</label>
+                                            <input id="SpareUniqueCode" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="SpareUniqueNumber" name="SpareUniqueCode" ng-model="obj.SpareReg_Unicode">
+                                            <p ng-show="ErrUnicodeMust" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Life Achived</label>
+                                            <input id="SpareRts_LifeAchived" type="text" class="form-control"  autocomplete="off" placeholder="LifeAchived" name="SpareReg_LifeAchived" ng-model="obj.SpareRts_LifeAchived">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Model</label>
+                                            <input id="SpareRts_Model" type="text" class="form-control" autocomplete="off" placeholder="Model" name="SpareReg_Model" ng-model="obj.SpareRts_Model">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_Responsible_Dept.$invalid && !SpareReturnForm.SpareReg_Responsible_Dept.$pristine,'has-success': SpareReturnForm.SpareReg_Responsible_Dept.$valid }">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Responsible Department</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="SpareReg_Responsible_Dept" name="SpareReg_Responsible_Dept" ng-model="obj.SpareReg_Responsible_Dept" data-live-search="true" data-actions-box="true" required>
+                                                <option value="">--Select Department--</option>
+                                                <option value="MI">Maintainance</option>
+                                                <option value="S">Stores</option>
+                                                <option value="O">Othters</option>
+                                                <option value="T">Spareing</option>
+                                                <option value="P">Production</option>
+                                                <option value="PED">Production Engineering</option>
+                                                <option value="SQA">Supplier Quality Assurance</option>
+                                                <option value="MT">Maintenance</option>
+                                                <option value="UT">Utility</option>
+                                                <option value="AC">Auto Cycle</option>
+                                            </select>
+                                            <p ng-show="SpareReturnForm.SpareReg_Responsible_Dept.$invalid && !SpareReturnForm.SpareReg_Responsible_Dept.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Responsible Person</label>
+                                            <input id="SpareReg_Responsible_Person" type="text" class="form-control" autocomplete="off" placeholder="Responsible Person" name="SpareReg_Responsible_Person" ng-model="obj.SpareReg_Responsible_Person">
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Corrective Action</label>
+                                            <input id="SpareReg_Corrective_Action" type="text" class="form-control" autocomplete="off" placeholder="Corrective Action" name="SpareReg_Corrective_Action" ng-model="obj.SpareReg_Corrective_Action">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.Emp_Number.$invalid && !SpareReturnForm.Emp_Number.$pristine,'has-success': SpareReturnForm.Emp_Number.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Employee Number</label>
+                                            <input id="Emp_Number" type="text" class="form-control" autocomplete="off" placeholder="Emp Number" name="Emp_Number" ng-model="obj.Regrained_Emp_Number" required>
+                                            <p ng-show="SpareReturnForm.Emp_Number.$invalid && !SpareReturnForm.Emp_Number.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.Emp_Name.$invalid && !SpareReturnForm.Emp_Name.$pristine,'has-success': SpareReturnForm.Emp_Name.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Employee Name</label>
+                                            <input id="Emp_Name" type="text" class="form-control" autocomplete="off" placeholder="Emp Name" name="Emp_Name" ng-model="obj.Regrained_Emp_Name" required>
+                                            <p ng-show="SpareReturnForm.Emp_Name.$invalid && !SpareReturnForm.Emp_Name.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_Reason.$invalid && !SpareReturnForm.SpareReg_Reason.$pristine,'has-success': SpareReturnForm.SpareReg_Reason.$valid }">
+
+                                        <div class="form-group">
+                                            <label class="form-label">Reason</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="SpareReg_Reason" name="SpareReg_Reason" ng-model="obj.SpareReg_Reason" data-live-search="true" data-actions-box="true" required>
+                                                <option value="TB">Spare Breakage</option>
+                                                <option value="TLO">Spare Life Over</option>
+                                                <option value="TD">Spare Dimension Issue</option>
+                                                <option value="TC">Spare Chip Off</option>
+                                                <option value="TW">Spare Wear</option>
+                                                <option value="O">Othters</option>
+                                            </select>
+                                            <p ng-show="SpareReturnForm.SpareReg_Reason.$invalid && !SpareReturnForm.SpareReg_Reason.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_Unit_Cost.$invalid && !SpareReturnForm.SpareReg_Unit_Cost.$pristine,'has-success': SpareReturnForm.SpareReg_Unit_Cost.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Unit Cost</label>
+                                            <input id="SpareReg_Unit_Cost" type="number" class="form-control" autocomplete="off" placeholder="Cost" name="SpareReg_Unit_Cost" ng-model="obj.SpareReg_Unit_Cost" onmousewheel="return false" required>
+                                            <p ng-show="SpareReturnForm.SpareReg_Unit_Cost.$invalid && !SpareReturnForm.SpareReg_Unit_Cost.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_VendorCode.$invalid && !SpareReturnForm.SpareReg_VendorCode.$pristine,'has-success': SpareReturnForm.SpareReg_VendorCode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor</label>
+                                            <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="SpareReg_VendorCode" name="SpareReg_VendorCode" data-live-search="true" data-actions-box="true" ng-change="BindVendorName(obj)" ng-model="obj.SpareReg_VendorCode" name="VendorCode" ng-options='VendorCode.VendorCode as (VendorCode.VendorName + "  -  " + VendorCode.VendorCode) for VendorCode in SpareVendorList|filter:filterSpareVendorList' required>
+                                                @*<option value="">--Choose here--</option>*@
+                                            </select>
+                                            <p ng-show="SpareReturnForm.SpareReg_VendorCode.$invalid && !SpareReturnForm.SpareReg_VendorCode.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_VendorName.$invalid && !SpareReturnForm.SpareReg_VendorName.$pristine,'has-success': SpareReturnForm.SpareReg_VendorName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor Name</label>
+                                            <input id="SpareReg_VendorName" type="text" class="form-control" autocomplete="off" placeholder="VendorName" name="SpareReg_VendorName" ng-model="obj.SpareReg_VendorName" required>
+                                            <p ng-show="SpareReturnForm.SpareReg_VendorName.$invalid && !SpareReturnForm.SpareReg_VendorName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_RDC_Number.$invalid && !SpareReturnForm.SpareReg_RDC_Number.$pristine,'has-success': SpareReturnForm.SpareReg_RDC_Number.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">RDC Number</label>
+                                            <input id="SpareReg_RDC_Number" type="text" class="form-control" autocomplete="off" placeholder="RDC Number" name="SpareReg_RDC_Number" ng-model="obj.SpareReg_RDC_Number" required>
+                                            <p ng-show="SpareReturnForm.SpareReg_RDC_Number.$invalid && !SpareReturnForm.SpareReg_RDC_Number.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="">
+                                            <label class="form-label">Expect return date</label>
+                                        </div>
+                                        <div class="input-group">
+
+                                            <input id="Todate" type="text" name="SED" ng-model="obj.SpareReg_Vend_ExpDate" @*ng-click="SetDisable(obj)"*@ placeholder="Expect return date" class="form-control datepickerFuction" autocomplete="off">
+                                            <label class="input-group-addon date-label btn" for="Todate">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Return Qty</label>
+                                            <input id="SpareRts_Qty" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Return Qty" name="SpareRts_Qty" ng-model="obj.SpareRts_Qty">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_Qty.$invalid && !SpareReturnForm.SpareReg_Qty.$pristine,'has-success': SpareReturnForm.SpareReg_Qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Service Qty</label>
+                                            @*<input id="Max_qty" type="number" class="form-control" autocomplete="off" placeholder="Maxqty" ng-model="obj.Max_qty" ng-min="obj.Min_qty" ng-max="obj.Max_qty" name="value1" required />
+                                                <p ng-show="PartMasterForm.value1.$invalid && !PartMasterForm.value1.$pristine" class="help-block">Value Invalid..</p>*@
+                                            <input id="SpareReg_Qty" type="number" ng-disabled="true" class="form-control" autocomplete="off" placeholder="Service Qty" name="SpareReg_Qty" ng-model="1" ng-min="Min" ng-max="obj.SpareRts_Qty" onmousewheel="return false" required>
+                                            <p ng-show="SpareReturnForm.SpareReg_Qty.$invalid && !SpareReturnForm.SpareReg_Qty.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-12" ng-class="{'has-error':SpareReturnForm.Remarks.$invalid && !SpareReturnForm.Remarks.$pristine,'has-success': SpareReturnForm.Remarks.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Remarks</label>
+                                                <textarea class="form-control" placeholder="Remarks" name="VendorAddress" ng-model="obj.SpareRts_Remarks" rows="2"></textarea>
+                                                <p ng-show="SpareReturnForm.Remarks.$invalid && !SpareReturnForm.Remarks.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6" ng-class="{'has-error':SpareReturnForm.SpareReg_Remarks.$invalid && !SpareReturnForm.SpareReg_Remarks.$pristine,'has-success': SpareReturnForm.SpareReg_Remarks.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Remarks</label>
+                                            <input id="SpareReg_Remarks" type="text" class="form-control" autocomplete="off" placeholder="Remarks" name="SpareReg_Remarks" ng-model="obj.SpareReg_Remarks" required>
+                                            <p ng-show="SpareReturnForm.SpareReg_Remarks.$invalid && !SpareReturnForm.SpareReg_Remarks.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelSpareingReturn()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+
+    <script src="~/AngularJS/Spare/SpareRegrinding/SpareRegrinding-app.js"></script>
+    <script src="~/AngularJS/Spare/SpareRegrinding/SpareRegrinding-controller.js"></script>
+    <script src="../CommonJS/lodash.min.js"></script>
+    <script>
+        $('.spare-request-reason-form-select2').select2({
+            placeholder: "--select return reason--",
+            allowClear: true
+        })
+        //.on("change", function (e) { angular.element(document.getElementById("spareingreturnCtrl")).scope().setReturnReason(e); })
+    </script>
+
+}
+

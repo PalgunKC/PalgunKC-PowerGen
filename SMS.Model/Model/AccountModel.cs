@@ -95,6 +95,9 @@ namespace SMS.Model.Model
         public string MENU_NAME { get; set; }
         public string STYLE { get; set; }
         public string HAS_SUB { get; set; }
+        public string MENU_ID { get; set; }
+        public string SUBMENU_ID { get; set; }
+        public string HAS_INNERMENU { get; set; }
     }
     public class LoginViewModel
     {

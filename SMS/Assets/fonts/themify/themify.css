@@ -488,7 +488,7 @@
 .ti-hummer:before {
 	content: "\e69a";
 }
-.ti-home:before {
+.ti-Dashboard:before {
 	content: "\e69b";
 }
 .ti-help:before {
@@ -533,7 +533,7 @@
 .ti-direction-alt:before {
 	content: "\e6a9";
 }
-.ti-dashboard:before {
+.ti-Dashboard:before {
 	content: "\e6aa";
 }
 .ti-control-stop:before {

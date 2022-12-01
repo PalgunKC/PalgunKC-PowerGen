@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "PartMasterWithParameter";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+
+<div ng-app="partmasterApp" ng-controller="partmasterCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Part Master</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/PartMaster">Part Master</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Part Master List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add NewPart" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#PartMasterList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('PartMasterList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="PartMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Part Master Id</th>
+                                                <th>Part Number</th>
+                                                <th>Part Name</th>
+                                                <th>Part Spec</th>
+                                                <th>UOM</th>
+                                                @*<th>Cost per unit</th>*@
+                                                <th>Resuable(Y/N)</th>
+                                                <th>Part Type</th>
+                                                <th>Min</th>
+                                                <th>Current Stock</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in PartMasterList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.PartId }}</td>
+                                                <td>{{ row.PartNumber }}</td>
+                                                <td>{{ row.PartName }}</td>
+                                                <td>{{ row.PartSpecification }}</td>
+                                                @*<td>{{ row.UOM }}</td>*@
+
+                                                <td>
+                                                    <span ng-if="row.UOM==='L'">
+                                                        {{'Liter'}}
+                                                    </span>
+                                                    <span ng-if="row.UOM==='ML'">
+                                                        {{'Mililiter'}}
+                                                    </span>
+                                                    <span ng-if="row.UOM==='KG'">
+                                                        {{'Kilogram'}}
+                                                    </span>
+                                                    <span ng-if="row.UOM==='M'">
+                                                        {{'Meter'}}
+                                                    </span>
+                                                    <span ng-if="row.UOM==='Qty'">
+                                                        {{'Quantity'}}
+                                                    </span>
+                                                    <span ng-if="row.UOM==='Set'">
+                                                        {{'Set'}}
+                                                    </span>
+                                                </td>
+                                                @*<td>{{ row.CostPerUnit }}</td>*@
+                                                <td>
+                                                    <span ng-if="row.IsReusable==='Y'">
+                                                        {{'Yes'}}
+                                                    </span>
+                                                    <span ng-if="row.IsReusable==='N'">
+                                                        {{'No'}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span ng-if="row.SpareType==='S'">
+                                                        {{'Spare'}}
+                                                    </span>
+                                                    <span ng-if="row.SpareType==='T'">
+                                                        {{'Tool'}}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {{ row.Min_qty }}
+                                                </td>
+                                                <td>{{ row.TotalProductCount }}</td>
+
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add PartMaster</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Cancel" data-toggle="tooltip" style="font-size: 25px;" ng-click="CancelPartMaster()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="PartMasterForm" ng-submit="submitForm(PartMasterForm.$valid,obj)" novalidate>
+                                <div class="row">
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.SubInv.$invalid && !PartMasterForm.SubInv.$pristine,'has-success': PartMasterForm.SubInv.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Sub Inventory</label>
+                                            <input id="SubInv" type="text" class="form-control" autocomplete="off" placeholder="SubInvoice" name="SubInv" ng-model="obj.SubInv" required>
+                                            <p ng-show="PartMasterForm.SubInv.$invalid && !PartMasterForm.SubInv.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.ItemType.$invalid && !PartMasterForm.ItemType.$pristine,'has-success': PartMasterForm.ItemType.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Item Type</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="ItemType" data-live-search="true" data-actions-box="true" ng-model="obj.ItemType" name="ItemType" required>
+                                                <option value="">--Select Item Type--</option>
+                                                <option value="MRO">MRO</option>
+                                                <option value="NON MRO">NON MRO</option>
+
+                                            </select>
+                                            <p ng-show="PartMasterForm.ItemType.$invalid && !PartMasterForm.ItemType.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.PartNumber.$invalid && !PartMasterForm.PartNumber.$pristine,'has-success': PartMasterForm.PartNumber.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Number</label>
+                                            <input id="PartNumber" type="text" class="form-control" autocomplete="off" placeholder="Number" name="PartNumber" ng-model="obj.PartNumber" required>
+                                            <p ng-show="PartMasterForm.PartNumber.$invalid && !PartMasterForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.PartName.$invalid && !PartMasterForm.PartName.$pristine,'has-success': PartMasterForm.PartName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Name</label>
+                                            <input id="PartName" type="text" class="form-control" autocomplete="off" placeholder="Name" name="PartName" ng-model="obj.PartName" required>
+                                            <p ng-show="PartMasterForm.PartName.$invalid && !PartMasterForm.PartName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.PartSpecification.$invalid && !PartMasterForm.PartSpecification.$pristine,'has-success': PartMasterForm.PartSpecification.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Specification</label>
+                                            <input id="PartSpecification" type="text" class="form-control" autocomplete="off" placeholder="Specification" name="PartSpecification" ng-model="obj.PartSpecification" required>
+                                            <p ng-show="PartMasterForm.PartSpecification.$invalid && !PartMasterForm.PartSpecification.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.ProductGroup.$invalid && !PartMasterForm.ProductGroup.$pristine,'has-success': PartMasterForm.ProductGroup.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Product Group</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="ProductGroup" data-live-search="true" data-actions-box="true" ng-model="obj.ProductGroup" name="ProductGroup" required>
+                                                <option value="">--Select Item Type--</option>
+                                                <option value="MCMM">MCMM</option>
+                                                <option value="CCMM">CCMM</option>
+                                                <option value="CHMM">CHMM</option>
+                                                <option value="ASSEMBLY">ASSEMBLY</option>
+                                                <option value="COMMON">COMMON</option>
+
+                                            </select>
+                                            <p ng-show="PartMasterForm.ProductGroup.$invalid && !PartMasterForm.ProductGroup.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.UOM.$invalid && !PartMasterForm.UOM.$pristine,'has-success': PartMasterForm.UOM.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">UOM</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.UOM" name="UOM" required>
+                                                <option value="">--Select UOM Type--</option>
+                                                <option value="L">Liter</option>
+                                                <option value="ML">Mililiter</option>
+                                                <option value="KG">Kilogram</option>
+                                                <option value="M">Meter</option>
+                                                <option value="Qty">Quantity</option>
+                                                <option value="Set">Set</option>
+                                            </select>
+                                            <p ng-show="PartMasterForm.UOM.$invalid && !PartMasterForm.UOM.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.CostPerUnit.$invalid && !PartMasterForm.CostPerUnit.$pristine,'has-success': PartMasterForm.CostPerUnit.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Cost Per Unit</label>
+                                            <input id="CostPerUnit" numbers-only type="text" class="form-control" autocomplete="off" placeholder="Cost" name="CostPerUnit" ng-model="obj.CostPerUnit" required>
+                                            <p ng-show="PartMasterForm.CostPerUnit.$invalid && !PartMasterForm.CostPerUnit.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.value.$invalid && !PartMasterForm.value.$pristine ,'has-success': PartMasterForm.value.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Minimun Quantity</label>
+                                            <input id="Min_qty" type="number" class="form-control" autocomplete="off" placeholder="Minqty" ng-model="obj.Min_qty" ng-min="obj.Min_qty" ng-max="obj.Max_qty" name="value" required />
+
+                                            <p ng-show="PartMasterForm.value.$invalid && !PartMasterForm.value.$pristine " class="help-block">Value Invalid..</p>
+                                            <p ng-show="PartMasterForm.value.$invalid && !PartMasterForm.value.$pristine && obj.Min_qty==0" class="help-block">Value Inv.</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.value1.$invalid && !PartMasterForm.value1.$pristine,'has-success': PartMasterForm.value1.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Maximun Quantity</label>
+                                            <input id="Max_qty" type="number" class="form-control" autocomplete="off" placeholder="Maxqty" ng-model="obj.Max_qty" ng-min="obj.Min_qty" ng-max="obj.Max_qty" name="value1" required />
+                                            <p ng-show="PartMasterForm.value1.$invalid && !PartMasterForm.value1.$pristine" class="help-block">Value Invalid..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.Reorder_qty.$invalid && !PartMasterForm.Reorder_qty.$pristine,'has-success': PartMasterForm.Reorder_qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Reorder Quantity</label>
+                                            <input id="Reorder_qty" type="text" class="form-control" decimal-only autocomplete="off" placeholder="Reorderqty" name="Reorder_qty" ng-model="obj.Reorder_qty" required>
+                                            <p ng-show="PartMasterForm.Reorder_qty.$invalid && !PartMasterForm.Reorder_qty.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.LifeTime.$invalid && !PartMasterForm.LifeTime.$pristine,'has-success': PartMasterForm.LifeTime.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Life Time</label>
+                                            <input id="LifeTime" type="text" class="form-control" autocomplete="off" placeholder="LifeTime" name="LifeTime" ng-model="obj.LifeTime" required>
+                                            <p ng-show="PartMasterForm.LifeTime.$invalid && !PartMasterForm.LifeTime.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.IsReusable.$invalid && !PartMasterForm.IsReusable.$pristine,'has-success': PartMasterForm.IsReusable.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Reusable</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.IsReusable" name="IsReusable" required>
+                                                <option value="">--Select Is Reusable--</option>
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </select>
+                                            <p ng-show="PartMasterForm.IsReusable.$invalid && !PartMasterForm.IsReusable.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':PartMasterForm.SpareType.$invalid && !PartMasterForm.SpareType.$pristine,'has-success': PartMasterForm.SpareType.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Type</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.SpareType" name="SpareType" required>
+                                                <option value="">--Select Part Type--</option>
+                                                <option value="S">Spare</option>
+                                                <option value="T">Tool</option>
+                                            </select>
+                                            <p ng-show="PartMasterForm.SpareType.$invalid && !PartMasterForm.SpareType.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Tool Location</label>
+                                            <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="Tool_Location" data-live-search="true" data-actions-box="true" ng-model="obj.Tool_Location" name="Tool_Location" ng-options='Tool_Location.LocationName as (Tool_Location.LocationName) for Tool_Location in ToolLocationList|filter:filterToolLocationList' required>
+                                                @*<option value="">--Select Spare Location--</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor</label>
+                                            <select class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="VendorCode" data-live-search="true" data-actions-box="true" ng-change="BindVendorName(obj)" ng-model="obj.VendorCode" name="VendorCode" ng-options='VendorCode.VendorCode as (VendorCode.VendorName + "  -  " + VendorCode.VendorCode) for VendorCode in ToolVendorList|filter:filterToolVendorList' required>
+                                                @*<option value="">--Choose here--</option>*@
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Vendor Name</label>
+                                            <input id="VendorName" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="VendorName" name="VendorName" ng-model="obj.VendorName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelPartMaster()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Tool/PartMasterWithParameter/PartMaster-app.js"></script>
+    <script src="~/AngularJS/Tool/PartMasterWithParameter/PartMaster-controller.js"></script>
+}
+
+
+
+

@@ -9,7 +9,10 @@ $(document).ready(function() {
         date: false,
         format: 'HH:mm'
     });
-
+    $('#time1').bootstrapMaterialDatePicker({
+        date: false,
+        format: 'HH:mm'
+    });
     $('#date-format').bootstrapMaterialDatePicker({
         format: 'dddd DD MMMM YYYY - HH:mm'
     });

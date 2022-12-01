@@ -3601,7 +3601,7 @@
      * <div ng-view class="view-animation">
      * </div>
      *
-     * <!-- home.html -->
+     * <!-- Dashboard.html -->
      * <a href="#/banner-page">
      *   <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
      * </a>
@@ -3690,7 +3690,7 @@
                deps="angular-animate.js;angular-route.js"
                animations="true">
         <file name="index.html">
-          <a href="#/">Home</a>
+          <a href="#/">Dashboard</a>
           <hr />
           <div class="view-container">
             <div ng-view class="view"></div>
@@ -3700,8 +3700,8 @@
           angular.module('anchoringExample', ['ngAnimate', 'ngRoute'])
             .config(['$routeProvider', function($routeProvider) {
               $routeProvider.when('/', {
-                templateUrl: 'home.html',
-                controller: 'HomeController as home'
+                templateUrl: 'Dashboard.html',
+                controller: 'DashboardController as Dashboard'
               });
               $routeProvider.when('/profile/:id', {
                 templateUrl: 'profile.html',
@@ -3722,7 +3722,7 @@
                 { id:10, title: "Alexandrea Sauer" }
               ];
             }])
-            .controller('HomeController', [function() {
+            .controller('DashboardController', [function() {
               //empty
             }])
             .controller('ProfileController', ['$rootScope', '$routeParams', function($rootScope, $routeParams) {
@@ -3733,8 +3733,8 @@
               this.id = record.id;
             }]);
         </file>
-        <file name="home.html">
-          <h2>Welcome to the home page</h1>
+        <file name="Dashboard.html">
+          <h2>Welcome to the Dashboard page</h1>
           <p>Please click on an element</p>
           <a class="record"
              ng-href="#/profile/{{ record.id }}"
@@ -3889,7 +3889,7 @@
      * routing controller to hook into that:
      *
      * ```js
-     * ngModule.controller('HomePageController', ['$animate', function($animate) {
+     * ngModule.controller('DashboardPageController', ['$animate', function($animate) {
      *   $animate.on('enter', ngViewElement, function(element) {
      *     // the animation for this route has completed
      *   }]);

@@ -1,0 +1,395 @@
+﻿
+@{
+    ViewBag.Title = "LinemachineMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+@section styles{
+    <style>
+        .multiselect-parent > button.dropdown-toggle {
+            display: none !important;
+        }
+
+        .multiselect-parent > ul.dropdown-menu {
+            display: block !important;
+            position: relative !important;
+            width: 300px;
+            background: #f4f7fa !important;
+        }
+
+        .dropdown-header {
+            padding: 0.5rem 0;
+        }
+    </style>
+
+    @*<link data-require="bootstrap-css@3.3.6" data-semver="3.3.6" rel="stylesheet" href="~/Assets/css/Multiselect.css" />
+        <style>
+            /* Put your css in here */
+
+            multiselect {
+                display: block;
+            }
+
+                multiselect .btn {
+                    width: 100%;
+                    background-color: #FFF;
+                }
+
+                    multiselect .btn.error {
+                        border: 1px solid #da4f49 !important;
+                    }
+
+                multiselect .dropdown-menu {
+                    max-height: 300px;
+                    overflow-y: auto;
+                }
+
+                multiselect .dropdown-menu {
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding: 2px;
+                }
+
+                    multiselect .dropdown-menu > li > a {
+                        padding: 3px 10px;
+                        cursor: pointer;
+                    }
+        </style>*@
+
+    @*<a href="http://dotansimha.github.io/angularjs-dropdown-multiselect/#/">Source documentation</a>*@
+
+}
+
+<style>
+    .multiselect {
+        width: 20em;
+        height: 15em;
+        border: solid 1px #c0c0c0;
+        overflow: auto;
+        height: 400px;
+    }
+
+        .multiselect label {
+            display: block;
+        }
+
+    .multiselect-on {
+        color: #ffffff;
+        background-color: #000099;
+    }
+
+    span.multiselect-native-select {
+        position: relative;
+    }
+
+        span.multiselect-native-select select {
+            border: 0 !important;
+            clip: rect(0 0 0 0) !important;
+            height: 1px !important;
+            margin: -1px -1px -1px -3px !important;
+            overflow: hidden !important;
+            padding: 0 !important;
+            position: absolute !important;
+            width: 1px !important;
+            left: 50%;
+            top: 30px;
+        }
+
+    .multiselect-container {
+        position: absolute;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .multiselect-container .input-group {
+            margin: 5px;
+        }
+
+        .multiselect-container > li {
+            padding: 0;
+        }
+
+            .multiselect-container > li > a.multiselect-all label {
+                font-weight: 700;
+            }
+
+            .multiselect-container > li.multiselect-group label {
+                margin: 0;
+                padding: 3px 20px 3px 20px;
+                height: 100%;
+                font-weight: 700;
+            }
+
+            .multiselect-container > li.multiselect-group-clickable label {
+                cursor: pointer;
+            }
+
+            .multiselect-container > li > a {
+                padding: 0;
+            }
+
+                .multiselect-container > li > a > label {
+                    margin: 0;
+                    height: 100%;
+                    cursor: pointer;
+                    font-weight: 400;
+                    padding: 3px 0 3px 30px;
+                }
+
+                    .multiselect-container > li > a > label.radio, .multiselect-container > li > a > label.checkbox {
+                        margin: 0;
+                    }
+
+                    .multiselect-container > li > a > label > input[type=checkbox] {
+                        margin-bottom: 5px;
+                    }
+
+    .btn-group > .btn-group:nth-child(2) > .multiselect.btn {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .form-inline .multiselect-container label.checkbox, .form-inline .multiselect-container label.radio {
+        padding: 3px 20px 3px 40px;
+    }
+
+    .form-inline .multiselect-container li a label.checkbox input[type=checkbox], .form-inline .multiselect-container li a label.radio input[type=radio] {
+        margin-left: -20px;
+        margin-right: 0;
+    }
+</style>
+
+
+<div ng-app="linemachineApp" ng-controller="linemachineCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Machine Mapping</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/LinemachineMaster">Machine Mapping</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Machine Mapping</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="AddNew MachineMapping" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#LinemachineMasterList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('LinemachineMasterList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="LinemachineMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">LineMachine Id</th>
+                                                <th>Work Center Name</th>
+                                                <th>Machine Code</th>
+                                                <th>Machine Name</th>
+                                                @*<th>Is Active</th>*@
+                                                @*<th>Action</th>*@
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in LinemachineList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.LineMachine_Map_Id }}</td>
+                                                <td>{{ row.LineMachine_Line_Code }}</td>
+                                                <td>{{ row.M_Code }}</td>
+                                                <td>{{ row.MachineName }}</td>
+                                                @*<td>
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
+                                                @*<td ng-switch on="row.IsActive" class="text-wrap">
+                                                        <span ng-switch-when="Y" class="label theme-bg f-12 text-white" style="border-radius: 15px;">Active</span>
+                                                        <span ng-switch-default class="label theme-bg2 f-12 text-white" style="border-radius: 15px;">InActive</span>
+                                                    </td>*@
+                                                @*<td>
+                                                        <i class="fas fa-toggle-on" style="font-size:29px;cursor:pointer; color: #5cb85c;padding-left: 31px;padding-top: 0px;"
+                                                           ng-if="row.IsActive == 'Y'"
+                                                           ng-click="editClick(row,'I')" title="Active">
+                                                        </i>
+                                                        <i class="fas fa-toggle-on fa-rotate-180" style="font-size:29px;cursor:pointer;color: #d9534f;padding-left: 31px;padding-top: 0px;"
+                                                           ng-if="row.IsActive == 'N'"
+                                                           ng-click="editClick(row,'A')" title="InActive">
+                                                        </i>
+                                                    </td>*@
+
+                                                @*<td>
+
+                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    </td>*@
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>AddNew MachineMapping and Modify</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelLinemachine()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="LinemachineForm" ng-submit="submitForm(LinemachineForm.$valid,obj)" novalidate>
+                                <div class="row">
+
+                                    <div class="col-md-6" ng-class="{'has-error':LinemachineForm.LineName.$invalid && !LinemachineForm.LineName.$pristine,'has-success': LinemachineForm.LineName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label" style="display: inline-block;
+    margin-bottom: .5rem;
+    font-weight: bold;font: icon;
+    font-family: Open Sans;
+    font-weight: bold;">LineName</label>
+                                            <select name="LineName" id="LineName" class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" ng-model="obj.LineMachine_Line_Code" nam="LineName" ng-change="editClick(obj, 'E')" required>
+                                                <option value="">--Select Line--</option>
+                                                <option data-ng-repeat="list in LineList" value="{{list.LineName}}">{{list.LineName}}</option>
+                                            </select>
+                                            @*<div ng-dropdown-multiselect=""  options="example14data"  selected-model="example13model" extra-settings="setting2"></div>*@
+                                            <p ng-show="LinemachineForm.LineName.$invalid && !LinemachineForm.LineName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-6" ng-class="{'has-error':LinemachineForm.MachineName.$invalid && !LinemachineForm.MachineName.$pristine,'has-success': LinemachineForm.MachineName.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">MachineName</label>
+                                                <select name="MachineName" id="MachineName" class="form-control" ng-model="obj.MachineName" multiple required>
+
+                                                    <option data-ng-repeat="list in MachineList " value="{{list.Machinecode}}">{{list.MachineName+' - '+list.Machinecode}}</option>
+                                                </select>
+
+                                                <p ng-show="LinemachineForm.MachineName.$invalid && !LinemachineForm.MachineName.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+
+
+                                    <div class="col-md-6" ng-class="{'has-error':LinemachineForm.MachineName.$invalid && !LinemachineForm.MachineName.$pristine,'has-success': LinemachineForm.MachineName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label" style="display: inline-block;
+    margin-bottom: .5rem;
+    font-weight: bold;font: icon;
+    font-family: Open Sans;
+    font-weight: bold;">MachineName</label>
+                                            @*<select name="MachineName" id="MachineName" class="form-control" ng-model="obj.Machinecode" multiple required>
+
+                                                    <option data-ng-repeat="list in MachineList " value="{{list.Machinecode}}">{{list.MachineName+' - '+list.Machinecode}}</option>
+
+                                                </select>*@
+                                            <div class="col-md-6" ng-dropdown-multiselect="" style="overflow: scroll;
+    display: block;
+    height: 400px;font: icon;
+    font-family: Open Sans;
+    font-weight: bold;" options="MachineList" selected-model="obj.Machinecode" events="CheckMachineAlreadyExists" checkboxes="true" extra-settings="example13settings"></div>
+
+
+                                            <p ng-show="machinecodeError" class="help-block" style="color:red;margin-top:20px;">This field is required..</p>
+
+                                            @*<p ng-show="LinemachineForm.MachineName.$invalid && !LinemachineForm.MachineName.$pristine" class="help-block">This field is required..</p>*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelLinemachine()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Master/LineMachineMappingMaster/LineMachineMappingMaster-app.js"></script>
+    <script src="~/AngularJS/Master/LineMachineMappingMaster/LineMachineMappingMaster-controller.js"></script>
+    @*<script src="../CommonJS/lodash.min.js"></script>*@
+<script src="../CommonJS/lodash.min.js"></script>
+
+
+    <script>
+
+        $(function () {
+            $(".multiselect").multiselect();
+        });
+
+        $(".js-example-basic-multiple").select2();
+
+
+        $('.multiselect-ui').multiselect({
+            includeSelectAllOption: true
+        });
+        $('select.multiselect-ui+div .multiselect-container').attr('style', 'display:block;');
+
+
+        jQuery.fn.multiselect = function () {
+            $(this).each(function () {
+                var checkboxes = $(this).find("input:checkbox");
+                checkboxes.each(function () {
+                    var checkbox = $(this);
+                    // Highlight pre-selected checkboxes
+                    if (checkbox.prop("checked"))
+                        checkbox.parent().addClass("multiselect-on");
+
+                    // Highlight checkboxes that the user selects
+                    checkbox.click(function () {
+                        if (checkbox.prop("checked"))
+                            checkbox.parent().addClass("multiselect-on");
+                        else
+                            checkbox.parent().removeClass("multiselect-on");
+                    });
+                });
+            });
+        };
+    </script>
+
+
+    @*<script src="~/Assets/js/multiselect/angularjs-dropdown-multiselect.js"></script>
+        <script src="~/Assets/plugins/AngularMultiselect/jquery.multi-select.js"></script>
+        <script src="~/Assets/js/multiselect/angularjs-dropdown-multiselect.min.js"></script>*@
+
+
+
+}
+

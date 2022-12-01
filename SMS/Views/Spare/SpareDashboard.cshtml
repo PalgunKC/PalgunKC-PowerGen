@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "OldDashboard";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+@section styles{
+    <link href="../CommonJS/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+}
+<div ng-app="ProductReportApp" ng-controller="ProductReportCtrl" ng-cloak>
+
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Dash Board</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/Spare/SpareDashboard">Spare Dashboard</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="main-body">
+        <div class="page-wrapper">-->
+            <!-- [ Main Content ] start 
+            <div class="row">
+                <a href="http://localhost:58803/Tool/MasterToolUpload">
+                <div class="col-md-6 col-xl-4" onclick="location.href = 'http://localhost:58803/Spare/SpareingIssue'" style="cursor: pointer;">
+                    <div class="card theme-bg bitcoin-wallet">
+                        <div class="card-block">
+                            <h5 class="text-white mb-2">TODAY</h5>
+                            <h2 class="text-white mb-2 f-w-300">{{Request_Cnt}}</h2>
+                            <span class="text-white d-block">Ratings by Market Capitalization</span>
+                            <i class="fab fa-btc f-70 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <div class="col-md-6 col-xl-4" onclick="location.href = 'http://localhost:58803/Spare/SpareingReturnCheck'" style="cursor: pointer;">
+                    <div class="card theme-bg2 bitcoin-wallet">
+                        <div class="card-block">
+                            <h5 class="text-white mb-2">GRAPHANA</h5>
+                            <h2 class="text-white mb-2 f-w-300">{{Return_Cnt}}</h2>
+                            <span class="text-white d-block">Ratings by Market Capitalization</span>
+                            <i class="fas fa-dollar-sign f-70 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4" onclick="location.href = 'http://localhost:58803/Spare/SpareingRegrindCheck'" style="cursor: pointer;">
+                    <div class="card bg-c-blue bitcoin-wallet">
+                        <div class="card-block">
+                            <h5 class="text-white mb-2">SYSTEM DESCRIPTION</h5>
+                            <h2 class="text-white mb-2 f-w-300">{{Regrain_Cnt}}</h2>
+                            <span class="text-white d-block">Ratings by Market Capitalization</span>
+                            <i class="fas fa-pound-sign f-70 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                 [ bitcoin-wallet section ] end
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-6 col-xl-4" onclick="location.href = 'http://localhost:58803/Spare/SpareingRegrindCheckWithParameter'" style="cursor: pointer;">
+                    <div class="card  theme-bg3 bitcoin-wallet">
+                        <div class="card-block">
+                            <h5 class="text-white mb-2">WEATHER</h5>
+                            <h2 class="text-white mb-2 f-w-300">{{Regrain_Exceeds_Cnt}}</h2>
+                            <span class="text-white d-block">Ratings by Market Capitalization</span>
+                            <i class="fas fa-pound-sign f-70 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                 [ bitcoin-wallet section ] end
+
+                <div class="col-md-6 col-xl-4" onclick="location.href = 'http://localhost:58803/Spare/SparePartMasterWithParameter'" style="cursor: pointer;">
+                    <div class="card bg-c-red bitcoin-wallet">
+                        <div class="card-block">
+                            <h5 class="text-white mb-2">SOLAR PLANT</h5>
+                            <h2 class="text-white mb-2 f-w-300">{{PartNumber_Min_Count}}</h2>
+                            <span class="text-white d-block">Ratings by Market Capitalization</span>
+                            <i class="fas fa-pound-sign f-70 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>-->
+
+
+
+             <!--[ bitcoin-wallet section ] end
+             [ Main Content ] end 
+        </div>
+    </div>-->
+
+</div>
+
+
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Dashboard/SpareDashboard-app.js"></script>
+    <script src="~/AngularJS/Dashboard/SpareDashboard-controller.js"></script>
+}
+
+
+
+

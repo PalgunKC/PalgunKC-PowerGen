@@ -1,0 +1,322 @@
+﻿
+@{
+    ViewBag.Title = "MachineMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+
+<div ng-app="machineApp" ng-controller="machineCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Machine List</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Master</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/MachineMaster">Machine List</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Machine Master List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add NewMachine" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#MachineMasterList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('MachineMasterList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="MachineMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Location Id</th>
+                                                <th>Machine Code</th>
+                                                <th>Machine Name</th>
+                                                <th>Machine Type</th>
+                                                <th>Machine Number</th>
+                                                <th>Is Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in MachineList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.MachineId }}</td>
+                                                <td>{{ row.Machinecode }}</td>
+                                                <td>{{ row.MachineName }}</td>
+                                                <td>{{ row.Machine_Type }}</td>
+                                                <td>{{ row.MachineNumber }}</td>
+                                                <td>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
+                                                </td>
+
+
+                                                @*<td>
+
+                                                    <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                </td>*@
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add Machine</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelMachine()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="MachineForm" ng-submit="submitForm(MachineForm.$valid,obj)" novalidate>
+                                <div class="row">
+
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.Machinecode.$invalid && !MachineForm.Machinecode.$pristine,'has-success': MachineForm.Machinecode.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">MachineCode</label>
+                                            <input id="Machinecode" type="text" class="form-control" autocomplete="off"  placeholder="MachineNumber" name="Machinecode" ng-model="obj.Machinecode" required>
+                                            <p ng-show="MachineForm.Machinecode.$invalid && !MachineForm.Machinecode.$pristine" class="help-block">This field is required..</p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.MachineName.$invalid && !MachineForm.MachineName.$pristine,'has-success': MachineForm.MachineName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">MachineName</label>
+                                            <input id="MachineName" type="text" class="form-control" autocomplete="off"  placeholder="Machine Name" name="MachineName" ng-model="obj.MachineName" required>
+                                            <p ng-show="MachineForm.MachineName.$invalid && !MachineForm.MachineName.$pristine" class="help-block">This field is required..</p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">MachineNumber</label>
+                                            <input id="MachineNumber" type="text" class="form-control" autocomplete="off" placeholder="Machine Number" name="MachineNumber" ng-model="obj.MachineNumber" >
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.Acquisition_date.$invalid && !MachineForm.Acquisition_date.$pristine,'has-success': MachineForm.Acquisition_date.$valid }">
+                                        <div class="">
+                                            <label class="form-label">Acquisition Date</label>
+                                        </div>
+                                        <div class="input-group">
+
+                                            <input id="Acquisition_date" type="text" name="Acquisition_date" ng-model="obj.Acquisition_date" placeholder="Acquisition Date" class="form-control datepickerFuction" autocomplete="off" required>
+                                            <label class="input-group-addon date-label btn" for="Acquisition_date">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                        <p ng-show="MachineForm.Acquisition_date.$invalid && !MachineForm.Acquisition_date.$pristine" class="help-block">This field is required..</p>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.ScrapUpdate_date.$invalid && !MachineForm.ScrapUpdate_date.$pristine,'has-success': MachineForm.ScrapUpdate_date.$valid }">
+                                        <div class="">
+                                            <label class="form-label">ScrapUpdate Date</label>
+                                        </div>
+                                        <div class="input-group">
+
+                                            <input id="ScrapUpdate_date" type="text" name="ScrapUpdate_date" ng-model="obj.ScrapUpdate_date" placeholder="ScrapUpdate Date" class="form-control datepickerFuction" autocomplete="off">
+                                            <label class="input-group-addon date-label btn" for="ScrapUpdate_date">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                        @*<p ng-show="MachineForm.ScrapUpdate_date.$invalid && !MachineForm.ScrapUpdate_date.$pristine" class="help-block">This field is required..</p>*@
+                                    </div>
+
+
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.Use_Status.$invalid && !MachineForm.Use_Status.$pristine,'has-success': MachineForm.Use_Status.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Is In Use</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" data-live-search="true" data-actions-box="true" ng-model="obj.Use_Status" name="Use_Status" required>
+                                                <option value="">--Select--</option>
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </select>
+                                            <p ng-show="MachineForm.Use_Status.$invalid && !MachineForm.Use_Status.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.Department.$invalid && !MachineForm.Department.$pristine,'has-success': MachineForm.Department.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Department</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick"  data-live-search="true" data-actions-box="true" ng-model="obj.Department" name="Department" required>
+                                                <option value="">--Select Department--</option>
+                                                
+                                                <option value="Global_Suspension_BU">Global_Suspension_BU</option>
+                                                <option value="Brake_Plant_India">Brake_Plant_India</option>
+                                                <option value="Global_Brake_BU">Global_Brake_BU</option>
+                                                <option value="Central_Functions">Central_Functions</option>
+                                            </select>
+                                            <p ng-show="MachineForm.Department.$invalid && !MachineForm.Department.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label class="form-label">Section</label>
+                                            <input id="Section" type="text" class="form-control" autocomplete="off"  placeholder="Section" name="Section" ng-model="obj.Section" >
+                                           
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label class="form-label">Machine Spec</label>
+                                            <input id="Machine_Spec" type="text" class="form-control" autocomplete="off"  placeholder="Machine Spec" name="Machine_Spec" ng-model="obj.Machine_Spec">                                  
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.Machine_Type.$invalid && !MachineForm.Machine_Type.$pristine,'has-success': MachineForm.Machine_Type.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Machine Type</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick"  data-live-search="true" data-actions-box="true" ng-model="obj.Machine_Type" name="Machine_Type" required>
+                                                <option value="">--Select Machine Type--</option>
+
+                                                <option value="Assembly">Assembly</option>
+                                                <option value="Facility">Facility</option>
+                                                <option value="Machine">Machine</option>
+                                                <option value="Machining Utility">Machining Utility</option>
+                                            </select>
+                                            <p ng-show="MachineForm.Machine_Type.$invalid && !MachineForm.Machine_Type.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Machine Detail Type</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick"  data-live-search="true" data-actions-box="true" ng-model="obj.Machinedetail_type" name="Machinedetail_type" >
+                                                <option value="">--Select Machine Detail Type--</option>
+
+                                                <option value="General Assembly M/C">General Assembly M/C</option>
+                                                <option value="Facility">Facility</option>
+                                                <option value="General Machiney M/C">General Machiney M/C</option>
+                                                <option value="Marking M/C">Marking M/C</option>
+                                                <option value="Washing M/C">Washing M/C</option>
+                                                <option value="MILLING M/C">MILLING M/C</option>
+                                                <option value="BROACHING M/C">BROACHING M/C</option>
+                                                <option value="DRILL M/C">DRILL M/C</option>
+                                                <option value="Oil Storage Tank">Oil Storage Tank</option>
+
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6"  ng-class="{'has-error':MachineForm.Manufacturer.$invalid && !MachineForm.Manufacturer.$pristine,'has-success': MachineForm.Manufacturer.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Manufacturer</label>
+                                            <input id="Manufacturer" type="text" class="form-control" autocomplete="off"  placeholder="Manufacturer" name="Manufacturer" ng-model="obj.Manufacturer" required>
+                                            <p ng-show="MachineForm.Manufacturer.$invalid && !MachineForm.Manufacturer.$pristine" class="help-block">This field is required..</p>
+                                         </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':MachineForm.Model_no.$invalid && !MachineForm.Model_no.$pristine,'has-success': MachineForm.Model_no.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Model_no</label>
+                                            <input id="Model_no" type="text" class="form-control" autocomplete="off"  placeholder="Model no" name="Model_no" ng-model="obj.Model_no" required>
+                                            <p ng-show="MachineForm.Model_no.$invalid && !MachineForm.Model_no.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                     <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label class="form-label">Inspec Cycle</label>
+                                            <input id="inspec_cycle" type="text" class="form-control" autocomplete="off" placeholder="Inspec Cycle" name="inspec_cycle" ng-model="obj.inspec_cycle">                                  
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">WorkingVoltage ph</label>
+                                            <input id="workingvoltage_ph" type="text" class="form-control" autocomplete="off"  placeholder="WorkingVoltage ph" name="workingvoltage_ph" ng-model="obj.workingvoltage_ph">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">WorkingVoltage v</label>
+                                            <input id="workingvoltage_v" type="text" class="form-control" autocomplete="off"  placeholder="WorkingVoltage v" name="workingvoltage_v" ng-model="obj.workingvoltage_v">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Power kva</label>
+                                            <input id="Power_kva" type="text" class="form-control" autocomplete="off"  placeholder="Power kva" name="Power_kva" ng-model="obj.Power_kva">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Power kw</label>
+                                            <input id="Power_kw" type="text" class="form-control" autocomplete="off"  placeholder="Power kw" name="Power_kw" ng-model="obj.Power_kw">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelMachine()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Master/MachineMaster/MachineMaster-app.js"></script>
+    <script src="~/AngularJS/Master/MachineMaster/MachineMaster-controller.js"></script>
+}
+
+
+
+

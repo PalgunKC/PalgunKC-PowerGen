@@ -1,0 +1,582 @@
+﻿@{
+    ViewBag.Title = "ToolingRequest";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+@section styles{
+    <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
+    <style>
+        .dropdown-header {
+            padding: 0.5rem 0;
+        }
+
+        .multiselect-parent {
+            width: 100%;
+        }
+
+            .multiselect-parent > button {
+                width: 100%;
+                background: none;
+            }
+
+        .checkbox {
+            padding: 0 10px;
+            font-size: 14px;
+        }
+
+        .dropdown-menu > li > a {
+            padding: 0;
+        }
+
+        .dropdown-menu {
+            overflow-x: hidden;
+        }
+    </style>
+    <style>
+        .pagination {
+            margin: 20px 0;
+        }
+
+            .pagination ul {
+                display: inline-block;
+                *display: inline;
+                *zoom: 1;
+                margin-left: 0;
+                margin-bottom: 0;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                border-radius: 4px;
+                -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+
+                .pagination ul > li {
+                    display: inline;
+                }
+
+                    .pagination ul > li > a, .pagination ul > li > span {
+                        float: left;
+                        padding: 4px 12px;
+                        line-height: 20px;
+                        text-decoration: none;
+                        background-color: #ffffff;
+                        border: 1px solid #dddddd;
+                        border-left-width: 0;
+                    }
+
+                        .pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span {
+                            background-color: #f5f5f5;
+                        }
+
+                .pagination ul > .active > a, .pagination ul > .active > span {
+                    color: #999999;
+                    cursor: default;
+                }
+
+                .pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus {
+                    color: #999999;
+                    background-color: transparent;
+                    cursor: default;
+                }
+
+                .pagination ul > li:first-child > a, .pagination ul > li:first-child > span {
+                    border-left-width: 1px;
+                    -webkit-border-top-left-radius: 4px;
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -webkit-border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                }
+
+                .pagination ul > li:last-child > a, .pagination ul > li:last-child > span {
+                    -webkit-border-top-right-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -webkit-border-bottom-right-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                }
+
+        .pagination-centered {
+            text-align: center;
+        }
+
+        .pagination-right {
+            text-align: right;
+        }
+
+        .pagination-large ul > li > a, .pagination-large ul > li > span {
+            padding: 11px 19px;
+            font-size: 17.5px;
+        }
+
+        .pagination-large ul > li:first-child > a, .pagination-large ul > li:first-child > span {
+            -webkit-border-top-left-radius: 6px;
+            -moz-border-radius-topleft: 6px;
+            border-top-left-radius: 6px;
+            -webkit-border-bottom-left-radius: 6px;
+            -moz-border-radius-bottomleft: 6px;
+            border-bottom-left-radius: 6px;
+        }
+
+        .pagination-large ul > li:last-child > a, .pagination-large ul > li:last-child > span {
+            -webkit-border-top-right-radius: 6px;
+            -moz-border-radius-topright: 6px;
+            border-top-right-radius: 6px;
+            -webkit-border-bottom-right-radius: 6px;
+            -moz-border-radius-bottomright: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .pagination-mini ul > li:first-child > a, .pagination-small ul > li:first-child > a, .pagination-mini ul > li:first-child > span, .pagination-small ul > li:first-child > span {
+            -webkit-border-top-left-radius: 3px;
+            -moz-border-radius-topleft: 3px;
+            border-top-left-radius: 3px;
+            -webkit-border-bottom-left-radius: 3px;
+            -moz-border-radius-bottomleft: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        .pagination-mini ul > li:last-child > a, .pagination-small ul > li:last-child > a, .pagination-mini ul > li:last-child > span, .pagination-small ul > li:last-child > span {
+            -webkit-border-top-right-radius: 3px;
+            -moz-border-radius-topright: 3px;
+            border-top-right-radius: 3px;
+            -webkit-border-bottom-right-radius: 3px;
+            -moz-border-radius-bottomright: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .pagination-small ul > li > a, .pagination-small ul > li > span {
+            padding: 2px 10px;
+            font-size: 11.9px;
+        }
+
+        .pagination-mini ul > li > a, .pagination-mini ul > li > span {
+            padding: 0 6px;
+            font-size: 10.5px;
+        }
+
+        .div-disabled-tab {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+}
+<div ng-app="ToolingrequestApp" ng-controller="ToolingrequestCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Tool Request</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Tool Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolingRequest">Tool Request</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>Tool Request List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a id="AddTab" class="" href="#" title="Add Request" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'A')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                                <button class="btn btn-primary" type="button" id="fakeButton" style="display:none"></button>
+                            </div>
+                            <div class="">
+                                <div class="row" style="padding-left:17%">
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" style="height:90%" data-live-search="true" data-actions-box="true" ng-model="obj.SearchField" name="IsReusable">
+                                            <option value="">--Select Search Field--</option>
+                                            <option value="ToolReq_Partno">PartNumber</option>
+                                            <option value="ToolReq_Partname">PartName</option>
+                                            <option value="ToolReq_no">Request Number</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="main-search open">
+                                            <div class="input-group">
+                                                <input type="text" id="" ng-model="obj.SearchData" class="form-control" placeholder="Search . . ." style="width: 90px;">
+
+                                                <span class="input-group-append search-btn btn btn-primary">
+                                                    <i class="feather icon-search input-group-text" ng-click="FunctionSearch(obj)"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<i class="fa fa-refresh" aria-hidden="true"></i>*@
+                                    <a href="#!" class="btn  btn-primary" ng-click="init()"><i class="feather icon-refresh-cw f-30"></i>&nbsp;Refresh <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+
+                                </div>
+                                <div class="table-responsive m-t-20" ng-class="{ 'div-disabled-tab':!isAddTab_Visblity}">
+                                    <table class="table table-bordered table-striped mb-0  no-footer" style="font-weight: bolder;width: 100%;" datatable="ng" dt-options="vm.dtOptions" id="ToolRequestList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Tool Request id</th>
+                                                <th>Action</th>
+                                                <th>Request Date</th>
+                                                <th>Request Number</th>
+                                                <th>PartName</th>
+                                                <th>PartNumber</th>
+                                                <th>PartSpec</th>
+                                                @*<th>Line Name</th>
+                                                    <th>Machine Name</th>*@
+                                                <th>AvailableQty at Req</th>
+                                                <th>Requested Quantity</th>
+                                                <th>Status</th>
+                                                @*<th>Is Active</th>*@
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in ToolingRequestList|orderBy : '-ToolReq_id'">
+                                                <td>{{ row.Row_no }}</td>
+                                                <td style="display:none">{{ row.ToolReq_id }}</td>
+                                                <td ng-switch on="row.Tool_Status" class="text-wrap">
+
+
+                                                    @*<span ng-switch-default ng-click="editClick(row,'V')" class="feather icon-eye"> View </span>
+                                                        <span ng-switch-when="R" title="Edit" data-toggle="tooltip"  ng-click="editClick(row,'E')" class="feather icon-edit"> Edit</span>*@
+                                                    <span ng-switch-default ng-click="editClick(row,'V')"> <i class="feather icon-eye btn btn-success" title="View" style="margin-left: 15%;"> </i></span>
+                                                    <span ng-switch-when="R" ng-click="editClick(row,'E')"><i class="feather icon-edit btn btn-primary" title="Edit" style="margin-left: 15%;"> </i></span>
+
+                                                </td>
+                                                <td>{{row.OrderCreatedAt}}</td>
+                                                <td>{{ row.ToolReq_no }}</td>
+                                                <td>{{ row.ToolReq_Partname }}</td>
+                                                <td>{{ row.ToolReq_Partno }}</td>
+                                                <td>{{ row.ToolReq_PartSpecification }}</td>
+                                                @*<td>{{ row.ToolReq_Linename }}</td>
+                                                    <td>{{ row.ToolReq_Machinename }}</td>*@
+                                                <td>{{ row.ToolReq_AvailableQty }}</td>
+                                                <td>{{ row.ToolReq_Qty }}</td>
+                                                @*
+                                                    <td>{{ row.Tool_Status }}</td>*@
+                                                @*
+                                                    <td>
+                                                        <span ng-if="row.Tool_Status==='I'">
+                                                            {{'Issue'}}
+                                                        </span>
+                                                        <span ng-if="row.Tool_Status==='R'">
+                                                            {{'Request'}}
+                                                        </span>
+                                                        <span ng-if="row.Tool_Status==='C'">
+                                                            {{'Cancel'}}
+                                                        </span>
+                                                    </td>*@
+
+                                                <td ng-switch on="row.Tool_Status" class="text-wrap">
+                                                    <span ng-switch-when="I" class="label theme-bg f-12 text-white" style="border-radius: 15px;">Approved</span>
+                                                    <span ng-switch-when="R" class="label theme-bg2 f-12 text-white" style="border-radius: 15px;">Pending</span>
+                                                    <span ng-switch-when="C" class="label theme-bg3 f-12 text-white" style="border-radius: 15px;">Rejected</span>
+                                                </td>
+                                                @*<td>
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
+                                                @*
+                                                    <td>
+                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    </td>*@
+                                                @*
+                                                    <td>
+                                                        <a href="#!" class="btn btn-outline-primary" ng-click="editClick(row,'E')" ng-class="row.Tool_Status == 'I' && row.Tool_Status=='C' ? 'isNotClick' : 'isClick' "><i class="feather icon-edit"></i>&nbsp;Edit <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+                                                    </td>*@
+                                                @*
+                                                    <td>
+                                                        <a href="#!" class="btn btn-outline-primary" ng-click="editClick(row,'E')"><i class="feather icon-edit"></i>&nbsp;Edit <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+                                                    </td>*@
+                                                @*
+                                                    <td>
+                                                        <a href="#!" class="btn btn-outline-primary" ng-click="editClick(row,'E')" ng-class="row.Tool_Status == 'I' && row.Tool_Status=='C' ? 'isNotClick' : 'isClick' "><i class="feather icon-edit"></i>&nbsp;Edit <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+                                                    </td>*@
+
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div data-pagination="" data-num-pages="numPages()"
+                                         data-current-page="currentPage" data-max-size="maxSize"
+                                         data-boundary-links="true" ng-click="BindFilterData()"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Tooling Request</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelToolingRequest()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="ToolRequestForm" ng-submit="submitForm(ToolRequestForm.$valid,obj)" novalidate>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Date&Time</label>
+                                            <input id="Reqtime" type="text" class="form-control" autocomplete="off" placeholder="Date&Time" name="Rtime" ng-model="obj.ToolReq_datetime" disabled required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Shift</label>
+                                            <input id="Rshift" type="text" class="form-control" autocomplete="off" placeholder="Shift" name="Rshift" ng-model="obj.ToolReq_shift" disabled required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">RequestNumber</label>
+                                            <input id="Rnumber" type="text" class="form-control" autocomplete="off" placeholder="RequestNumber" name="Rno" ng-model="obj.ToolReq_no" disabled required>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Plant</label>
+                                                <input id="Plant" type="text" class="form-control" autocomplete="off" placeholder="Plant" name="Plant" ng-model="obj.ToolReq_plant" disabled>
+                                            </div>
+                                        </div>*@
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolRequestForm.PartNumber.$invalid && !ToolRequestForm.PartNumber.$pristine,'has-success': ToolRequestForm.PartNumber.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Part Number</label>
+                                                <input id="PartNo" type="text" class="form-control" autocomplete="off"  placeholder="Number" name="PartNumber" ng-model="obj.ToolReq_Partno" required>
+                                                <p ng-show="ToolRequestForm.PartNumber.$invalid && !ToolRequestForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Emp_Number.$invalid && !ToolRequestForm.Emp_Number.$pristine,'has-success': ToolRequestForm.Emp_Number.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Select Employee Name</label>
+                                                <select ng-disabled="disableCtrl" class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="Emp_Number" data-live-search="true" data-actions-box="true" ng-model="obj.Requested_Emp_Number" name="Emp_Number"
+                                                        ng-options="Emp_Number.Emp_Number as (Emp_Number.Emp_Number+ '  -  ' +Emp_Number.Emp_Name)
+                                                         for Emp_Number in EmployeeMasterList"
+                                                        required></select>
+                                                <p ng-show="ToolRequestForm.Emp_Number.$invalid && !ToolRequestForm.Emp_Number.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Emp_Number.$invalid && !ToolRequestForm.Emp_Number.$pristine,'has-success': ToolRequestForm.Emp_Number.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Employee Number</label>
+                                            <input id="Emp_Number" type="text" class="form-control" autocomplete="off" placeholder="Emp Number" name="Emp_Number" ng-model="obj.Requested_Emp_Number" required>
+                                            <p ng-show="ToolRequestForm.Emp_Number.$invalid && !ToolRequestForm.Emp_Number.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Emp_Name.$invalid && !ToolRequestForm.Emp_Name.$pristine,'has-success': ToolRequestForm.Emp_Name.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Employee Name</label>
+                                            <input id="Emp_Name" type="text" class="form-control" autocomplete="off" placeholder="Emp Name" name="Emp_Name" ng-model="obj.Requested_Emp_Name" required>
+                                            <p ng-show="ToolRequestForm.Emp_Name.$invalid && !ToolRequestForm.Emp_Name.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.ProductGroup.$invalid && !ToolRequestForm.ProductGroup.$pristine,'has-success': ToolRequestForm.ProductGroup.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Product Group</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" id="ProductGroup" ng-disabled="disableCtrl" data-live-search="true" data-actions-box="true" ng-model="obj.ProductGroup" ng-options='Group.Productgroup as (Group.Productgroup_desc) for Group in PartGroupList|filter:filterPartGroupList' name="ProductGroup" ng-change="BindPartGroupList(obj)" required></select>
+                                            <p ng-show="ToolRequestForm.ProductGroup.$invalid && !ToolRequestForm.ProductGroup.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.PartNumber.$invalid && !ToolRequestForm.PartNumber.$pristine,'has-success': ToolRequestForm.PartNumber.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Description</label>
+                                            <select ng-disabled="disableCtrl" class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="PartNumber" data-live-search="true" data-actions-box="true" ng-change="BindPartName(obj)" ng-model="obj.ToolReq_Partno" name="PartNumber"
+                                                    ng-options="PartNumber.PartNumber as (PartNumber.PartName+ '  -  ' +PartNumber.PartNumber+' - '+PartNumber.ToolInward_no+' - '+PartNumber.PartSpecification) for PartNumber in PartGroupMasterList"
+                                                    required>
+                                                @*|unique:'ToolUploadList'*@
+                                                @*<option value=""> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;PartName - PartCode  </option>*@
+                                                @*<option data-ng-repeat="PartNumber in ToolUploadList"
+                                                    value="{{PartNumber.PartNumber}}">{{PartNumber.PartName+ '  -  ' +PartNumber.PartNumber}}</option>*@
+                                            </select>
+                                            <p ng-show="ToolRequestForm.PartNumber.$invalid && !ToolRequestForm.PartNumber.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <input id="PartId" type="text" style="display:none" class="form-control" ng-disabled="true" name="PartId" ng-model="obj.PartId">
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.PartName.$invalid && !ToolRequestForm.PartName.$pristine,'has-success': ToolRequestForm.PartName.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Name</label>
+                                            <input id="PartName" type="text" class="form-control" autocomplete="off" placeholder="Part Name" name="PartName" ng-model="obj.ToolReq_Partname" required disabled>
+                                            <p ng-show="ToolRequestForm.PartName.$invalid && !ToolRequestForm.PartName.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.PartSpecfi.$invalid && !ToolRequestForm.PartSpecfi.$pristine,'has-success': ToolRequestForm.PartSpecfi.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Part Specification</label>
+                                            <input id="PartSpecfi" type="text" class="form-control" autocomplete="off" placeholder="Part Specification" name="PartSpecfi" ng-model="obj.ToolReq_PartSpecification" disabled>
+                                            <p ng-show="ToolRequestForm.PartSpecfi.$invalid && !ToolRequestForm.PartSpecfi.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Uniquecode.$invalid && !ToolRequestForm.Uniquecode.$pristine,'has-success': ToolRequestForm.Uniquecode.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Unique Code</label>
+                                                <input id="Uniquecode" type="text" class="form-control" autocomplete="off"  placeholder="Unique Code" name="Uniquecode" ng-model="obj.ToolReq_uniquecode" required >
+                                                <p ng-show="ToolRequestForm.Uniquecode.$invalid && !ToolRequestForm.Uniquecode.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Is Reusable</label>
+                                            <select class="form-control selectpicker show-menu-arrow show-tick" ng-disabled="true" data-live-search="true" data-actions-box="true" ng-model="obj.Tooltype" name="IsReusable" required>
+                                                <option value="">--Select Is Reusable--</option>
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Lname.$invalid && !ToolRequestForm.Lname.$pristine,'has-success': ToolRequestForm.Lname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">LineName</label>
+                                            <select ng-disabled="disableCtrl" name="Lname" id="Lname" class="form-control selectpicker show-menu-arrow show-tick" ng-model="obj.LineMachine_Line_Code" nam="Lname" ng-change="getLineDetails(obj)" required>
+                                                <option value="">--Select Line--</option>
+                                                <option data-ng-repeat="list in LineList" value="{{list.LineName}}">{{list.LineName}}</option>
+                                            </select>
+                                            @*<div ng-dropdown-multiselect=""  options="example14data"  selected-model="example13model" extra-settings="setting2"></div>*@
+                                            <p ng-show="ToolRequestForm.Lname.$invalid && !ToolRequestForm.Lname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Lname.$invalid && !ToolRequestForm.Lname.$pristine,'has-success': ToolRequestForm.Lname.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Line Name</label>
+                                                <input id="Lname" type="text" class="form-control" autocomplete="off"  placeholder="Line Name" name="Lname" ng-model="obj.ToolReq_Linename" required>
+                                                <p ng-show="ToolRequestForm.Lname.$invalid && !ToolRequestForm.Lname.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Mname.$invalid && !ToolRequestForm.Mname.$pristine,'has-success': ToolRequestForm.Mname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">MachineName</label>
+                                            @*<div class="col-md-12"  ng-disabled="disableCtrl" ng-dropdown-multiselect="" options="MachineList" selected-model="obj.Machinecode" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></div>*@
+                                            <fieldset class="col-md-12" ng-disabled="disableCtrl" ng-dropdown-multiselect="" options="MachineList" selected-model="obj.Machinecode" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></fieldset>
+                                            <p ng-show="machinecodeError" class="help-block" style="color:red;margin-top:20px;">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Mname.$invalid && !ToolRequestForm.Mname.$pristine,'has-success': ToolRequestForm.Mname.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Machine Name</label>
+                                                <input id="Mname" type="text" class="form-control" autocomplete="off"  placeholder="Machine Name" name="Mname" ng-model="obj.ToolReq_Machinename" required>
+                                                <p ng-show="ToolRequestForm.Mname.$invalid && !ToolRequestForm.Mname.$pristine" class="help-block">This field is required..</p>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Troubleregno.$invalid && !ToolRequestForm.Troubleregno.$pristine,'has-success': ToolRequestForm.Troubleregno.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Trouble RegisterNumber</label>
+                                            <input id="Troubleregno" ng-disabled="disableCtrl" type="text" class="form-control" autocomplete="off" placeholder="Trouble RegisterNumber" name="Troubleregno" ng-model="obj.ToolReq_TroubleReqno">
+                                            <p ng-show="ToolRequestForm.Troubleregno.$invalid && !ToolRequestForm.Troubleregno.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Qty.$invalid && !ToolRequestForm.Qty.$pristine,'has-success': ToolRequestForm.Qty.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Qty</label>
+                                            @*<input id="Max_qty" type="number" class="form-control" autocomplete="off" placeholder="Maxqty" ng-model="obj.Max_qty" ng-min="obj.Min_qty" ng-max="obj.Max_qty" name="value1" required />
+                                                <p ng-show="PartMasterForm.value1.$invalid && !PartMasterForm.value1.$pristine" class="help-block">Value Invalid..</p>*@
+                                            <input id="Qty" type="number" ng-disabled="disableCtrl" class="form-control" autocomplete="off" placeholder="Qty" name="Qty" ng-model="obj.ToolReq_Qty" ng-min="Min" ng-max="obj.ToolReq_AvailableQty" onmousewheel="return false" required>
+                                            <p ng-show="ToolRequestForm.Qty.$invalid && !ToolRequestForm.Qty.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Available Qty</label>
+                                            <input id="AvailableQty" type="number" class="form-control" autocomplete="off" placeholder="Available Qty" name="AvailableQty" ng-model="obj.ToolReq_AvailableQty" disabled>
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Reason.$invalid && !ToolRequestForm.Reason.$pristine,'has-success': ToolRequestForm.Reason.$valid }">
+                                            <div class="form-group">
+                                                <label class="form-label">Reason</label>
+                                                <div class="col-md-12" ng-dropdown-multiselect="" options="ToolRequestReason" selected-model="obj.ToolReq_Reason" checkboxes="true" extra-settings="Machinesettings" style="background: #f4f7fa;    border: 1px solid #ced4da;"></div>
+
+
+                                                <p ng-show="machinecodeError" class="help-block" style="color:red;margin-top:20px;">This field is required..</p>
+                                            </div>
+                                        </div>*@
+
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Reason.$invalid && !ToolRequestForm.Reason.$pristine,'has-success': ToolRequestForm.Reason.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Reason</label>
+                                            <select ng-disabled="disableCtrl" class="form-control js-example-basic-multiple col-sm-12 select2-hidden-accessible" id="Reason" data-live-search="true" data-actions-box="true" ng-model="obj.ToolReq_Reason" name="Reason" ng-options='Reason.ReasonCode as (Reason.ReasonDetails) for Reason in ToolRequestReason|filter:filterToolRequestReason' required>
+                                                @*<option value="" selected="selected">--Choose here--</option>*@
+                                            </select>
+                                            <p ng-show="ToolRequestForm.Reason.$invalid && !ToolRequestForm.Reason.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-class="{'has-error':ToolRequestForm.Remarks.$invalid && !ToolRequestForm.Remarks.$pristine,'has-success': ToolRequestForm.Remarks.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Remarks</label>
+                                            <input id="Remarks" ng-disabled="disableCtrl" type="text" class="form-control" autocomplete="off" placeholder="Remarks" name="Remarks" ng-model="obj.ToolReq_Remarks" required>
+                                            <p ng-show="ToolRequestForm.Remarks.$invalid && !ToolRequestForm.Remarks.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div style="max-height:300px;overflow-y:auto" class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <table id="PivotValueData" class="table">
+                                            <thead>
+
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="row in filterToolLocationList">
+                                                    <td>
+                                                        <input type="text" id="browser" name="browser" ng-disabled="true" class="form-control" ng-model="row.label" />
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6" style="display:none">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" ng-disabled="disableCtrl" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" ng-disabled="disableCtrl" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolingRequest()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+
+    <script src="~/AngularJS/Tool/ToolRequest/ToolRequest-app.js"></script>
+    <script src="~/AngularJS/Tool/ToolRequest/ToolRequest-controller.js"></script>
+    <script src="../CommonJS/lodash.min.js"></script>
+    <script>
+        $('.Tool-request-reason-form-select2').select2({
+            placeholder: "--select request reason--",
+            allowClear: true
+        })
+        //.on("change", function (e) { angular.element(document.getElementById("toolingrequestCtrl")).scope().setRequestReason(e); })
+    </script>
+
+}

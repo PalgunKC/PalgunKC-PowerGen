@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "ToolLineMaster";
+    Layout = "~/Views/Shared/e_Master.cshtml";
+}
+
+<div ng-app="toollineApp" ng-controller="toollineCtrl" ng-cloak>
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Tool LocationMaster</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Tool Module</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolLineMaster">Tool LocationMaster</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card" ng-show="IsListDivVisible">
+                        <div class="card-header">
+                            <h5>ToolLine Master List</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" title="Add NewLocation" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-plus-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                                <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToExcel('#ToollineMasterList')"><i class="fas fa-file-excel text-c-blue f-30"></i> Save As Excel</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item  " href="#!" ng-click="exportToPDF('ToollineMasterList')"><i class="fas fa-file-pdf text-c-blue f-30"></i> Save As PDF</a>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="table-responsive m-t-20">
+                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer" style="width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ToollineMasterList">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="display:none">Location Id</th>
+                                                <th>Location Name</th>
+                                                <th>Location Rack</th>
+                                                <th>Location Row</th>
+                                                <th>Location Column</th>
+                                                <th>Location Bin</th>
+                                                <th>Is Active</th>
+                                                @*<th>Action</th>*@
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="row in ToolLineList">
+                                                <td>{{ $index +   1 }}</td>
+                                                <td style="display:none">{{ row.LocationID }}</td>
+                                                <td>{{ row.LocationName }}</td>
+                                                <td>{{ row.LocationStation }}</td>
+                                                <td>{{ row.LocationRow }}</td>
+                                                <td>{{ row.LocationColumn }}</td>
+                                                <td>{{ row.LocationBinData }}</td>
+                                                @*<td>
+                                                        <span ng-switch on="row.IsActive">
+                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                        </span>
+                                                    </td>*@
+                                                <td>
+                                                    <i class="fas fa-toggle-on" style="font-size:29px;cursor:pointer; color: #5cb85c;padding-left: 31px;padding-top: 0px;"
+                                                       ng-if="row.IsActive == 'Y'"
+                                                       ng-click="editClick(row,'I')" title="Active">
+                                                    </i>
+                                                    <i class="fas fa-toggle-on fa-rotate-180" style="font-size:29px;cursor:pointer;color: #d9534f;padding-left: 31px;padding-top: 0px;"
+                                                       ng-if="row.IsActive == 'N'"
+                                                       ng-click="editClick(row,'A')" title="InActive">
+                                                    </i>
+                                                </td>
+
+                                                @*<td>
+
+                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                    </td>*@
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" ng-show="IsEditDivVisible">
+                        <div class="card-header">
+                            <h5>Add ToolLine</h5>
+                            <div style="float: right; margin-right: 25px;">
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelToolLine()"><i class="feather icon-x-square f-30"></i></a>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <form name="ToollineForm" ng-submit="submitForm(ToollineForm.$valid,obj)" novalidate>
+                                <div class="row">
+                                  
+                                    <div class="col-md-6" ng-class="{'has-error':ToollineForm.Lname.$invalid && !ToollineForm.Lname.$pristine,'has-success': ToollineForm.Lname.$valid }">
+                                        <div class="form-group">
+                                            <label class="form-label">Line Name</label>
+                                            <input id="LineName" type="text" class="form-control" ng-disabled="true" autocomplete="off" maxlength="60" placeholder="Line Name" name="Lname" ng-model="obj.LineName" required>
+                                            <p ng-show="ToollineForm.Lname.$invalid && !ToollineForm.Lname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox checkbox-info d-inline">
+                                            <input type="checkbox" name="IsActive" id="chkIsActive" ng-model="obj.IsActive">
+                                            <label for="chkIsActive" style="padding-top: 40px; padding-left: 4px;" class="cr">Is Active</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-outline-primary" title="" data-toggle="tooltip" data-original-title="Submit">Submit</button>
+                                    <button type="button" ng-click="CancelToolLine()" class="btn btn-outline-secondary" title="" data-toggle="tooltip" data-original-title="Cancel">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="../CommonJS/jquery.dataTables.min.js"></script>
+    <script src="../CommonJS/angular-datatable.min.js"></script>
+    <script src="~/AngularJS/Tool/ToolLineMaster/ToolLineMaster-app.js"></script>
+    <script src="~/AngularJS/Tool/ToolLineMaster/ToolLineMaster-controller.js"></script>
+}
+

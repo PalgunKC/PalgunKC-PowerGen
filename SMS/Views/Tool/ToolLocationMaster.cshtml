@@ -6,18 +6,144 @@
 @section styles{
     <link href="~/CommonJS/datatables.bootstrap.css" rel="stylesheet" />
 }
+<style>
+    .pagination {
+        margin: 20px 0;
+    }
+
+        .pagination ul {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            margin-left: 0;
+            margin-bottom: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+            .pagination ul > li {
+                display: inline;
+            }
+
+                .pagination ul > li > a, .pagination ul > li > span {
+                    float: left;
+                    padding: 4px 12px;
+                    line-height: 20px;
+                    text-decoration: none;
+                    background-color: #ffffff;
+                    border: 1px solid #dddddd;
+                    border-left-width: 0;
+                }
+
+                    .pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span {
+                        background-color: #f5f5f5;
+                    }
+
+            .pagination ul > .active > a, .pagination ul > .active > span {
+                color: #999999;
+                cursor: default;
+            }
+
+            .pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus {
+                color: #999999;
+                background-color: transparent;
+                cursor: default;
+            }
+
+            .pagination ul > li:first-child > a, .pagination ul > li:first-child > span {
+                border-left-width: 1px;
+                -webkit-border-top-left-radius: 4px;
+                -moz-border-radius-topleft: 4px;
+                border-top-left-radius: 4px;
+                -webkit-border-bottom-left-radius: 4px;
+                -moz-border-radius-bottomleft: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            .pagination ul > li:last-child > a, .pagination ul > li:last-child > span {
+                -webkit-border-top-right-radius: 4px;
+                -moz-border-radius-topright: 4px;
+                border-top-right-radius: 4px;
+                -webkit-border-bottom-right-radius: 4px;
+                -moz-border-radius-bottomright: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+    .pagination-centered {
+        text-align: center;
+    }
+
+    .pagination-right {
+        text-align: right;
+    }
+
+    .pagination-large ul > li > a, .pagination-large ul > li > span {
+        padding: 11px 19px;
+        font-size: 17.5px;
+    }
+
+    .pagination-large ul > li:first-child > a, .pagination-large ul > li:first-child > span {
+        -webkit-border-top-left-radius: 6px;
+        -moz-border-radius-topleft: 6px;
+        border-top-left-radius: 6px;
+        -webkit-border-bottom-left-radius: 6px;
+        -moz-border-radius-bottomleft: 6px;
+        border-bottom-left-radius: 6px;
+    }
+
+    .pagination-large ul > li:last-child > a, .pagination-large ul > li:last-child > span {
+        -webkit-border-top-right-radius: 6px;
+        -moz-border-radius-topright: 6px;
+        border-top-right-radius: 6px;
+        -webkit-border-bottom-right-radius: 6px;
+        -moz-border-radius-bottomright: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .pagination-mini ul > li:first-child > a, .pagination-small ul > li:first-child > a, .pagination-mini ul > li:first-child > span, .pagination-small ul > li:first-child > span {
+        -webkit-border-top-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-bottomleft: 3px;
+        border-bottom-left-radius: 3px;
+    }
+
+    .pagination-mini ul > li:last-child > a, .pagination-small ul > li:last-child > a, .pagination-mini ul > li:last-child > span, .pagination-small ul > li:last-child > span {
+        -webkit-border-top-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 3px;
+        -moz-border-radius-bottomright: 3px;
+        border-bottom-right-radius: 3px;
+    }
+
+    .pagination-small ul > li > a, .pagination-small ul > li > span {
+        padding: 2px 10px;
+        font-size: 11.9px;
+    }
+
+    .pagination-mini ul > li > a, .pagination-mini ul > li > span {
+        padding: 0 6px;
+        font-size: 10.5px;
+    }
+</style>
 <div ng-app="toollocationApp" ng-controller="toollocationCtrl" ng-cloak>
     <div class="page-header">
         <div class="page-block">
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Tool LocationMaster</h5>
+                        <h5 class="m-b-10">ToolCrib Location</h5>
                     </div>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="#!">Tool Module</a></li>
-                        <li class="breadcrumb-item"><a href="/Tool/ToolLocationMaster">Tool LocationMaster</a></li>
+                        <li class="breadcrumb-item"><a href="/Dashboard/admin"><i class="feather icon-Dashboard"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Tool</a></li>
+                        <li class="breadcrumb-item"><a href="/Tool/ToolLocationMaster">ToolCrib Location</a></li>
                     </ul>
                 </div>
             </div>
@@ -29,71 +155,107 @@
                 <div class="col-sm-12">
                     <div class="card" ng-show="IsListDivVisible">
                         <div class="card-header">
-                            <h5>ToolLocation Master List</h5>
+                            <h5>ToolCrib Location List</h5>
                             <div style="float: right; margin-right: 25px;">
-                                <a class="" href="#" title="Add Drug" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-user-plus"></i></a>
+                                <a class="" href="#" title="AddNew ToolCrib" style="font-size: 25px;" data-toggle="tooltip" ng-click="editClick(null,'C')"><i class="feather icon-plus-square f-30"></i></a>
                             </div>
                         </div>
                         <div class="card-block">
+                            <div class="dropdown-secondary dropdown d-inline">
+                                <button class="btn btn-primary  " type="button" data-toggle="dropdown" aria-haspopup="true" ng-click="GetExcelData()" aria-expanded="false">Save As Excel</button>
+                            </div>
                             <div class="">
+                                <div class="row" style="padding-left:17%">
+                                    <div class="col-md-4">
+                                        <select class="form-control selectpicker show-menu-arrow show-tick" style="height:90%" data-live-search="true" data-actions-box="true" ng-model="obj.SearchField" name="IsReusable">
+                                            <option value="">--Select Search Field--</option>
+                                            <option value="LocationName">LocationName</option>
+                                            <option value="LocationStation">Location Rack</option>
+                                            <option value="LocationRow">Location Row</option>
+                                            <option value="LocationColumn">Location Column</option>
+                                            <option value="LocationBinData">Location Bin</option>
+
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="main-search open">
+                                            <div class="input-group">
+                                                <input type="text" id="" ng-model="obj.SearchData" class="form-control" placeholder="Search . . ." style="width: 90px;">
+
+                                                <span class="input-group-append search-btn btn btn-primary">
+                                                    <i class="feather icon-search input-group-text" ng-click="FunctionSearch(obj)"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<i class="fa fa-refresh" aria-hidden="true"></i>*@
+                                    <a href="#!" class="btn  btn-primary" ng-click="init()"><i class="feather icon-refresh-cw f-30"></i>&nbsp;Refresh <span class="ripple ripple-animate" style="height: 60.4875px; width: 60.4875px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(255, 255, 255); opacity: 0.4; top: -13.6437px; left: -24.3687px;"></span></a>
+
+                                </div>
                                 <div class="table-responsive m-t-20">
-                                    <table class="table table-hover" style="width: 100%" datatable="ng" dt-options="vm.dtOptions">
+                                    <table class="table table-bordered table-striped mb-0  no-footer" style="font-weight: bolder;width: 100%" datatable="ng" dt-options="vm.dtOptions" id="ToollocationMasterList">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th style="display:none">Location Id</th>
                                                 <th>Location Name</th>
-                                                <th>Location Station</th>
+                                                <th>Location Rack</th>
                                                 <th>Location Row</th>
                                                 <th>Location Column</th>
+                                                <th>Location Bin</th>
                                                 <th>Is Active</th>
-                                                @*<th>Action</th>*@
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
 
                                             <tr ng-repeat="row in ToolLocationList">
-                                                <td>{{ $index +   1 }}</td>
+                                                <td>{{row.Row_no }}</td>
                                                 <td style="display:none">{{ row.LocationID }}</td>
                                                 <td>{{ row.LocationName }}</td>
                                                 <td>{{ row.LocationStation }}</td>
                                                 <td>{{ row.LocationRow }}</td>
                                                 <td>{{ row.LocationColumn }}</td>
-                                                @*<td>
-                                                        <span ng-switch on="row.IsActive">
-                                                            <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
-                                                            <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
-                                                        </span>
-                                                    </td>*@
+                                                <td>{{ row.LocationBinData }}</td>
                                                 <td>
-                                                    <i class="fas fa-toggle-on" style="font-size:40px;cursor:pointer; color: #5cb85c"
-                                                       ng-if="row.IsActive == 'Y'"
-                                                       ng-click="editClick(row,'I')" title="Active">
-                                                    </i>
-                                                    <i class="fas fa-toggle-on fa-rotate-180" style="font-size:40px;cursor:pointer;color: #d9534f"
-                                                       ng-if="row.IsActive == 'N'"
-                                                       ng-click="editClick(row,'A')" title="InActive">
-                                                    </i>
+                                                    <span ng-switch on="row.IsActive">
+                                                        <img ng-switch-when="Y" src="~/Assets/images/table/tick.jpg" style="width: 25px;">
+                                                        <img ng-switch-default src="~/Assets/images/table/cross.jpg" style="width: 25px;">
+                                                    </span>
                                                 </td>
-
                                                 @*<td>
-
-                                                        <a><i class="fa fa-edit text-primary" title="Edit" ng-click="editClick(row,'E')" style="padding-right: 10px;"></i></a>
+                                                        <i class="fas fa-toggle-on" style="font-size:29px;cursor:pointer; color: #5cb85c;padding-left: 31px;padding-top: 0px;"
+                                                           ng-if="row.IsActive == 'Y'"
+                                                           ng-click="editClick(row,'I')" title="Active">
+                                                        </i>
+                                                        <i class="fas fa-toggle-on fa-rotate-180" style="font-size:29px;cursor:pointer;color: #d9534f;padding-left: 31px;padding-top: 0px;"
+                                                           ng-if="row.IsActive == 'N'"
+                                                           ng-click="editClick(row,'A')" title="InActive">
+                                                        </i>
                                                     </td>*@
+
+                                                <td>
+                                                    <a><i class="feather icon-edit btn btn-primary" title="Edit" ng-click="editClick(row,'E')" style="margin-left: 15%;"></i></a>
+
+                                                </td>
 
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div data-pagination="" data-num-pages="numPages()"
+                                         data-current-page="currentPage" data-max-size="maxSize"
+                                         data-boundary-links="true" ng-click="BindFilterData()"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card" ng-show="IsEditDivVisible">
                         <div class="card-header">
-                            <h5>Add ToolLocation</h5>
+                            <h5>Add ToolCrib</h5>
                             <div style="float: right; margin-right: 25px;">
-                                <a class="" href="#" title="Cancel" style="font-size: 25px;" ng-click="CancelToolLocation()"><i class="feather icon-user-x"></i></a>
+                                <a class="" href="#" data-toggle="tooltip" title="Cancel" style="font-size: 25px;" ng-click="CancelToolLocation()"><i class="feather icon-x-square f-30"></i></a>
                             </div>
                         </div>
                         <div class="card-block">
@@ -101,8 +263,8 @@
                                 <div class="row">
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine,'has-success': ToollocationForm.Tcode.$valid }">
                                         <div class="form-group">
-                                            <label class="form-label">Tool Station</label>
-                                            <input id="LocationStation" type="text" alpha-only class="form-control" autocomplete="off" maxlength="60" placeholder="Code" name="Tcode" ng-model="obj.LocationStation" required>
+                                            <label class="form-label">Tool Rack</label>
+                                            <input id="LocationStation" type="text" class="form-control" autocomplete="off" placeholder="Station" name="Tcode" ng-model="obj.LocationStation" required>
                                             <p ng-show="ToollocationForm.Tcode.$invalid && !ToollocationForm.Tcode.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
@@ -110,7 +272,7 @@
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine,'has-success': ToollocationForm.Tname.$valid }">
                                         <div class="form-group">
                                             <label class="form-label">Tool Row</label>
-                                            <input id="LocationRow" type="text" alpha-only class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Tname" ng-model="obj.LocationRow" required>
+                                            <input id="LocationRow" type="text" alpha-only class="form-control" autocomplete="off" placeholder="Row" name="Tname" ng-model="obj.LocationRow" required>
                                             <p ng-show="ToollocationForm.Tname.$invalid && !ToollocationForm.Tname.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
@@ -118,15 +280,23 @@
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Cname.$invalid && !ToollocationForm.Cname.$pristine,'has-success': ToollocationForm.Cname.$valid }">
                                         <div class="form-group">
                                             <label class="form-label">Tool Column</label>
-                                            <input id="LocationColumn" type="text" numeric-validation class="form-control" autocomplete="off" maxlength="60" placeholder="Name" name="Cname" ng-model="obj.LocationColumn" required>
+                                            <input id="LocationColumn" type="text" numeric-validation class="form-control" autocomplete="off" placeholder="Column" name="Cname" ng-model="obj.LocationColumn" required>
                                             <p ng-show="ToollocationForm.Cname.$invalid && !ToollocationForm.Cname.$pristine" class="help-block">This field is required..</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" @*ng-class="{'has-error':ToollocationForm.bin.$invalid && !ToollocationForm.bin.$pristine,'has-success': ToollocationForm.bin.$valid }"*@>
+                                        <div class="form-group">
+                                            <label class="form-label">Location Bin</label>
+                                            <input id="LocationBinData" type="text" class="form-control" autocomplete="off" placeholder="Bin" name="bin" ng-model="obj.LocationBinData">
+                                            @*<p ng-show="ToollocationForm.bin.$invalid && !ToollocationForm.bin.$pristine" class="help-block">This field is required..</p>*@
                                         </div>
                                     </div>
 
                                     <div class="col-md-6" ng-class="{'has-error':ToollocationForm.Lname.$invalid && !ToollocationForm.Lname.$pristine,'has-success': ToollocationForm.Lname.$valid }">
                                         <div class="form-group">
                                             <label class="form-label">Tool Location</label>
-                                            <input id="LocationName" type="text" class="form-control" ng-disabled="true" autocomplete="off" maxlength="60" placeholder="Name" name="Lname" ng-model="obj.LocationName=obj.LocationStation+'-'+obj.LocationRow+obj.LocationColumn" required>
+                                            <input id="LocationName" ng-show="obj.LocationBinData==''" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Toollocation" name="Lname" ng-model="obj.LocationName=obj.LocationStation+'-'+obj.LocationRow+obj.LocationColumn" required>
+                                            <input id="LocationName" ng-show="obj.LocationBinData!=''" type="text" class="form-control" ng-disabled="true" autocomplete="off" placeholder="Toollocation" name="Lname" ng-model="obj.LocationName=obj.LocationStation+'-'+obj.LocationRow+obj.LocationColumn+ '-' + obj.LocationBinData" required>
                                             <p ng-show="ToollocationForm.Lname.$invalid && !ToollocationForm.Lname.$pristine" class="help-block">This field is required..</p>
                                         </div>
                                     </div>
